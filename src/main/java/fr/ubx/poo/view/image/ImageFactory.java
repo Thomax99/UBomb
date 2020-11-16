@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020. Laurent Réveillère
  */
-
+//test
 package fr.ubx.poo.view.image;
 
 import fr.ubx.poo.game.Direction;
