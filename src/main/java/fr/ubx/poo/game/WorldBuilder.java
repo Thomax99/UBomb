@@ -38,6 +38,8 @@ public class WorldBuilder {
                 return new Door();
             case Princess:
                 return new Princess();
+            case Key:
+                return new Key();
             default:
                 return null;
         }
