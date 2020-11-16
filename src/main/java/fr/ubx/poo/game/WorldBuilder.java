@@ -36,6 +36,8 @@ public class WorldBuilder {
                 return new Box();
             case DoorNextClosed:
                 return new Door();
+            case Princess:
+                return new Princess();
             default:
                 return null;
         }
