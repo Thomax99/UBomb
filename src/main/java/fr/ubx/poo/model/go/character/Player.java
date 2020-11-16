@@ -9,6 +9,7 @@ import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
 import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.decor.* ;
+import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
 public class Player extends GameObject implements Movable {
@@ -30,6 +31,9 @@ public class Player extends GameObject implements Movable {
         this.bombs = game.getInitPlayerBombs();
         this.key = game.getInitPlayerKey();
         this.portee = game.getInitPlayerPortee();
+    }
+    private void addLive(){
+        lives++ ;
     }
 
     public int getLives() {
@@ -60,12 +64,19 @@ public class Player extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ;
-        return nextPos.inside(game.getWorld().dimension);
+        return nextPos.inside(game.getWorld().dimension); // changer avec la methode isInside de la classe World
     }
 
     public void doMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);
+        if (game.getWorld().get(nextPos) instanceof Heart){
+            Heart heart = (Heart) game.getWorld().get(nextPos) ;
+            if(! heart.isAlreadyTaken()){
+                addLive();
+                heart.take() ;
+            }
+        }
     }
 
     public void update(long now) {

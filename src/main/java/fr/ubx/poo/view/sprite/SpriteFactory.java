@@ -31,7 +31,7 @@ public final class SpriteFactory {
         if (decor instanceof Key)
             return new SpriteDecor(layer, factory.get(KEY), position);
         if (decor instanceof Heart)
-            return new SpriteDecor(layer, factory.get(HEART), position);
+            return new SpriteBonus(layer, factory.get(HEART), position, (Bonus) decor);
         return null;
     }
 

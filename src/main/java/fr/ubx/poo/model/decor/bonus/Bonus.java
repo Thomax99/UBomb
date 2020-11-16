@@ -8,8 +8,11 @@ import fr.ubx.poo.model.decor.Decor;
 
 
 public class Bonus extends Decor {
-    private final boolean alreadyTaken = false;
+    private boolean alreadyTaken = false;
     public boolean isAlreadyTaken(){
         return alreadyTaken ;
+    }
+    public void take(){
+        alreadyTaken = true ;
     }
 }

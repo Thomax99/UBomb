@@ -3,18 +3,22 @@ package fr.ubx.poo.view.sprite;
 import fr.ubx.poo.game.Position;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import fr.ubx.poo.model.decor.bonus.*;
 
 
-public class SpriteDecor extends Sprite {
+public class SpriteBonus extends Sprite {
     private Position position;
+    private Bonus bonus ;
 
-    public SpriteDecor(Pane layer, Image image, Position position) {
+    public SpriteBonus(Pane layer, Image image, Position position, Bonus bonus) {
         super(layer, image);
         this.position = position;
+        this.bonus = bonus ;
     }
 
     @Override
     public void updateImage() {
+        if(bonus.isAlreadyTaken()) setImage(null) ;
     }
 
     @Override
