@@ -18,6 +18,7 @@ public class Player extends GameObject implements Movable {
     private int lives = 1;
     private int bombs = 1;
     private int key = 0;
+    private int portee = 1;
 
     private boolean winner;
 
@@ -27,6 +28,7 @@ public class Player extends GameObject implements Movable {
         this.lives = game.getInitPlayerLives();
         this.bombs = game.getInitPlayerBombs();
         this.key = game.getInitPlayerKey();
+        this.portee = game.getInitPlayerPortee();
     }
 
     public int getLives() {
@@ -37,6 +39,9 @@ public class Player extends GameObject implements Movable {
     }
     public int getKey() {
         return key;
+    }
+    public int getPortee() {
+        return portee;
     }
 
     public Direction getDirection() {

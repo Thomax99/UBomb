@@ -21,6 +21,7 @@ public class Game {
     public int initPlayerLives;
     public int initPlayerBombs;
     public int initPlayerKey;
+    public int initPlayerPortee;
 
     public Game(String worldPath) {
         world = new WorldStatic();
@@ -45,6 +46,9 @@ public class Game {
     public int getInitPlayerKey() {
         return initPlayerKey;
     }
+    public int getInitPlayerPortee() {
+        return initPlayerPortee;
+    }
 
     private void loadConfig(String path) {
         try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
@@ -54,6 +58,7 @@ public class Game {
             initPlayerLives = Integer.parseInt(prop.getProperty("lives", "3"));
             initPlayerBombs = Integer.parseInt(prop.getProperty("bombs", "3"));
             initPlayerKey = Integer.parseInt(prop.getProperty("key", "3"));
+            initPlayerPortee = Integer.parseInt(prop.getProperty("portee", "3"));
         } catch (IOException ex) {
             System.err.println("Error loading configuration");
         }
