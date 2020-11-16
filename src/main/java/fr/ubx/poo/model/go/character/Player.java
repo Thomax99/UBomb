@@ -41,7 +41,8 @@ public class Player extends GameObject implements Movable {
 
     @Override
     public boolean canMove(Direction direction) {
-        return true;
+        Position nextPos = direction.nextPosition(getPosition());
+        return nextPos.inside(game.getWorld().dimension);
     }
 
     public void doMove(Direction direction) {
