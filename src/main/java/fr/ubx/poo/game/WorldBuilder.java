@@ -1,7 +1,7 @@
 package fr.ubx.poo.game;
 
 import fr.ubx.poo.model.decor.*;
-import fr.ubx.poo.model.bonus.Heart;
+import fr.ubx.poo.model.decor.bonus.*;
 
 
 import java.util.Hashtable;
@@ -40,6 +40,8 @@ public class WorldBuilder {
                 return new Princess();
             case Key:
                 return new Key();
+            case Heart:
+                return new Heart() ;
             default:
                 return null;
         }
