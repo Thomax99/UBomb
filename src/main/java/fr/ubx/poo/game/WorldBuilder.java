@@ -1,9 +1,6 @@
 package fr.ubx.poo.game;
 
-import fr.ubx.poo.model.decor.Box;
-import fr.ubx.poo.model.decor.Decor;
-import fr.ubx.poo.model.decor.Stone;
-import fr.ubx.poo.model.decor.Tree;
+import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.bonus.Heart;
 
 
@@ -37,6 +34,8 @@ public class WorldBuilder {
                 return new Tree();
             case Box:
                 return new Box();
+            case DoorNextClosed:
+                return new Door();
             default:
                 return null;
         }
