@@ -29,9 +29,18 @@ public final class SpriteFactory {
         if (decor instanceof Princess)
             return new SpriteDecor(layer, factory.get(PRINCESS), position);
         if (decor instanceof Key)
-            return new SpriteDecor(layer, factory.get(KEY), position);
+            return new SpriteBonus(layer, factory.get(KEY), position, (Bonus) decor);
         if (decor instanceof Heart)
             return new SpriteBonus(layer, factory.get(HEART), position, (Bonus) decor);
+        if (decor instanceof BombNumberInc)
+            return new SpriteBonus(layer, factory.get(BONUS_BOMB_INC), position, (Bonus) decor);
+        if (decor instanceof BombNumberDec)
+            return new SpriteBonus(layer, factory.get(BONUS_BOMB_DEC), position, (Bonus) decor);
+        if (decor instanceof BombRangeDec)
+            return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, (Bonus) decor);
+        if (decor instanceof BombRangeInc)
+            return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
+
         return null;
     }
 

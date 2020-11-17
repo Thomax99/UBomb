@@ -5,8 +5,8 @@
 package fr.ubx.poo.model.decor.bonus;
 
 
-public class Heart extends Bonus {
+public class BombNumberDec extends Bonus {
     public String toString(){
-        return "Heart" ;
+        return "BombNumberDec" ;
     }
 }

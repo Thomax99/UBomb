@@ -42,6 +42,14 @@ public class WorldBuilder {
                 return new Key();
             case Heart:
                 return new Heart() ;
+            case BombNumberInc:
+                return new BombNumberInc() ;
+            case BombNumberDec:
+                return new BombNumberDec() ;
+            case BombRangeDec:
+                return new BombRangeDec() ;
+            case BombRangeInc:
+                return new BombRangeInc() ;
             default:
                 return null;
         }
