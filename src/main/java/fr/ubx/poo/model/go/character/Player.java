@@ -33,7 +33,11 @@ public class Player extends GameObject implements Movable {
         this.portee = game.getInitPlayerPortee();
     }
     private void addLive(){
+
         lives++ ;
+    }
+    private void damage(){
+        lives--;
     }
     public int getLives() {
         return lives;
@@ -106,6 +110,13 @@ public class Player extends GameObject implements Movable {
                 else if(bonus instanceof BombRangeDec){
                     lessPortee();
                 }
+
+            }
+        }
+        if(game.getWorld().get(nextPos) instanceof Decor){
+            Decor decor = (Decor) game.getWorld().get(nextPos) ;
+            if(decor instanceof Princess){
+                winner = true;
             }
         }
     }
@@ -124,6 +135,9 @@ public class Player extends GameObject implements Movable {
     }
 
     public boolean isAlive() {
+        if(lives==0){
+            return false;
+        }
         return alive;
     }
 
