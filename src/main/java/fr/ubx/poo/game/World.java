@@ -8,6 +8,9 @@ import fr.ubx.poo.model.decor.Decor;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
 import java.util.function.BiConsumer;
 
 public class World {
@@ -30,6 +33,17 @@ public class World {
             }
         }
         throw new PositionNotFoundException("Player");
+    }
+    public List<Position> findMonsters(){
+        ArrayList<Position> monstersPositions = new ArrayList<Position>() ;
+        for (int x = 0; x < dimension.width; x++) {
+            for (int y = 0; y < dimension.height; y++) {
+                if (raw[y][x] == WorldEntity.Monster) {
+                    monstersPositions.add(new Position(x, y));
+                }
+            }
+        }
+        return monstersPositions ;
     }
 
     public Decor get(Position position) {

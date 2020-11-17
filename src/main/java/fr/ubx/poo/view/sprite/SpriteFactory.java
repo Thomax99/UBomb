@@ -9,7 +9,7 @@ import static fr.ubx.poo.view.image.ImageResource.*;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.*;
-import fr.ubx.poo.model.go.character.Player;
+import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.view.image.ImageFactory;
 import javafx.scene.layout.Pane;
 
@@ -42,8 +42,10 @@ public final class SpriteFactory {
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, (Bonus) decor);
         if (decor instanceof BombRangeInc)
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
-
         return null;
+    }
+    public static Sprite createMonster(Pane layer, Monster monster){
+        return new SpriteMonster(layer, monster) ;
     }
 
     public static Sprite createPlayer(Pane layer, Player player) {

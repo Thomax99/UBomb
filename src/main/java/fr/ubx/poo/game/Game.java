@@ -10,13 +10,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
 
-import fr.ubx.poo.model.go.character.Player;
+
+import fr.ubx.poo.model.go.character.*;
 
 public class Game {
 
     private final World world;
     private final Player player;
+    private final List<Monster> monsters ;
     private final String worldPath;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -34,6 +38,10 @@ public class Game {
         } catch (PositionNotFoundException e) {
             System.err.println("Position not found : " + e.getLocalizedMessage());
             throw new RuntimeException(e);
+        }
+        monsters = new ArrayList<>() ;
+        for(Position p : world.findMonsters()){
+            monsters.add(new Monster(this, p)) ;
         }
     }
 
@@ -66,6 +74,9 @@ public class Game {
 
     public World getWorld() {
         return world;
+    }
+    public List<Monster> getMonsters(){
+        return monsters ;
     }
 
     public Player getPlayer() {
