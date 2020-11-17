@@ -2,6 +2,7 @@ package fr.ubx.poo.game;
 
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.*;
+import fr.ubx.poo.model.go.Box;
 
 
 import java.util.Hashtable;
@@ -32,8 +33,6 @@ public class WorldBuilder {
                 return new Stone();
             case Tree:
                 return new Tree();
-            case Box:
-                return new Box();
             case DoorNextClosed:
                 return new DoorNextCLosed();
             case DoorPrevOpened:

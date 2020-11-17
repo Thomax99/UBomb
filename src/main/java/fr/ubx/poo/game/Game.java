@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 
+import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.model.go.character.*;
 
 public class Game {
@@ -21,6 +22,7 @@ public class Game {
     private final World world;
     private final Player player;
     private final List<Monster> monsters ;
+    private final List<Box> boxes ;
     private final String worldPath;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -42,6 +44,10 @@ public class Game {
         monsters = new ArrayList<>() ;
         for(Position p : world.findMonsters()){
             monsters.add(new Monster(this, p)) ;
+        }
+        boxes = new ArrayList<>() ;
+        for(Position p : world.findBoxes()){
+            boxes.add(new Box(this, p)) ;
         }
     }
 
@@ -77,6 +83,9 @@ public class Game {
     }
     public List<Monster> getMonsters(){
         return monsters ;
+    }
+    public List<Box> getBoxes(){
+        return boxes ;
     }
 
     public Player getPlayer() {

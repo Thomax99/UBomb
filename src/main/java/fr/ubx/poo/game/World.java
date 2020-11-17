@@ -46,6 +46,18 @@ public class World {
         return monstersPositions ;
     }
 
+    public List<Position> findBoxes(){
+        ArrayList<Position> boxesPositions = new ArrayList<Position>() ;
+        for (int x = 0; x < dimension.width; x++) {
+            for (int y = 0; y < dimension.height; y++) {
+                if (raw[y][x] == WorldEntity.Box) {
+                    boxesPositions.add(new Position(x, y));
+                }
+            }
+        }
+        return boxesPositions ;
+    }
+
     public Decor get(Position position) {
         return grid.get(position);
     }

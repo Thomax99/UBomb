@@ -5,6 +5,7 @@
 package fr.ubx.poo.engine;
 
 import fr.ubx.poo.game.Direction;
+import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.sprite.Sprite;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
@@ -31,7 +32,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>(), spritesMonsters = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>(), spritesMonsters = new ArrayList<>(), spritesBoxes = new ArrayList<>();
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -71,6 +72,10 @@ public final class GameEngine {
         spritePlayer = SpriteFactory.createPlayer(layer, player);
         for(Monster m : game.getMonsters()){
             spritesMonsters.add(SpriteFactory.createMonster(layer, m)) ;
+        }
+
+        for(Box b : game.getBoxes()){
+            spritesBoxes.add(SpriteFactory.createBox(layer, b)) ;
         }
 
     }
@@ -148,6 +153,7 @@ public final class GameEngine {
     private void render() {
         sprites.forEach(Sprite::render);
         spritesMonsters.forEach(Sprite::render);
+        spritesBoxes.forEach(Sprite::render);
         // last rendering to have player in the foreground
         spritePlayer.render();
     }
