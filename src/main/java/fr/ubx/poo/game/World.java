@@ -58,6 +58,11 @@ public class World {
         return boxesPositions ;
     }
 
+    public void removeBoxPos(Position ancien, Position nouvelle){
+        raw[ancien.x][ancien.y]=WorldEntity.Empty;
+        raw[nouvelle.x][nouvelle.y]=WorldEntity.Box;
+    }
+
     public Decor get(Position position) {
         return grid.get(position);
     }
