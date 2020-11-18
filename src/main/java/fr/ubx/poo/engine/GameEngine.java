@@ -115,6 +115,9 @@ public final class GameEngine {
         if (input.isMoveUp()) {
             player.requestMove(Direction.N);
         }
+        if (input.isKey()){
+            player.requestOpenDoor() ;
+        }
         input.clear();
     }
 
@@ -139,8 +142,13 @@ public final class GameEngine {
 
 
     private void update(long now) {
+        if(game.hasAChange()){
+            sprites.forEach(Sprite::remove);
+            sprites.clear();
+            initialize(stage, game);
+            game.changeMade();
+        }
         player.update(now);
-
         if (player.isAlive() == false) {
             gameLoop.stop();
             showMessage("Perdu!", Color.RED);

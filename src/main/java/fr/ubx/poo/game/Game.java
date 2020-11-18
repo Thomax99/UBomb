@@ -19,11 +19,12 @@ import fr.ubx.poo.model.go.character.*;
 
 public class Game {
 
-    private final World world;
+    private final List<World> worlds;
     private final Player player;
-    private final List<GameObject> monstersAndBoxes ; // the array of monsters AND Boxes
+    private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
     private final String worldPath;
-    private final int nb_level ;
+    private int nb_level, level_max ;
+    private boolean hasAChange = false ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -31,29 +32,64 @@ public class Game {
     public int initPlayerPortee;
 
     public Game(String worldPath, int nb_level){
-        this.nb_level = nb_level ;
+        this.nb_level = level_max = nb_level ;
         this.worldPath = worldPath;
         loadConfig(worldPath);
-        world = loadWorld(nb_level) ;
+        worlds = new ArrayList<>() ;
+        monstersAndBoxes = new ArrayList<>() ;
+        initializeGame() ;
         Position positionPlayer = null;
         try {
-            positionPlayer = world.findPlayer();
+            positionPlayer = getWorld().findPlayer();
         } catch (PositionNotFoundException e) {
+            System.err.println("Position not found : " + e.getLocalizedMessage());
+            throw new RuntimeException(e);
+        }
+        player = new Player(this, positionPlayer);
+    }
+
+    public void initializeGame(){
+        worlds.add(loadWorld(this.nb_level)) ;
+        monstersAndBoxes.add(new ArrayList<>()) ;
+        for(Position p : getWorld().findMonsters()){
+            getMonstersAndBoxes().add(new Monster(this, p)) ;
+        }
+        for(Position p : getWorld().findBoxes()){
+            getMonstersAndBoxes().add(new Box(this, p)) ;
+        }
+    }
+
+    public void changeWorld(int new_level){
+        this.nb_level+=new_level ;
+        if (this.nb_level > level_max){
+            initializeGame();
+            level_max++ ;
+        }
+        Position positionPlayer = null ;
+        if (new_level == 1){
             try {
-                positionPlayer = world.findPreviousDoorOpened();
-            } catch(PositionNotFoundException e2){
-                System.err.println("Positions not found : " + e.getLocalizedMessage()+ " ; "+e2.getLocalizedMessage());
+                positionPlayer = getWorld().findPreviousDoorOpened();
+            } catch (PositionNotFoundException e) {
+                System.err.println("Position not found : " + e.getLocalizedMessage());
                 throw new RuntimeException(e);
             }
         }
-        player = new Player(this, positionPlayer);
-        monstersAndBoxes = new ArrayList<>() ;
-        for(Position p : world.findMonsters()){
-            monstersAndBoxes.add(new Monster(this, p)) ;
+        else if (new_level == -1){
+            try {
+                positionPlayer = getWorld().findNextDoor();
+            } catch (PositionNotFoundException e) {
+                System.err.println("Position not found : " + e.getLocalizedMessage());
+                throw new RuntimeException(e);
+            }
         }
-        for(Position p : world.findBoxes()){
-            monstersAndBoxes.add(new Box(this, p)) ;
-        }
+        player.setPosition(positionPlayer);
+        hasAChange = true ;
+    }
+    public boolean hasAChange(){
+        return hasAChange ;
+    }
+    public void changeMade(){
+        hasAChange = false ;
     }
 
     public Game(String worldPath) {
@@ -88,7 +124,6 @@ public class Game {
         }
     }
     private World loadWorld(int n){
-        World world ;
         int width = 0, height = 0 ;
         try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
             int c;
@@ -119,11 +154,11 @@ public class Game {
     }
 
     public World getWorld() {
-        return world;
+        return worlds.get(this.nb_level-1);
     }
 
     public List<GameObject> getMonstersAndBoxes(){
-        return monstersAndBoxes ;
+        return monstersAndBoxes.get(this.nb_level-1) ;
     }
 
     public Player getPlayer() {

@@ -44,6 +44,16 @@ public class World {
         }
         throw new PositionNotFoundException("Previous door");
     }
+    public Position findNextDoor() throws PositionNotFoundException {
+        for (int x = 0; x < dimension.width; x++) {
+            for (int y = 0; y < dimension.height; y++) {
+                if (raw[y][x] == WorldEntity.DoorNextClosed) {
+                    return new Position(x, y);
+                }
+            }
+        }
+        throw new PositionNotFoundException("Previous door");
+    }
     public List<Position> findMonsters(){
         ArrayList<Position> monstersPositions = new ArrayList<Position>() ;
         for (int x = 0; x < dimension.width; x++) {

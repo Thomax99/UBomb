@@ -53,6 +53,9 @@ public class Player extends GameObject implements Movable {
     public int getBombs() {
         return bombs;
     }
+    private void useKey(){
+        key -- ;
+    }
     private void addKey(){
         key++ ;
     }
@@ -140,6 +143,13 @@ public class Player extends GameObject implements Movable {
 
             }
         }
+        if (game.getWorld().get(nextPos) instanceof DoorNext){
+            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
+            if (! door.isClosed()) game.changeWorld(1);
+        }
+        if (game.getWorld().get(nextPos) instanceof DoorPrevOpened){
+            game.changeWorld(-1);
+        }
         if(game.getWorld().get(nextPos) instanceof Decor){
             Decor decor = (Decor) game.getWorld().get(nextPos) ;
             if(decor instanceof Princess){
@@ -147,6 +157,16 @@ public class Player extends GameObject implements Movable {
             }
         }
 
+    }
+    public void requestOpenDoor(){
+        Position nextPos = direction.nextPosition(getPosition());
+        if (game.getWorld().get(nextPos) instanceof DoorNext){
+            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
+            if(door.isClosed() && getKey() > 0){
+                door.open();
+                useKey() ;
+            }
+        }
     }
 
     public void update(long now) {
