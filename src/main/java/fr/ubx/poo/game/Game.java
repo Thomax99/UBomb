@@ -23,24 +23,30 @@ public class Game {
     private final Player player;
     private final List<GameObject> monstersAndBoxes ; // the array of monsters AND Boxes
     private final String worldPath;
+    private final int nb_level ;
+    private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
     public int initPlayerKey;
     public int initPlayerPortee;
 
-    public Game(String worldPath) {
-        world = new WorldStatic();
+    public Game(String worldPath, int nb_level){
+        this.nb_level = nb_level ;
         this.worldPath = worldPath;
         loadConfig(worldPath);
+        world = loadWorld(nb_level) ;
         Position positionPlayer = null;
         try {
             positionPlayer = world.findPlayer();
-            player = new Player(this, positionPlayer);
         } catch (PositionNotFoundException e) {
-            System.err.println("Position not found : " + e.getLocalizedMessage());
-            throw new RuntimeException(e);
+            try {
+                positionPlayer = world.findPreviousDoorOpened();
+            } catch(PositionNotFoundException e2){
+                System.err.println("Positions not found : " + e.getLocalizedMessage()+ " ; "+e2.getLocalizedMessage());
+                throw new RuntimeException(e);
+            }
         }
-
+        player = new Player(this, positionPlayer);
         monstersAndBoxes = new ArrayList<>() ;
         for(Position p : world.findMonsters()){
             monstersAndBoxes.add(new Monster(this, p)) ;
@@ -48,6 +54,10 @@ public class Game {
         for(Position p : world.findBoxes()){
             monstersAndBoxes.add(new Box(this, p)) ;
         }
+    }
+
+    public Game(String worldPath) {
+        this(worldPath,1) ;
     }
 
     public int getInitPlayerLives() {
@@ -72,14 +82,46 @@ public class Game {
             initPlayerBombs = Integer.parseInt(prop.getProperty("bombs", "3"));
             initPlayerKey = Integer.parseInt(prop.getProperty("key", "3"));
             initPlayerPortee = Integer.parseInt(prop.getProperty("portee", "3"));
+            initPrefString = prop.getProperty("prefix", "level") ;
         } catch (IOException ex) {
             System.err.println("Error loading configuration");
         }
+    }
+    private World loadWorld(int n){
+        World world ;
+        int width = 0, height = 0 ;
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+            int c;
+            while( (c = input.read()) != -1){
+                if ((char) c == '\n') break ;
+                width++ ;
+            }
+            if (width != 0) height ++ ;
+            while((c = input.read()) != -1){
+                if ((char) c == '\n') height++ ;
+            }
+        } catch (IOException ex) {
+            System.err.println("Error loading game");
+        }
+        WorldEntity[][] mapEntities = new WorldEntity[height][width] ;
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+            int c, nb_read = 0;
+            while((c = input.read()) != -1){
+                if ((char) c != '\n'){
+                    mapEntities[nb_read/width][nb_read%width] = WorldEntity.fromCode((char) c).get() ;
+                    nb_read++ ;
+                }
+            }
+        } catch (IOException ex) {
+            System.err.println("Error loading game");
+        }
+        return new World(mapEntities) ;
     }
 
     public World getWorld() {
         return world;
     }
+
     public List<GameObject> getMonstersAndBoxes(){
         return monstersAndBoxes ;
     }
