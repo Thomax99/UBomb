@@ -84,28 +84,28 @@ public class Player extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ;
-        for(Box box : game.getBoxes()){
-            System.out.println(nextPos +" box : "+box.getPosition()) ;
-            if (box.getPosition().equals(nextPos)){
-                if(box.canMove(direction)){
-                    box.doMove(direction);
-                    return true;
+        for(GameObject go : game.getMonstersAndBoxes()){
+            if (go instanceof Box){
+                Box box = (Box) go ;
+                if (box.getPosition().equals(nextPos)){
+                    if(box.canMove(direction)){
+                        box.doMove(direction);
+                        return true;
+                    }
+                    else {
+                        return false ;
+                    }
                 }
-                else {
-                    return false ;
+            }
+            else if (go instanceof Monster){
+                Monster monster = (Monster) go ;
+                if (monster.getPosition().equals(nextPos)){
+                    damage() ;
+                    return true;
                 }
             }
         }
-        if(game.getWorld().findMonsters().contains(nextPos)){
-            for(int i = 0; i<game.getMonsters().size(); i++){
-                Monster monster = game.getMonsters().get(i);
-                if(monster.getPosition().x == nextPos.x && monster.getPosition().y == nextPos.y){
-                    damage();
-                    return true;
-                }
-            }
-        }
-        else if (game.getWorld().isInside(nextPos)){
+        if (game.getWorld().isInside(nextPos)){
             return true;
         }
         return false;

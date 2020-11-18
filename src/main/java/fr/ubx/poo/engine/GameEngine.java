@@ -10,6 +10,7 @@ import fr.ubx.poo.view.sprite.Sprite;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
+import fr.ubx.poo.model.go.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -32,7 +33,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>(), spritesMonsters = new ArrayList<>(), spritesBoxes = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>() ;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -70,14 +71,14 @@ public final class GameEngine {
         // Create decor sprites
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
         spritePlayer = SpriteFactory.createPlayer(layer, player);
-        for(Monster m : game.getMonsters()){
-            spritesMonsters.add(SpriteFactory.createMonster(layer, m)) ;
+        for (GameObject go : game.getMonstersAndBoxes()){
+            if (go instanceof Monster){
+                sprites.add(SpriteFactory.createMonster(layer, (Monster) go)) ;
+            }
+            else if (go instanceof Box){
+                sprites.add(SpriteFactory.createBox(layer, (Box) go)) ;
+            }
         }
-
-        for(Box b : game.getBoxes()){
-            spritesBoxes.add(SpriteFactory.createBox(layer, b)) ;
-        }
-
     }
 
     protected final void buildAndSetGameLoop() {
@@ -152,8 +153,6 @@ public final class GameEngine {
 
     private void render() {
         sprites.forEach(Sprite::render);
-        spritesMonsters.forEach(Sprite::render);
-        spritesBoxes.forEach(Sprite::render);
         // last rendering to have player in the foreground
         spritePlayer.render();
     }

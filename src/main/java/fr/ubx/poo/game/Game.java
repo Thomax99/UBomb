@@ -14,15 +14,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 
-import fr.ubx.poo.model.go.Box;
+import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.go.character.*;
 
 public class Game {
 
     private final World world;
     private final Player player;
-    private final List<Monster> monsters ;
-    private final List<Box> boxes ;
+    private final List<GameObject> monstersAndBoxes ; // the array of monsters AND Boxes
     private final String worldPath;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -41,13 +40,13 @@ public class Game {
             System.err.println("Position not found : " + e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
-        monsters = new ArrayList<>() ;
+
+        monstersAndBoxes = new ArrayList<>() ;
         for(Position p : world.findMonsters()){
-            monsters.add(new Monster(this, p)) ;
+            monstersAndBoxes.add(new Monster(this, p)) ;
         }
-        boxes = new ArrayList<>() ;
         for(Position p : world.findBoxes()){
-            boxes.add(new Box(this, p)) ;
+            monstersAndBoxes.add(new Box(this, p)) ;
         }
     }
 
@@ -81,12 +80,8 @@ public class Game {
     public World getWorld() {
         return world;
     }
-    public List<Monster> getMonsters(){
-        return monsters ;
-    }
-    public List<Box> getBoxes(){
-        System.out.println(boxes.size()) ;
-        return boxes ;
+    public List<GameObject> getMonstersAndBoxes(){
+        return monstersAndBoxes ;
     }
 
     public Player getPlayer() {
