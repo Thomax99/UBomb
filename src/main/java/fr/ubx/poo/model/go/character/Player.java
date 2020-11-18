@@ -84,18 +84,19 @@ public class Player extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ;
-        else if(game.getWorld().findBoxes().contains(nextPos)){
-            for(int i = 0; i<game.getBoxes().size(); i++){
-                Box box = game.getBoxes().get(i);
-                if(box.getPosition().x == nextPos.x && box.getPosition().y == nextPos.y){
-                    if(box.canMove(direction)){
-                        box.doMove(direction);
-                        return true;
-                    }
+        for(Box box : game.getBoxes()){
+            System.out.println(nextPos +" box : "+box.getPosition()) ;
+            if (box.getPosition().equals(nextPos)){
+                if(box.canMove(direction)){
+                    box.doMove(direction);
+                    return true;
+                }
+                else {
+                    return false ;
                 }
             }
         }
-         else if(game.getWorld().findMonsters().contains(nextPos)){
+        if(game.getWorld().findMonsters().contains(nextPos)){
             for(int i = 0; i<game.getMonsters().size(); i++){
                 Monster monster = game.getMonsters().get(i);
                 if(monster.getPosition().x == nextPos.x && monster.getPosition().y == nextPos.y){
@@ -105,7 +106,7 @@ public class Player extends GameObject implements Movable {
             }
         }
         else if (game.getWorld().isInside(nextPos)){
-            return true;// changer avec la methode isInside de la classe World
+            return true;
         }
         return false;
     }

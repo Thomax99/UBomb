@@ -85,6 +85,7 @@ public class Game {
         return monsters ;
     }
     public List<Box> getBoxes(){
+        System.out.println(boxes.size()) ;
         return boxes ;
     }
 
