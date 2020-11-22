@@ -13,11 +13,12 @@ import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
 public class Monster extends GameObject implements Movable {
-
+    private boolean explosed;
     Direction direction;
     public Monster(Game game, Position position) {
         super(game, position);
         this.direction = Direction.S;
+        this.explosed = false;
     }
     public Direction getDirection() {
         return direction;
@@ -29,6 +30,14 @@ public class Monster extends GameObject implements Movable {
     }
 
     public void doMove(Direction direction) {
+    }
+
+    public boolean hasExplosed() {
+        return this.explosed;
+    }
+
+    public void explose(){
+        this.explosed = true;
     }
 
 }

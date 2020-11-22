@@ -9,7 +9,7 @@ import static fr.ubx.poo.view.image.ImageResource.*;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.*;
-import fr.ubx.poo.model.go.Box;
+import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.view.image.ImageFactory;
 import javafx.scene.layout.Pane;
@@ -49,7 +49,9 @@ public final class SpriteFactory {
     public static Sprite createBox(Pane layer, Box box){
         return new SpriteBox(layer, box) ;
     }
-
+    public static Sprite createBomb(Pane layer, Bomb bomb) {
+        return new SpriteBomb(layer, bomb);
+    }
     public static Sprite createPlayer(Pane layer, Player player) {
         return new SpritePlayer(layer, player);
     }

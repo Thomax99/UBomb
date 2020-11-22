@@ -12,6 +12,9 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Hashtable;
+
 
 
 import fr.ubx.poo.model.go.*;
@@ -22,6 +25,7 @@ public class Game {
     private final List<World> worlds;
     private final Player player;
     private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
+    private final List<Map<Position, Bomb>> bombs ;
     private final String worldPath;
     private int nb_level, level_max ;
     private boolean hasAChange = false ;
@@ -37,6 +41,7 @@ public class Game {
         loadConfig(worldPath);
         worlds = new ArrayList<>() ;
         monstersAndBoxes = new ArrayList<>() ;
+        bombs = new ArrayList<>() ;
         initializeGame() ;
         Position positionPlayer = null;
         try {
@@ -51,6 +56,7 @@ public class Game {
     public void initializeGame(){
         worlds.add(loadWorld(this.nb_level)) ;
         monstersAndBoxes.add(new ArrayList<>()) ;
+        bombs.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
             getMonstersAndBoxes().add(new Monster(this, p)) ;
         }
@@ -96,10 +102,6 @@ public class Game {
         this(worldPath,1) ;
     }
 
-    public int getLevel(){
-        return nb_level ;
-    }
-
     public int getInitPlayerLives() {
         return initPlayerLives;
     }
@@ -111,6 +113,9 @@ public class Game {
     }
     public int getInitPlayerPortee() {
         return initPlayerPortee;
+    }
+    public int getLevel() {
+        return nb_level ;
     }
 
     private void loadConfig(String path) {
@@ -150,24 +155,42 @@ public class Game {
                     mapEntities[nb_read/width][nb_read%width] = WorldEntity.fromCode((char) c).get() ;
                     nb_read++ ;
                 }
-            }
+
+
+                            }
         } catch (IOException ex) {
             System.err.println("Error loading game");
         }
         return new World(mapEntities) ;
     }
+    public Map<Position, Bomb> getBombs() {
+        return bombs.get(this.nb_level-1);
+    }
 
     public World getWorld() {
-        return worlds.get(this.nb_level-1);
+        return getWorld(this.nb_level) ;
     }
 
     public List<GameObject> getMonstersAndBoxes(){
-        return monstersAndBoxes.get(this.nb_level-1) ;
+        return getMonstersAndBoxes(this.nb_level) ;
     }
+
+    public World getWorld(int level) {
+        return worlds.get(level-1);
+    }
+    
+
+    public List<GameObject> getMonstersAndBoxes(int level){
+        return monstersAndBoxes.get(level-1) ;
+    }
+
 
     public Player getPlayer() {
         return this.player;
     }
-
-
+    public Bomb addBomb(){
+        Bomb bomb = player.putBomb();
+        getBombs().put(bomb.getPosition(), bomb) ;
+        return bomb;
+    }
 }

@@ -25,6 +25,9 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map ;
+import java.util.Hashtable ;
+
 
 
 public final class GameEngine {
@@ -33,7 +36,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>() ;
+    private final List<Sprite> sprites = new ArrayList<>(), spritesBomb = new ArrayList<>(); ;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -79,6 +82,9 @@ public final class GameEngine {
                 sprites.add(SpriteFactory.createBox(layer, (Box) go)) ;
             }
         }
+        for(Bomb bomb : game.getBombs().values()){
+            if (!bomb.hasExplosed()) spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
+        }
     }
 
     protected final void buildAndSetGameLoop() {
@@ -118,6 +124,20 @@ public final class GameEngine {
         if (input.isKey()){
             player.requestOpenDoor() ;
         }
+        if (input.isBomb()) {
+            
+            if(player.canBomb()){
+                //poser une bombe
+                Bomb bomb = game.addBomb() ;
+                // creer Sprite Factory a partir de bomb
+                spritesBomb.add(SpriteFactory.createBomb(layer, bomb));
+                
+            }
+                
+            
+            
+            
+        }
         input.clear();
     }
 
@@ -144,6 +164,7 @@ public final class GameEngine {
     private void update(long now) {
         if(game.hasAChange()){
             sprites.forEach(Sprite::remove);
+            spritesBomb.forEach(Sprite::remove);
             sprites.clear();
             initialize(stage, game);
             game.changeMade();
@@ -161,6 +182,7 @@ public final class GameEngine {
 
     private void render() {
         sprites.forEach(Sprite::render);
+        spritesBomb.forEach(Sprite::render);
         // last rendering to have player in the foreground
         spritePlayer.render();
     }

@@ -21,6 +21,10 @@ public final class ImageFactory {
         MONSTER_UP, MONSTER_RIGHT, MONSTER_DOWN, MONSTER_LEFT,
     };
 
+    private final ImageResource[] stateBomb = new ImageResource[]{
+        // State {0, 1, 2, 3, 4}
+         BOMB_4, BOMB_3, BOMB_2, BOMB_1, BOMB_0,
+    };
 
     private final ImageResource[] digits = new ImageResource[]{
             DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4,
@@ -66,6 +70,10 @@ public final class ImageFactory {
     }
     public Image getBox() {
         return get(BOX);
+    }
+
+    public Image getBomb(int state) {
+        return get(stateBomb[state]);
     }
 
     /**

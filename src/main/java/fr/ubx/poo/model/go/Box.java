@@ -11,8 +11,10 @@ import fr.ubx.poo.model.decor.bonus.Bonus;
 import fr.ubx.poo.model.go.character.*;
 
 public class Box extends GameObject implements Movable {
+    private boolean explosed;
     public Box(Game game, Position position) {
         super(game, position);
+        this.explosed = false;
     }
 
     @Override
@@ -42,6 +44,14 @@ public class Box extends GameObject implements Movable {
             return true;
         }
         return false;
+    }
+
+    public boolean hasExplosed(){
+        return explosed;
+    }
+
+    public void explose(){
+        this.explosed = true;
     }
 
     @Override

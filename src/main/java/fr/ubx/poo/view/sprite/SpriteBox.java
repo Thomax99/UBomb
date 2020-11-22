@@ -16,6 +16,7 @@ public class SpriteBox extends SpriteGameObject{
     @Override
     public void updateImage() {
         Box box = (Box) go;
-        setImage(ImageFactory.getInstance().getBox());
+        if (box.hasExplosed()) setImage(null) ;
+        else setImage(ImageFactory.getInstance().getBox());
     }
 }

@@ -13,6 +13,8 @@ fr/ubx/poo/model/decor/bonus/Bonus.java
  fr.ubx.poo.model.decor.bonus.Bonus
 fr/ubx/poo/model/decor/bonus/BombRangeDec.java
  fr.ubx.poo.model.decor.bonus.BombRangeDec
+fr/ubx/poo/view/sprite/SpriteBomb.java
+ fr.ubx.poo.view.sprite.SpriteBomb
 fr/ubx/poo/view/sprite/SpriteBox.java
  fr.ubx.poo.view.sprite.SpriteBox
 fr/ubx/poo/game/Dimension.java
@@ -39,6 +41,9 @@ fr/ubx/poo/view/sprite/SpriteNextDoor.java
  fr.ubx.poo.view.sprite.SpriteNextDoor
 fr/ubx/poo/model/go/GameObject.java
  fr.ubx.poo.model.go.GameObject
+fr/ubx/poo/model/go/Bomb.java
+ fr.ubx.poo.model.go.Bomb
+ fr.ubx.poo.model.go.Bomb$1
 fr/ubx/poo/Main.java
  fr.ubx.poo.Main
 fr/ubx/poo/model/decor/Tree.java

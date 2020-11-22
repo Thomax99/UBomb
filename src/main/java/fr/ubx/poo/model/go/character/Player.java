@@ -7,7 +7,7 @@ package fr.ubx.poo.model.go.character;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
-import fr.ubx.poo.model.go.Box;
+import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
@@ -49,6 +49,7 @@ public class Player extends GameObject implements Movable {
     }
     private void lessBomb(){
         bombs-- ;
+        bombs = (bombs < 0 ? 0 : bombs) ;
     }
     public int getBombs() {
         return bombs;
@@ -70,6 +71,15 @@ public class Player extends GameObject implements Movable {
     }
     public int getPortee() {
         return portee;
+    }
+
+    public boolean canBomb(){
+        return getBombs() >0 ;
+    }
+    public Bomb putBomb() {
+        Bomb bomb = new Bomb(game, getPosition(), getPortee(), game.getLevel());
+        lessBomb();
+        return bomb ;
     }
 
     public Direction getDirection() {
@@ -176,6 +186,9 @@ public class Player extends GameObject implements Movable {
             }
         }
         moveRequested = false;
+    }
+    public void explose(){
+        lives-- ;
     }
 
     public boolean isWinner() {
