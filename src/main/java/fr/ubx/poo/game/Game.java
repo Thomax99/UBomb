@@ -96,6 +96,10 @@ public class Game {
         this(worldPath,1) ;
     }
 
+    public int getLevel(){
+        return nb_level ;
+    }
+
     public int getInitPlayerLives() {
         return initPlayerLives;
     }
