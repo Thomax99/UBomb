@@ -21,7 +21,7 @@ public enum ImageResource {
     BOMB_1 ("bomb3.png"),
     BOMB_2 ("bomb2.png"),
     BOMB_3 ("bomb1.png"),
-    BOMB_4 ("explosion.png"),
+    EXPLOSION ("explosion.png"),
     PLAYER_DOWN("player_down.png"),
     PLAYER_LEFT("player_left.png"),
     PLAYER_RIGHT("player_right.png"),

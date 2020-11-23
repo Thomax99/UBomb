@@ -12,55 +12,34 @@ import java.util.Iterator;
 
 public class Bomb extends GameObject {
 
-    private int state, range, level;
-    private Timer timer ;
-    public Bomb(Game game, Position position, int range, int level) {
+    private int state, range, level ;
+    private boolean hasExplosed = false ;
+    private long start;
+    public Bomb(Game game, Position position, int range, long start) {
         super(game, position);
         this.range = range ;
-        this.level = level ;
-        state = 4;
-        TimerTask task = new TimerTask(){
-            public void run(){
-                addState() ;
-            }
-        } ;
-        timer = new Timer() ;
-        timer.scheduleAtFixedRate(task, 1000L, 1000L);
+        this.level = game.getLevel() ;
+        state = 3;
+        this.start = start ;
     }
-    public void addState() {
-        this.state--;
-        if(state == 0) explose() ;
-        if (state == -1){
-            timer.cancel();
-            timer.purge() ;
-        }
+    public void update(long now) {
+        state = (int)((start-now)/1000000000L) + 3 ;
+        System.out.println(state) ;
+    }
+    public boolean isExplosing(){
+        return state == -1 ;
     }
     public void explose() {
-        /* checker les alentours par rapport a range de la bomb
-        Si range == 1 on doit faire un check dans 
-        Direction.S.nextPosition(getPosition)
-        */
-        Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-        for(int i =  0; i < 4; i++){ // a regler
-            Direction d = directions[i] ;
-            Position p = getPosition();
-            for (int j = 0; j < range; j++){
-                p = d.nextPosition(p);
-                List<GameObject> monstersAndBoxes = game.getMonstersAndBoxes(level);
-                Iterator<GameObject> it = monstersAndBoxes.iterator();
-    
-                while(it.hasNext()){
-                    if(it.next().getPosition() == p){
-                        it.next().explose();
-
-                    }
-                }
-            }
-        }
-        System.out.println("explosion") ;
+        hasExplosed = true ;
     }
     public boolean hasExplosed(){
-        return state < 0 ;
+        return hasExplosed ;
+    }
+    public int getLevel(){
+        return level ;
+    }
+    public int getRange(){
+        return level ;
     }
 
     public int getState() {

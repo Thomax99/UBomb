@@ -18,7 +18,7 @@ public class Player extends GameObject implements Movable {
 
     private final boolean alive = true;
     Direction direction;
-    private boolean moveRequested = false;
+    private boolean moveRequested = false, bombRequested = false ;
     private int lives = 1;
     private int bombs = 1;
     private int key = 0;
@@ -74,14 +74,8 @@ public class Player extends GameObject implements Movable {
     }
 
     public boolean canBomb(){
-        return getBombs() >0 ;
+        return getBombs() > 0 ;
     }
-    public Bomb putBomb() {
-        Bomb bomb = new Bomb(game, getPosition(), getPortee(), game.getLevel());
-        lessBomb();
-        return bomb ;
-    }
-
     public Direction getDirection() {
         return direction;
     }
@@ -92,7 +86,9 @@ public class Player extends GameObject implements Movable {
         }
         moveRequested = true;
     }
-
+    public void requestBomb(){
+        bombRequested = true ;
+    }
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
@@ -186,6 +182,13 @@ public class Player extends GameObject implements Movable {
             }
         }
         moveRequested = false;
+        if (bombRequested){
+            if (canBomb()){
+                game.addBomb(new Bomb(game, getPosition(), getPortee(), now)) ;
+                lessBomb();
+            }
+        }
+        bombRequested = false ;
     }
     public void explose(){
         lives-- ;

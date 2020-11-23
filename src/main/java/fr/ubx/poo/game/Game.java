@@ -12,10 +12,10 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Hashtable;
-
-
+import java.util.Iterator;
 
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.go.character.*;
@@ -25,7 +25,8 @@ public class Game {
     private final List<World> worlds;
     private final Player player;
     private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
-    private final List<Map<Position, Bomb>> bombs ;
+    private final List<List<Bomb>> bombs ;
+    private final List<List<Explosion>> explosion ;
     private final String worldPath;
     private int nb_level, level_max ;
     private boolean hasAChange = false ;
@@ -42,6 +43,7 @@ public class Game {
         worlds = new ArrayList<>() ;
         monstersAndBoxes = new ArrayList<>() ;
         bombs = new ArrayList<>() ;
+        explosion = new ArrayList<>() ;
         initializeGame() ;
         Position positionPlayer = null;
         try {
@@ -56,7 +58,8 @@ public class Game {
     public void initializeGame(){
         worlds.add(loadWorld(this.nb_level)) ;
         monstersAndBoxes.add(new ArrayList<>()) ;
-        bombs.add(new Hashtable<>()) ;
+        bombs.add(new ArrayList<>()) ;
+        explosion.add(new ArrayList<>()) ;
         for(Position p : getWorld().findMonsters()){
             getMonstersAndBoxes().add(new Monster(this, p)) ;
         }
@@ -163,7 +166,7 @@ public class Game {
         }
         return new World(mapEntities) ;
     }
-    public Map<Position, Bomb> getBombs() {
+    public List<Bomb> getBombs() {
         return bombs.get(this.nb_level-1);
     }
 
@@ -183,14 +186,54 @@ public class Game {
     public List<GameObject> getMonstersAndBoxes(int level){
         return monstersAndBoxes.get(level-1) ;
     }
-
-
     public Player getPlayer() {
         return this.player;
     }
-    public Bomb addBomb(){
-        Bomb bomb = player.putBomb();
-        getBombs().put(bomb.getPosition(), bomb) ;
+    public Bomb addBomb(Bomb bomb){
+        getBombs().add(bomb) ;
         return bomb;
+    }
+    public void updateExplosions(long now){
+        List<Explosion> expl = explosion.get(this.nb_level-1) ;
+        expl.forEach(exp -> exp.update(now));
+        expl.removeIf(exp -> !exp.isExisting());
+        for(Bomb bomb : getBombs()){
+            if (bomb.isExplosing()){
+                System.out.println("bomb") ;
+
+                bomb.explose();
+                Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
+                expl.add(new Explosion(this, bomb.getPosition(), now )) ;
+                List<GameObject> monstersBoxes = getMonstersAndBoxes(bomb.getLevel()) ;
+                for(GameObject go: monstersBoxes){
+                    System.out.println(go) ;
+                }
+                for(int i =  0; i < 4; i++){ // a regler
+
+                    Direction d = directions[i] ;
+                    Position p = bomb.getPosition();
+                    boolean somethingExplosed = false ;
+                    for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
+
+                        p = d.nextPosition(p);
+                        Iterator<GameObject> it = monstersBoxes.iterator() ;
+                        while(it.hasNext()){
+
+                            GameObject go = it.next() ;
+                            if (go.getPosition().equals(p) && ! somethingExplosed){
+                                go.explose();
+                                somethingExplosed = true ;
+                                it.remove() ;
+                            }
+                        }
+                        expl.add(new Explosion(this,p, now)) ;
+                    }
+                }
+            }
+        }
+
+    }
+    public List<Explosion> getExplosions(){
+        return explosion.get(this.nb_level-1) ;
     }
 }

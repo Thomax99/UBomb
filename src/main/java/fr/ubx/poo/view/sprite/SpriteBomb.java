@@ -17,7 +17,7 @@ public class SpriteBomb extends SpriteGameObject{
     @Override
     public void updateImage() {
         Bomb bomb = (Bomb) go;
-        if (bomb.hasExplosed()) setImage(null) ;
+        if (bomb.isExplosing() || bomb.hasExplosed()) setImage(null) ;
         else setImage(ImageFactory.getInstance().getBomb(bomb.getState()));
     }
 }

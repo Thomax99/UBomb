@@ -7,6 +7,7 @@ package fr.ubx.poo.engine;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.sprite.Sprite;
+import fr.ubx.poo.view.sprite.SpriteExplosion;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
@@ -36,7 +37,8 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>(), spritesBomb = new ArrayList<>(); ;
+    private final List<Sprite> sprites = new ArrayList<>(), spritesBomb = new ArrayList<>() ;
+    private final List<SpriteExplosion> spritesExpl = new ArrayList<>();
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -82,7 +84,7 @@ public final class GameEngine {
                 sprites.add(SpriteFactory.createBox(layer, (Box) go)) ;
             }
         }
-        for(Bomb bomb : game.getBombs().values()){
+        for(Bomb bomb : game.getBombs()){
             if (!bomb.hasExplosed()) spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
         }
     }
@@ -125,18 +127,7 @@ public final class GameEngine {
             player.requestOpenDoor() ;
         }
         if (input.isBomb()) {
-            
-            if(player.canBomb()){
-                //poser une bombe
-                Bomb bomb = game.addBomb() ;
-                // creer Sprite Factory a partir de bomb
-                spritesBomb.add(SpriteFactory.createBomb(layer, bomb));
-                
-            }
-                
-            
-            
-            
+            player.requestBomb() ;
         }
         input.clear();
     }
@@ -162,9 +153,21 @@ public final class GameEngine {
 
 
     private void update(long now) {
+        game.getBombs().forEach(bomb -> bomb.update(now));
+        game.getBombs().removeIf(bomb -> bomb.hasExplosed()) ;
+        spritesExpl.forEach(Sprite::remove);
+        game.updateExplosions(now) ;
+        game.getExplosions().forEach( exp -> spritesExpl.add(new SpriteExplosion(layer, exp))) ;
+        spritesExpl.forEach(Sprite::render);
+        spritesBomb.forEach(Sprite::remove);
+        spritesBomb.clear() ;
+        for(Bomb bomb: game.getBombs()){
+            spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
+        }
+        spritesBomb.forEach(Sprite::render);
+
         if(game.hasAChange()){
             sprites.forEach(Sprite::remove);
-            spritesBomb.forEach(Sprite::remove);
             sprites.clear();
             initialize(stage, game);
             game.changeMade();

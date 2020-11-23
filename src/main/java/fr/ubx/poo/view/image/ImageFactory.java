@@ -22,8 +22,8 @@ public final class ImageFactory {
     };
 
     private final ImageResource[] stateBomb = new ImageResource[]{
-        // State {0, 1, 2, 3, 4}
-         BOMB_4, BOMB_3, BOMB_2, BOMB_1, BOMB_0,
+        // State {0, 1, 2, 3}
+         BOMB_3, BOMB_2, BOMB_1, BOMB_0,
     };
 
     private final ImageResource[] digits = new ImageResource[]{
@@ -70,6 +70,9 @@ public final class ImageFactory {
     }
     public Image getBox() {
         return get(BOX);
+    }
+    public Image getExplosion(){
+        return get(EXPLOSION) ;
     }
 
     public Image getBomb(int state) {
