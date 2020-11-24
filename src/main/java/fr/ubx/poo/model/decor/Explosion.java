@@ -2,7 +2,7 @@
  * Copyright (c) 2020. Laurent Réveillère
  */
 
-package fr.ubx.poo.model.go;
+package fr.ubx.poo.model.decor;
 
 import fr.ubx.poo.model.Entity;
 import fr.ubx.poo.model.go.GameObject;
@@ -19,16 +19,13 @@ import fr.ubx.poo.model.go.character.*;
 /***
  * A decor is an element that does not know its own position in the grid.
  */
-public class Explosion extends GameObject {
+public class Explosion extends Decor {
     private long start ;
     private boolean exist ;
-    public Explosion(Game game, Position position, long start){
-        super(game, position) ;
+    public Explosion(long start){
+        super() ;
         this.start = start ;
         exist = true ;
-    }
-    public void explose(){
-
     }
     public void update(long now) {
         exist = (now-start) / 1000000000L == 0 ;

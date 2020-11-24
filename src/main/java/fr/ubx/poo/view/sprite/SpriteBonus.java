@@ -18,7 +18,7 @@ public class SpriteBonus extends Sprite {
 
     @Override
     public void updateImage() {
-        if(bonus.isAlreadyTaken()) setImage(null) ;
+        if(bonus.hasToBeRemoved()) setImage(null) ;
     }
 
     @Override

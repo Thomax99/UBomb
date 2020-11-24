@@ -41,6 +41,8 @@ public final class SpriteFactory {
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, (Bonus) decor);
         if (decor instanceof BombRangeInc)
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
+        if (decor instanceof Explosion)
+            return new SpriteExplosion(layer, factory.get(EXPLOSION), position, (Explosion) decor);
         return null;
     }
     public static Sprite createMonster(Pane layer, Monster monster){

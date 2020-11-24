@@ -18,6 +18,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.model.Removable;
+import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.go.character.*;
 
 public class Game {
@@ -26,7 +28,7 @@ public class Game {
     private final Player player;
     private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
     private final List<List<Bomb>> bombs ;
-    private final List<List<Explosion>> explosion ;
+    private final List<Map<Position, Explosion>> explosion ;
     private final String worldPath;
     private int nb_level, level_max ;
     private boolean hasAChange = false ;
@@ -59,7 +61,7 @@ public class Game {
         worlds.add(loadWorld(this.nb_level)) ;
         monstersAndBoxes.add(new ArrayList<>()) ;
         bombs.add(new ArrayList<>()) ;
-        explosion.add(new ArrayList<>()) ;
+        explosion.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
             getMonstersAndBoxes().add(new Monster(this, p)) ;
         }
@@ -181,8 +183,6 @@ public class Game {
     public World getWorld(int level) {
         return worlds.get(level-1);
     }
-    
-
     public List<GameObject> getMonstersAndBoxes(int level){
         return monstersAndBoxes.get(level-1) ;
     }
@@ -193,21 +193,16 @@ public class Game {
         getBombs().add(bomb) ;
         return bomb;
     }
-    public void updateExplosions(long now){
-        List<Explosion> expl = explosion.get(this.nb_level-1) ;
-        expl.forEach(exp -> exp.update(now));
-        expl.removeIf(exp -> !exp.isExisting());
+    public void update(long now){
+        Map<Position, Explosion> expl = explosion.get(this.nb_level-1) ;
+        expl.forEach((pos, exp) -> exp.update(now));
         for(Bomb bomb : getBombs()){
             if (bomb.isExplosing()){
-                System.out.println("bomb") ;
 
-                bomb.explose();
+                bomb.remove();
                 Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-                expl.add(new Explosion(this, bomb.getPosition(), now )) ;
+                expl.put(bomb.getPosition(), new Explosion(now)) ;
                 List<GameObject> monstersBoxes = getMonstersAndBoxes(bomb.getLevel()) ;
-                for(GameObject go: monstersBoxes){
-                    System.out.println(go) ;
-                }
                 for(int i =  0; i < 4; i++){ // a regler
 
                     Direction d = directions[i] ;
@@ -221,19 +216,19 @@ public class Game {
 
                             GameObject go = it.next() ;
                             if (go.getPosition().equals(p) && ! somethingExplosed){
-                                go.explose();
+                                ((Removable) go).remove();
                                 somethingExplosed = true ;
                                 it.remove() ;
                             }
                         }
-                        expl.add(new Explosion(this,p, now)) ;
+                        expl.put(p, new Explosion(now)) ;
                     }
                 }
             }
         }
 
     }
-    public List<Explosion> getExplosions(){
+    public Map<Position, Explosion> getExplosions(){
         return explosion.get(this.nb_level-1) ;
     }
 }

@@ -7,12 +7,13 @@ package fr.ubx.poo.model.go.character;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
+import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Monster extends GameObject implements Movable {
+public class Monster extends GameObject implements Movable, Removable {
     private boolean explosed;
     Direction direction;
     public Monster(Game game, Position position) {
@@ -32,11 +33,11 @@ public class Monster extends GameObject implements Movable {
     public void doMove(Direction direction) {
     }
 
-    public boolean hasExplosed() {
+    public boolean hasToBeRemoved() {
         return this.explosed;
     }
 
-    public void explose(){
+    public void remove(){
         this.explosed = true;
     }
 

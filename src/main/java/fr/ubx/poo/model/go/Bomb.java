@@ -4,13 +4,14 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
+import fr.ubx.poo.model.Removable;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.List ;
 import java.util.Iterator;
 
-public class Bomb extends GameObject {
+public class Bomb extends GameObject implements Removable {
 
     private int state, range, level ;
     private boolean hasExplosed = false ;
@@ -24,22 +25,21 @@ public class Bomb extends GameObject {
     }
     public void update(long now) {
         state = (int)((start-now)/1000000000L) + 3 ;
-        System.out.println(state) ;
     }
     public boolean isExplosing(){
         return state == -1 ;
     }
-    public void explose() {
+    public void remove() {
         hasExplosed = true ;
     }
-    public boolean hasExplosed(){
+    public boolean hasToBeRemoved(){
         return hasExplosed ;
     }
     public int getLevel(){
         return level ;
     }
     public int getRange(){
-        return level ;
+        return range ;
     }
 
     public int getState() {

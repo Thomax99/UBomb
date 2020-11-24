@@ -125,9 +125,9 @@ public class Player extends GameObject implements Movable {
         setPosition(nextPos);
         if (game.getWorld().get(nextPos) instanceof Bonus){
             Bonus bonus = (Bonus) game.getWorld().get(nextPos) ;
-            if(!bonus.isAlreadyTaken()){
+            if(!bonus.hasToBeRemoved()){
                 game.getWorld().clear(nextPos);
-                bonus.take() ;
+                bonus.remove() ;
                 if (bonus instanceof Heart){
                     addLive();
                 }
