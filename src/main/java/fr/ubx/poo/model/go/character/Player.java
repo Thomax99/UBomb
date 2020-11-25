@@ -23,6 +23,7 @@ public class Player extends GameObject implements Movable {
     private int bombs = 1;
     private int key = 0;
     private int portee = 1;
+    private int currentBombPut = 0 ;
 
     private boolean winner;
 
@@ -74,7 +75,7 @@ public class Player extends GameObject implements Movable {
     }
 
     public boolean canBomb(){
-        return getBombs() > 0 ;
+        return bombs>currentBombPut ;
     }
     public Direction getDirection() {
         return direction;
@@ -189,13 +190,16 @@ public class Player extends GameObject implements Movable {
         if (bombRequested){
             if (canBomb()){
                 game.addBomb(new Bomb(game, getPosition(), getPortee(), now)) ;
-                lessBomb();
+                currentBombPut++ ;
             }
         }
         bombRequested = false ;
     }
     public void explose(){
         lives-- ;
+    }
+    public void bombHasExplosed(){
+        currentBombPut--;
     }
 
     public boolean isWinner() {

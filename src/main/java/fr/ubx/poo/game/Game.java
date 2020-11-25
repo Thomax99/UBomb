@@ -203,7 +203,7 @@ public class Game {
         expl.forEach((pos, exp) -> exp.update(now));
         for(Bomb bomb : getBombs()){
             if (bomb.isExplosing()){
-
+                player.bombHasExplosed();
                 bomb.remove();
                 Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
                 expl.put(bomb.getPosition(), new Explosion(now)) ;
@@ -216,6 +216,7 @@ public class Game {
                     for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
 
                         p = d.nextPosition(p);
+                        if (!getWorld().isInside(p) || getWorld().get(p) instanceof Tree || getWorld().get(p) instanceof Stone) break ;
                         Iterator<GameObject> it = monstersBoxes.iterator() ;
                         while(it.hasNext()){
 

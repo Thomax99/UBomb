@@ -84,7 +84,7 @@ public final class GameEngine {
             }
         }
         for(Bomb bomb : game.getBombs()){
-            if (!bomb.hasToBeRemoved()) spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
+            spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
         }
     }
 
