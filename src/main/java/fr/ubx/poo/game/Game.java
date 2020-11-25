@@ -217,7 +217,7 @@ public class Game {
                     for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
 
                         p = d.nextPosition(p);
-                        if (!world.isInside(p) || world.get(p) instanceof Tree || world.get(p) instanceof Stone) break ;
+                        if (!world.isInside(p) || world.get(p) instanceof Tree || world.get(p) instanceof Stone || world.get(p) instanceof DoorNext || world.get(p) instanceof DoorPrevOpened) break ;
                         if (world.get(p) instanceof Bonus) {
                             Bonus bonus = (Bonus) world.get(p);
                             world.clear(p);
