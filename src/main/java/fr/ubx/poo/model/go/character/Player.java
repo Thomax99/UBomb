@@ -12,7 +12,6 @@ import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
-import javafx.geometry.Pos;
 
 public class Player extends GameObject implements Movable {
 
@@ -24,7 +23,7 @@ public class Player extends GameObject implements Movable {
     private int lives = 1;
     private int bombs = 1;
     private int key = 0;
-    private int portee = 1;
+    private int range = 1;
     private int currentBombPut = 0 ;
 
     private boolean winner;
@@ -35,7 +34,7 @@ public class Player extends GameObject implements Movable {
         this.lives = game.getInitPlayerLives();
         this.bombs = game.getInitPlayerBombs();
         this.key = game.getInitPlayerKey();
-        this.portee = game.getInitPlayerPortee();
+        this.range = game.getInitPlayerPortee();
     }
     private void addLive(){
         lives++ ;
@@ -75,13 +74,14 @@ public class Player extends GameObject implements Movable {
         return key;
     }
     private void addPortee(){
-        portee++;
+        range++;
     }
     private void lessPortee(){
-        portee--;
+        range--;
+        range = (range < 1 ? 1 : bombs);
     }
-    public int getPortee() {
-        return portee;
+    public int getRange() {
+        return range;
     }
 
     public boolean canBomb(){
@@ -204,7 +204,7 @@ public class Player extends GameObject implements Movable {
         moveRequested = false;
         if (bombRequested){
             if (canBomb()){
-                game.addBomb(new Bomb(game, getPosition(), getPortee(), now)) ;
+                game.addBomb(new Bomb(game, getPosition(), getRange(), now)) ;
                 currentBombPut++ ;
             }
         }
