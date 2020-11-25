@@ -17,6 +17,8 @@ import javafx.geometry.Pos;
 public class Player extends GameObject implements Movable {
 
     private final boolean alive = true;
+    private boolean isInvincible = false;
+    private long timeInvincible, currentTime ;
     Direction direction;
     private boolean moveRequested = false, bombRequested = false ;
     private int lives = 1;
@@ -36,11 +38,19 @@ public class Player extends GameObject implements Movable {
         this.portee = game.getInitPlayerPortee();
     }
     private void addLive(){
-
         lives++ ;
     }
-    private void damage(){
-        lives--;
+    public void damage(long now){
+        if(!isInvincible){
+            lives-- ;
+            System.out.println("Je suis invincible") ;
+            isInvincible = true ;
+            timeInvincible = now ;
+        }
+    }
+
+    public Boolean isInvincible(){
+        return isInvincible;
     }
     public int getLives() {
         return lives;
@@ -102,23 +112,11 @@ public class Player extends GameObject implements Movable {
             if (go instanceof Box){
                 Box box = (Box) go ;
                 if (box.getPosition().equals(nextPos)){
-                    if(box.canMove(direction)){
-                        box.doMove(direction);
-                        return true;
-                    }
-                    else {
-                        return false ;
-                    }
-                }
-            }
-            else if (go instanceof Monster){
-                Monster monster = (Monster) go ;
-                if (monster.getPosition().equals(nextPos)){
-                    damage() ;
-                    return true;
+                    return box.canMove(direction) ;
                 }
             }
         }
+
         if (game.getWorld().isInside(nextPos)){
             return true;
         }
@@ -167,7 +165,20 @@ public class Player extends GameObject implements Movable {
                 winner = true;
             }
         }
-
+        for(GameObject go : game.getMonstersAndBoxes()){
+            if (go instanceof Box){
+                Box box = (Box) go ;
+                if (box.getPosition().equals(nextPos)){
+                    box.doMove(direction);
+                }
+            }
+            else if (go instanceof Monster){
+                Monster monster = (Monster) go ;
+                if (monster.getPosition().equals(nextPos)){
+                    damage(currentTime) ;
+                }
+            }
+        }
     }
     public void requestOpenDoor(){
         Position nextPos = direction.nextPosition(getPosition());
@@ -181,6 +192,10 @@ public class Player extends GameObject implements Movable {
     }
 
     public void update(long now) {
+        currentTime = now ;
+        if ( ((currentTime-timeInvincible)/ 1000000000L) >= 1 ){
+            isInvincible = false ;
+        }
         if (moveRequested) {
             if (canMove(direction)) {
                 doMove(direction);
@@ -195,8 +210,13 @@ public class Player extends GameObject implements Movable {
         }
         bombRequested = false ;
     }
-    public void explose(){
-        lives-- ;
+    public void explose(long now){
+        
+        if(!isInvincible){
+            lives-- ;
+            isInvincible = true ;
+            timeInvincible = now ;
+        }
     }
     public void bombHasExplosed(){
         currentBombPut--;

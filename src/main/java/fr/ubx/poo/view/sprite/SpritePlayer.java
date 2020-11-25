@@ -14,12 +14,16 @@ public class SpritePlayer extends SpriteGameObject {
 
     public SpritePlayer(Pane layer, Player player) {
         super(layer, null, player);
-        updateImage();
+        render();
     }
 
     @Override
     public void updateImage() {
         Player player = (Player) go;
         setImage(ImageFactory.getInstance().getPlayer(player.getDirection()));
+
+        if(player.isInvincible()) effect.setBrightness(0.5) ;
+        else effect.setBrightness(0.1) ;
+        imageView.setEffect(effect) ;
     }
 }

@@ -13,7 +13,7 @@ public abstract class Sprite {
 
     public static final int size = 40;
     private final Pane layer;
-    private ImageView imageView;
+    protected ImageView imageView;
     private Image image;
 
     public Sprite(Pane layer, Image image) {
@@ -35,11 +35,11 @@ public abstract class Sprite {
         if (imageView != null) {
             remove();
         }
-        updateImage();
         imageView = new ImageView(this.image);
         imageView.setX(getPosition().x * size);
         imageView.setY(getPosition().y * size);
         layer.getChildren().add(imageView);
+        updateImage();
     }
 
     public final void remove() {

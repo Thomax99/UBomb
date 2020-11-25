@@ -21,6 +21,8 @@ import java.util.Iterator;
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.decor.*;
+import fr.ubx.poo.model.decor.bonus.Bonus;
+
 import fr.ubx.poo.model.go.character.*;
 
 public class Game {
@@ -197,7 +199,7 @@ public class Game {
     public void update(long now){   
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
         getMonstersAndBoxes().removeIf(go -> ((Removable) go).hasToBeRemoved()) ;
-        
+        getMonstersAndBoxes().stream().filter(go -> go instanceof Monster).forEach(go -> ((Monster)go).update(now));
         Map<Position, Explosion> expl = getExplosions() ;
 
         expl.forEach((pos, exp) -> exp.update(now));
@@ -217,6 +219,15 @@ public class Game {
 
                         p = d.nextPosition(p);
                         if (!getWorld().isInside(p) || getWorld().get(p) instanceof Tree || getWorld().get(p) instanceof Stone) break ;
+                        if (getWorld().get(p) instanceof Bonus) {
+                            Bonus bonus = (Bonus) getWorld().get(p);
+                            getWorld().clear(p);
+                            bonus.remove();
+                        }
+                        if(player.getPosition().equals(p)){
+                            player.damage(now);
+                            somethingExplosed = true ;
+                        }
                         Iterator<GameObject> it = monstersBoxes.iterator() ;
                         while(it.hasNext()){
 
