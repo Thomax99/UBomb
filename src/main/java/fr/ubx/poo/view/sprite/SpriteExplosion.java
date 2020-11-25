@@ -20,7 +20,7 @@ public class SpriteExplosion extends SpriteDecor{
 
     @Override
     public void updateImage() {
-        if (!exp.isExisting()) setImage(null) ;
+        if (exp.hasToBeRemoved()) setImage(null) ;
         else setImage(ImageFactory.getInstance().getExplosion()) ;
     }
 }

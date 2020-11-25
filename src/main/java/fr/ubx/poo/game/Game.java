@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Hashtable;
@@ -59,8 +60,8 @@ public class Game {
 
     public void initializeGame(){
         worlds.add(loadWorld(this.nb_level)) ;
-        monstersAndBoxes.add(new ArrayList<>()) ;
-        bombs.add(new ArrayList<>()) ;
+        monstersAndBoxes.add(new LinkedList<>()) ;
+        bombs.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
             getMonstersAndBoxes().add(new Monster(this, p)) ;
@@ -193,8 +194,12 @@ public class Game {
         getBombs().add(bomb) ;
         return bomb;
     }
-    public void update(long now){
-        Map<Position, Explosion> expl = explosion.get(this.nb_level-1) ;
+    public void update(long now){   
+        getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
+        getMonstersAndBoxes().removeIf(go -> ((Removable) go).hasToBeRemoved()) ;
+        
+        Map<Position, Explosion> expl = getExplosions() ;
+
         expl.forEach((pos, exp) -> exp.update(now));
         for(Bomb bomb : getBombs()){
             if (bomb.isExplosing()){

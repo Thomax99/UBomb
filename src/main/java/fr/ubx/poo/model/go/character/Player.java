@@ -93,6 +93,10 @@ public class Player extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ;
+        if (game.getWorld().get(nextPos) instanceof DoorNext){
+            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
+            return !door.isClosed();
+        }
         for(GameObject go : game.getMonstersAndBoxes()){
             if (go instanceof Box){
                 Box box = (Box) go ;
