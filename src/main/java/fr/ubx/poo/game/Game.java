@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.decor.*;
@@ -218,7 +219,7 @@ public class Game {
 
                         p = d.nextPosition(p);
                         if (!world.isInside(p) || world.get(p) instanceof Tree || world.get(p) instanceof Stone || world.get(p) instanceof DoorNext || world.get(p) instanceof DoorPrevOpened) break ;
-                        if (world.get(p) instanceof Bonus) {
+                        if (world.get(p) instanceof Bonus && !(world.get(p) instanceof Key)) {
                             Bonus bonus = (Bonus) world.get(p);
                             world.clear(p);
                             bonus.remove();
