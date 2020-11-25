@@ -30,7 +30,7 @@ public class Game {
     private final List<World> worlds;
     private final Player player;
     private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
-    private final List<List<Bomb>> bombs ;
+    private final List<Bomb> bombs ;
     private final List<Map<Position, Explosion>> explosion ;
     private final String worldPath;
     private int nb_level, level_max ;
@@ -63,7 +63,6 @@ public class Game {
     public void initializeGame(){
         worlds.add(loadWorld(this.nb_level)) ;
         monstersAndBoxes.add(new LinkedList<>()) ;
-        bombs.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
             getMonstersAndBoxes().add(new Monster(this, p)) ;
@@ -172,7 +171,7 @@ public class Game {
         return new World(mapEntities) ;
     }
     public List<Bomb> getBombs() {
-        return bombs.get(this.nb_level-1);
+        return bombs;
     }
 
     public World getWorld() {
@@ -208,23 +207,23 @@ public class Game {
                 player.bombHasExplosed();
                 bomb.remove();
                 Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-                expl.put(bomb.getPosition(), new Explosion(now)) ;
+                if (this.nb_level == bomb.getLevel()) expl.put(bomb.getPosition(), new Explosion(now)) ;
                 List<GameObject> monstersBoxes = getMonstersAndBoxes(bomb.getLevel()) ;
+                World world = getWorld(bomb.getLevel()) ;
                 for(int i =  0; i < 4; i++){ // a regler
-
                     Direction d = directions[i] ;
                     Position p = bomb.getPosition();
                     boolean somethingExplosed = false ;
                     for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
 
                         p = d.nextPosition(p);
-                        if (!getWorld().isInside(p) || getWorld().get(p) instanceof Tree || getWorld().get(p) instanceof Stone) break ;
-                        if (getWorld().get(p) instanceof Bonus) {
-                            Bonus bonus = (Bonus) getWorld().get(p);
-                            getWorld().clear(p);
+                        if (!world.isInside(p) || world.get(p) instanceof Tree || world.get(p) instanceof Stone) break ;
+                        if (world.get(p) instanceof Bonus) {
+                            Bonus bonus = (Bonus) world.get(p);
+                            world.clear(p);
                             bonus.remove();
                         }
-                        if(player.getPosition().equals(p)){
+                        if(player.getPosition().equals(p) && this.nb_level == bomb.getLevel()){
                             player.damage(now);
                             somethingExplosed = true ;
                         }
@@ -238,7 +237,7 @@ public class Game {
                                 it.remove() ;
                             }
                         }
-                        expl.put(p, new Explosion(now)) ;
+                        if (this.nb_level == bomb.getLevel()) expl.put(p, new Explosion(now)) ;
                     }
                 }
             }

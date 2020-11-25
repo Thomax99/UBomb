@@ -9,6 +9,8 @@ import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
 import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.go.GameObject;
+import fr.ubx.poo.model.go.Bomb;
+
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
@@ -31,6 +33,10 @@ public class Monster extends GameObject implements Movable, Removable {
         Position nextPos = direction.nextPosition(getPosition());
 
         if(!game.getWorld().isInside(nextPos) || game.getWorld().get(nextPos) instanceof Decor) return false ;
+        for (Bomb bo : game.getBombs()){
+            if (bo.getPosition().equals(nextPos)) return false ;
+
+        }
         for(GameObject go : game.getMonstersAndBoxes()){
             if (go.getPosition().equals(nextPos)) return false ;
         }
