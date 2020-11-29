@@ -235,7 +235,7 @@ public class Game {
                         somethingExplosed = true ;
                     }
                 }
-                if (this.nb_level == bomb.getLevel() && expl.get(p) == null) expl.put(p, new Explosion(now)) ;
+                if (this.nb_level == bomb.getLevel()) expl.put(p, new Explosion(now)) ;
             }
         }
     }
