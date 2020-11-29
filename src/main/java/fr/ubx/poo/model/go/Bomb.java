@@ -27,7 +27,7 @@ public class Bomb extends GameObject implements Removable {
         state = (int)((start-now)/1000000000L) + 3 ;
     }
     public boolean isExplosing(){
-        return state == -1 ;
+        return state == -1  ;
     }
     public void remove() {
         hasExplosed = true ;
