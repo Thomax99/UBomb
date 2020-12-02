@@ -58,8 +58,7 @@ public class Player extends GameObject implements Movable {
         bombs++ ;
     }
     private void lessBomb(){
-        bombs-- ;
-        bombs = (bombs < 0 ? 0 : bombs) ;
+        bombs = (bombs <= 1 ? 1 : bombs--) ;
     }
     public int getBombs() {
         return bombs;
@@ -77,8 +76,7 @@ public class Player extends GameObject implements Movable {
         range++;
     }
     private void lessPortee(){
-        range--;
-        range = (range < 1 ? 1 : bombs);
+        range = (range <= 1 ? 1 : range--);
     }
     public int getRange() {
         return range;

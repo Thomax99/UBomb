@@ -196,13 +196,13 @@ public class Game {
         getBombs().add(bomb) ;
         return bomb;
     }
-    public void exploser(Bomb bomb, Map<Position, Explosion> expl, long now){
+    public void exploser(Bomb bomb, long now){
         bomb.remove();
         player.bombHasExplosed();
         Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-        if (this.nb_level == bomb.getLevel()) expl.put(bomb.getPosition(), new Explosion(now)) ;
         List<GameObject> monstersBoxes = getMonstersAndBoxes(bomb.getLevel()) ;
         World world = getWorld(bomb.getLevel()) ;
+        world.set(bomb.getPosition(), new Explosion(now));
         for(int i =  0; i < 4; i++){ // a regler
             Direction d = directions[i] ;
             Position p = bomb.getPosition();
@@ -231,11 +231,11 @@ public class Game {
                 }
                 for (Bomb bombAdj : getBombs()){
                     if (!bombAdj.hasToBeRemoved() && bombAdj.getPosition().equals(p) && !somethingExplosed){
-                        exploser(bombAdj, expl, now) ;
+                        exploser(bombAdj, now) ;
                         somethingExplosed = true ;
                     }
                 }
-                if (this.nb_level == bomb.getLevel()) expl.put(p, new Explosion(now)) ;
+                world.set(p, new Explosion(now));
             }
         }
     }
@@ -243,17 +243,30 @@ public class Game {
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
         getMonstersAndBoxes().removeIf(go -> ((Removable) go).hasToBeRemoved()) ;
         getMonstersAndBoxes().stream().filter(go -> go instanceof Monster).forEach(go -> ((Monster)go).update(now));
-        Map<Position, Explosion> expl = getExplosions() ;
 
-        expl.forEach((pos, exp) -> exp.update(now));
+        World world = getWorld() ;
+
+        world.update(now) ;
+
         for(Bomb bomb : getBombs()){
             if (bomb.isExplosing()){
-                exploser(bomb, expl, now) ;
+                exploser(bomb, now) ;
             }
         }
 
     }
     public Map<Position, Explosion> getExplosions(){
-        return explosion.get(this.nb_level-1) ;
+        Map<Position, Explosion> expl = new Hashtable() ;
+        World world = worlds.get(this.nb_level-1) ;
+        for (int i = 0; i < world.dimension.height; i++){
+            for (int j = 0; j < world.dimension.width; j++){
+                Position p = new Position(j,i) ;
+                Decor d = world.get(p) ;
+                if (d instanceof Explosion){
+                    expl.put(p,(Explosion) d) ;
+                }
+            }
+        }
+        return expl ;
     }
 }

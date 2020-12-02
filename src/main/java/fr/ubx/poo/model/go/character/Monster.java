@@ -18,10 +18,20 @@ import fr.ubx.poo.game.Game;
 public class Monster extends GameObject implements Movable, Removable {
     private boolean explosed;
     private long lastMoveTime = 0 ;
+    private int timeAttack;
     Direction direction;
     public Monster(Game game, Position position) {
         super(game, position);
         this.direction = Direction.S;
+        //gestion aleatoire de la vitesse en fonction du niveau
+        double value = Math.random(), factor = Math.pow( (double) (1.5), (double) (game.getLevel()-1)) ;
+        if (value < factor * 0.125 ) timeAttack = 1 ;
+        else if (value < factor * 0.375) timeAttack = 2 ;
+        else if (value < factor*0.625) timeAttack = 3 ;
+        else timeAttack = 4 ;
+        timeAttack = 1 ;
+
+
         this.explosed = false;
     }
     public Direction getDirection() {
@@ -80,7 +90,7 @@ public class Monster extends GameObject implements Movable, Removable {
 
     }
     public void update(long now) {
-        if((now-lastMoveTime) /1000000000L >= 1){
+        if((now-lastMoveTime) /1000000000L >= timeAttack){
             lastMoveTime = now ;
             computeMove() ;
         }

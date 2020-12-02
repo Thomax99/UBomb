@@ -4,9 +4,12 @@
 
 package fr.ubx.poo.game;
 
+import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.decor.Decor;
+import fr.ubx.poo.model.decor.Explosion;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -101,6 +104,23 @@ public class World {
 
     public boolean isInside(Position position) {
         return position.inside(dimension) ;
+    }
+    public void update(long now){
+        forEach( (Position, dec) -> {
+                                        if (dec instanceof Explosion) ((Explosion)dec).update(now) ;
+                                        });
+        Iterator<Position> it = grid.keySet().iterator() ;
+        while (it.hasNext()){
+            Position pos = it.next() ;
+            if (grid.get(pos) instanceof Removable && ((Removable)grid.get(pos)).hasToBeRemoved() ) it.remove();
+        }
+        for (int x = 0; x < dimension.height; x++) {
+            for (int y = 0; y < dimension.width; y++) {
+                System.out.print(grid.get(new Position(y,x))+" ") ;
+            }
+            System.out.println() ;
+        }
+        System.out.println() ;
     }
 
     public boolean isEmpty(Position position) {
