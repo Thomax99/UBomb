@@ -84,7 +84,8 @@ public final class GameEngine {
             }
         }
         for(Bomb bomb : game.getBombs()){
-            spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
+            if (bomb.getLevel() == game.getLevel())
+                spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
         }
     }
 
@@ -160,7 +161,8 @@ public final class GameEngine {
         spritesBomb.forEach(Sprite::remove);
         spritesBomb.clear() ;
         for(Bomb bomb: game.getBombs()){
-            spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
+            if (bomb.getLevel() == game.getLevel())
+                spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
         }
 
         if(game.hasAChange()){
