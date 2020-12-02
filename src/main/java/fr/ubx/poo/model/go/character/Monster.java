@@ -29,8 +29,6 @@ public class Monster extends GameObject implements Movable, Removable {
         else if (value < factor * 0.375) timeAttack = 2 ;
         else if (value < factor*0.625) timeAttack = 3 ;
         else timeAttack = 4 ;
-        timeAttack = 1 ;
-
 
         this.explosed = false;
     }

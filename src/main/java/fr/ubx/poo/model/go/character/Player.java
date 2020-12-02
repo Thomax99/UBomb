@@ -42,7 +42,6 @@ public class Player extends GameObject implements Movable {
     public void damage(long now){
         if(!isInvincible){
             lives-- ;
-            System.out.println("Je suis invincible") ;
             isInvincible = true ;
             timeInvincible = now ;
         }
