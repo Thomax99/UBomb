@@ -11,4 +11,6 @@ import fr.ubx.poo.model.Entity;
  */
 public class Decor extends Entity {
 
+
+
 }

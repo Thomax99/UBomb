@@ -100,7 +100,7 @@ public class Player extends GameObject implements Movable {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ;
+        if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ; // better use canMoveIn
         if (game.getWorld().get(nextPos) instanceof DoorNext){
             DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
             return !door.isClosed();
@@ -123,11 +123,13 @@ public class Player extends GameObject implements Movable {
     public void doMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);
-        if (game.getWorld().get(nextPos) instanceof Bonus){
+        if (game.getWorld().get(nextPos) instanceof Bonus){ //we need to add a method in the class Decor which could be "Recoverable" : if the object is a bonus, send true
             Bonus bonus = (Bonus) game.getWorld().get(nextPos) ;
             if(!bonus.hasToBeRemoved()){
                 game.getWorld().clear(nextPos);
-                bonus.remove() ;
+                bonus.remove() ; //we need to clarify and make better this portion
+                // maybe on the decor, we add a method takeDecor. This function do nothing if it's just a normal decor, otherwise it makes the good treatment 
+                // in function of the parameter player given 
                 if (bonus instanceof Heart){
                     addLive();
                 }
@@ -190,7 +192,7 @@ public class Player extends GameObject implements Movable {
 
     public void update(long now) {
         currentTime = now ;
-        if ( ((currentTime-timeInvincible)/ 1000000000L) >= 1 ){
+        if ( ((currentTime-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers
             isInvincible = false ;
         }
         if (moveRequested) {
