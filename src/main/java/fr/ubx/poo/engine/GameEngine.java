@@ -93,6 +93,7 @@ public final class GameEngine {
         gameLoop = new AnimationTimer() {
             public void handle(long now) {
                 // Check keyboard actions
+
                 processInput(now);
 
                 // Do actions
@@ -168,6 +169,7 @@ public final class GameEngine {
         if(game.hasAChange()){
             sprites.forEach(Sprite::remove);
             sprites.clear();
+            stage.close();
             initialize(stage, game);
             game.changeMade();
         }
