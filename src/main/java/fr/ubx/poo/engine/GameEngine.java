@@ -75,7 +75,7 @@ public final class GameEngine {
         // Create decor sprites
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
         spritePlayer = SpriteFactory.createPlayer(layer, player);
-        for (GameObject go : game.getMonstersAndBoxes()){
+        for (GameObject go : game.getMonstersAndBoxes()){ 
             if (go instanceof Monster){
                 sprites.add(SpriteFactory.createMonster(layer, (Monster) go)) ;
             }

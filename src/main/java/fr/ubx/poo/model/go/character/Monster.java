@@ -39,16 +39,13 @@ public class Monster extends GameObject implements Movable, Removable {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-
-        if(!game.getWorld().isInside(nextPos) || (game.getWorld().get(nextPos) instanceof Decor && !(game.getWorld().get(nextPos) instanceof Key))) return false ;
         for (Bomb bo : game.getBombs()){
             if (bo.getPosition().equals(nextPos)) return false ;
-
         }
         for(GameObject go : game.getMonstersAndBoxes()){
             if (go.getPosition().equals(nextPos)) return false ;
         }
-        return true ;
+        return game.getWorld().isInside(nextPos) && game.getWorld().get(nextPos) == null ;
     }
     public void computeMove(){
 

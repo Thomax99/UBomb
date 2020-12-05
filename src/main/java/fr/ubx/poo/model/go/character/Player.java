@@ -36,7 +36,7 @@ public class Player extends GameObject implements Movable {
         this.key = game.getInitPlayerKey();
         this.range = game.getInitPlayerPortee();
     }
-    private void addLive(){
+    public void addLive(){
         lives++ ;
     }
     public void damage(long now){
@@ -53,11 +53,11 @@ public class Player extends GameObject implements Movable {
     public int getLives() {
         return lives;
     }
-    private void addBomb(){
+    public void addBomb(){
         bombs++ ;
     }
-    private void lessBomb(){
-        bombs = (bombs <= 1 ? 1 : bombs--) ;
+    public void lessBomb(){
+        bombs = (bombs <= 1 ? 1 : bombs-1) ;
     }
     public int getBombs() {
         return bombs;
@@ -65,17 +65,17 @@ public class Player extends GameObject implements Movable {
     private void useKey(){
         key -- ;
     }
-    private void addKey(){
+    public void addKey(){
         key++ ;
     }
     public int getKey() {
         return key;
     }
-    private void addPortee(){
+    public void addPortee(){
         range++;
     }
-    private void lessPortee(){
-        range = (range <= 1 ? 1 : range--);
+    public void lessPortee(){
+        range = (range <= 1 ? 1 : range-1);
     }
     public int getRange() {
         return range;
@@ -100,71 +100,21 @@ public class Player extends GameObject implements Movable {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof Tree || game.getWorld().get(nextPos) instanceof Stone) return false ; // better use canMoveIn
-        if (game.getWorld().get(nextPos) instanceof DoorNext){
-            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
-            return !door.isClosed();
-        }
+        if(game.getWorld().get(nextPos) != null)
+            return game.getWorld().get(nextPos).canMoveIn(direction) ;
         for(GameObject go : game.getMonstersAndBoxes()){
-            if (go instanceof Box){
-                Box box = (Box) go ;
-                if (box.getPosition().equals(nextPos)){
-                    return box.canMove(direction) ;
-                }
-            }
+            if (go.getPosition().equals(nextPos)) return go.canMoveIn(direction) ;
         }
-
-        if (game.getWorld().isInside(nextPos)){
-            return true;
-        }
-        return false;
+        return game.getWorld().isInside(nextPos) ;
     }
 
     public void doMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);
-        if (game.getWorld().get(nextPos) instanceof Bonus){ //we need to add a method in the class Decor which could be "Recoverable" : if the object is a bonus, send true
-            Bonus bonus = (Bonus) game.getWorld().get(nextPos) ;
-            if(!bonus.hasToBeRemoved()){
-                game.getWorld().clear(nextPos);
-                bonus.remove() ; //we need to clarify and make better this portion
-                // maybe on the decor, we add a method takeDecor. This function do nothing if it's just a normal decor, otherwise it makes the good treatment 
-                // in function of the parameter player given 
-                if (bonus instanceof Heart){
-                    addLive();
-                }
-                else if (bonus instanceof Key){
-                    addKey();
-                }
-                else if (bonus instanceof BombNumberInc){
-                    addBomb();
-                }
-                else if (bonus instanceof BombNumberDec){
-                    lessBomb();
-                }
-                else if(bonus instanceof BombRangeInc){
-                    addPortee();
-                }
-                else if(bonus instanceof BombRangeDec){
-                    lessPortee();
-                }
-
-            }
+        if(game.getWorld().get(nextPos) != null){ //there is a good decor at this position
+            game.getWorld().get(nextPos).computeDecor(this);
         }
-        if (game.getWorld().get(nextPos) instanceof DoorNext){
-            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
-            if (! door.isClosed()) game.changeWorld(1);
-        }
-        if (game.getWorld().get(nextPos) instanceof DoorPrevOpened){
-            game.changeWorld(-1);
-        }
-        if(game.getWorld().get(nextPos) instanceof Decor){
-            Decor decor = (Decor) game.getWorld().get(nextPos) ;
-            if(decor instanceof Princess){
-                winner = true;
-            }
-        }
-        for(GameObject go : game.getMonstersAndBoxes()){
+        for(GameObject go : game.getMonstersAndBoxes()){ // we need to suppress those fucking instanceofs
             if (go instanceof Box){
                 Box box = (Box) go ;
                 if (box.getPosition().equals(nextPos)){
@@ -181,7 +131,7 @@ public class Player extends GameObject implements Movable {
     }
     public void requestOpenDoor(){
         Position nextPos = direction.nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof DoorNext){
+        if (game.getWorld().get(nextPos) instanceof DoorNext){ // find a way to avoid this
             DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
             if(door.isClosed() && getKey() > 0){
                 door.open();
@@ -210,7 +160,6 @@ public class Player extends GameObject implements Movable {
         bombRequested = false ;
     }
     public void explose(long now){
-        
         if(!isInvincible){
             lives-- ;
             isInvincible = true ;
@@ -230,6 +179,13 @@ public class Player extends GameObject implements Movable {
             return false;
         }
         return alive;
+    }
+    public void princessFound(){
+        winner = true ;
+    }
+
+    public void changeWorld(int lv){
+        game.changeWorld(lv);
     }
 
 }

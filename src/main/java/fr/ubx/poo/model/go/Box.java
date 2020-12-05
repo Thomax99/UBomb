@@ -26,25 +26,12 @@ public class Box extends GameObject implements Movable, Removable {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof Decor || game.getWorld().get(nextPos) instanceof Bonus) return false ;
+
+        if (game.getWorld().get(nextPos) != null) return false ;
         for(GameObject go : game.getMonstersAndBoxes()){
-            if (go instanceof Box){
-                Box box = (Box) go ;
-                if (box.getPosition().equals(nextPos)){
-                        return false;
-                }
-            }
-            else if (go instanceof Monster){
-                Monster monster = (Monster) go ;
-                if (monster.getPosition().equals(nextPos)){
-                    return false;
-                }
-            }
+            if(go.getPosition().equals(nextPos)) return false ;
         }
-        if(game.getWorld().isInside(nextPos)){
-            return true;
-        }
-        return false;
+        return game.getWorld().isInside(nextPos) ;
     }
 
     public boolean hasToBeRemoved(){
@@ -59,6 +46,10 @@ public class Box extends GameObject implements Movable, Removable {
     public void doMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);
+    }
+    @Override
+    public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
+        return canMove(dir);
     }
 
 }
