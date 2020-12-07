@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
-import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.Bonus;
 
@@ -224,7 +223,7 @@ public class Game {
                 while(it.hasNext()){
                     GameObject go = it.next() ;
                     if (go.getPosition().equals(p) && ! somethingExplosed){
-                        ((Removable) go).remove();
+                        go.remove();
                         somethingExplosed = true ;
                         it.remove() ;
                     }
@@ -241,7 +240,7 @@ public class Game {
     }
     public void update(long now){
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
-        getMonstersAndBoxes().removeIf(go -> ((Removable) go).hasToBeRemoved()) ;
+        getMonstersAndBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
         getMonstersAndBoxes().stream().filter(go -> go instanceof Monster).forEach(go -> ((Monster)go).update(now));
 
         World world = getWorld() ;

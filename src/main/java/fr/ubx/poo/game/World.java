@@ -4,7 +4,6 @@
 
 package fr.ubx.poo.game;
 
-import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
 
@@ -106,13 +105,11 @@ public class World {
         return position.inside(dimension) ;
     }
     public void update(long now){
-        forEach( (Position, dec) -> {
-                                        if (dec instanceof Explosion) ((Explosion)dec).update(now) ;
-                                        });
+        forEach( (Position, dec) -> dec.update(now) ) ;
         Iterator<Position> it = grid.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (grid.get(pos) instanceof Removable && ((Removable)grid.get(pos)).hasToBeRemoved() ) it.remove();
+            if (grid.get(pos).hasToBeRemoved() ) it.remove();
         }
     }
 

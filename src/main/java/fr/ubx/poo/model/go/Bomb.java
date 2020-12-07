@@ -4,14 +4,13 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
-import fr.ubx.poo.model.Removable;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.List ;
 import java.util.Iterator;
 
-public class Bomb extends GameObject implements Removable {
+public class Bomb extends GameObject {
 
     private int state, range, level ;
     private boolean hasExplosed = false ;

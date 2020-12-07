@@ -7,7 +7,6 @@ package fr.ubx.poo.model.go.character;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
-import fr.ubx.poo.model.Removable;
 import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.go.Bomb;
 
@@ -15,7 +14,7 @@ import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Monster extends GameObject implements Movable, Removable {
+public class Monster extends Character implements Movable {
     private boolean explosed;
     private long lastMoveTime = 0 ;
     private int timeAttack;
@@ -71,7 +70,6 @@ public class Monster extends GameObject implements Movable, Removable {
         for(int i = 0; i < 4; i++){
 
             if(canMove(directions[i])){
-
                 doMove(directions[i]) ;
                 break ;
             }
@@ -82,7 +80,6 @@ public class Monster extends GameObject implements Movable, Removable {
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);
         if (game.getPlayer().getPosition().equals(nextPos)) game.getPlayer().damage(lastMoveTime);
-
     }
     public void update(long now) {
         if((now-lastMoveTime) /1000000000L >= timeAttack){

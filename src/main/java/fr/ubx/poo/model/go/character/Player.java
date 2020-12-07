@@ -13,7 +13,7 @@ import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Player extends GameObject implements Movable {
+public class Player extends Character implements Movable {
 
     private final boolean alive = true;
     private boolean isInvincible = false;
@@ -45,6 +45,9 @@ public class Player extends GameObject implements Movable {
             isInvincible = true ;
             timeInvincible = now ;
         }
+    }
+    public boolean canTakeBonus(){
+        return true ;
     }
 
     public Boolean isInvincible(){
@@ -186,6 +189,9 @@ public class Player extends GameObject implements Movable {
 
     public void changeWorld(int lv){
         game.changeWorld(lv);
+    }
+    public void remove(){
+        // nothing used : hasTobeRemoved() reply false everytime for a player
     }
 
 }
