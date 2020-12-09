@@ -13,4 +13,7 @@ public class Stone extends Decor {
     public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
         return false ;
     }
+    public boolean canExplose(){
+        return false ;
+    }
 }

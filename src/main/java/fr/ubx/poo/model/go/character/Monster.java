@@ -9,12 +9,11 @@ import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
 import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.go.Bomb;
-
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Monster extends Character implements Movable {
+public class Monster extends Character {
     private boolean explosed;
     private long lastMoveTime = 0 ;
     private int timeAttack;
@@ -35,19 +34,7 @@ public class Monster extends Character implements Movable {
         return direction;
     }
 
-    @Override
-    public boolean canMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        for (Bomb bo : game.getBombs()){
-            if (bo.getPosition().equals(nextPos)) return false ;
-        }
-        for(GameObject go : game.getMonstersAndBoxes()){
-            if (go.getPosition().equals(nextPos)) return false ;
-        }
-        return game.getWorld().isInside(nextPos) && game.getWorld().get(nextPos) == null ;
-    }
     public void computeMove(){
-
         Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E} ;
         Position playerPos = game.getPlayer().getPosition() ;
         int distances[] = new int[4] ;
@@ -68,7 +55,6 @@ public class Monster extends Character implements Movable {
             }
         }
         for(int i = 0; i < 4; i++){
-
             if(canMove(directions[i])){
                 doMove(directions[i]) ;
                 break ;
@@ -76,11 +62,9 @@ public class Monster extends Character implements Movable {
         }
     }
 
-    public void doMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        setPosition(nextPos);
-        if (game.getPlayer().getPosition().equals(nextPos)) game.getPlayer().damage(lastMoveTime);
+    public void damage(long now){
     }
+
     public void update(long now) {
         if((now-lastMoveTime) /1000000000L >= timeAttack){
             lastMoveTime = now ;
@@ -94,5 +78,4 @@ public class Monster extends Character implements Movable {
     public void remove(){
         this.explosed = true;
     }
-
 }

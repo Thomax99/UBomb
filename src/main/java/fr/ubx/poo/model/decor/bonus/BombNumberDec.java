@@ -15,4 +15,6 @@ public class BombNumberDec extends Bonus {
         player.lessBomb();
         remove();
     }
+
+
 }

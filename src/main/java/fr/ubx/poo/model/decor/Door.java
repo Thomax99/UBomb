@@ -1,8 +1,13 @@
 package fr.ubx.poo.model.decor;
 import fr.ubx.poo.model.go.character.Player;
 import fr.ubx.poo.game.Direction;
-public class DoorNext extends Decor{
-    private boolean isClosed = true ;
+public class Door extends Decor{
+    private boolean isClosed ;
+    private final boolean isNext ;
+    public Door(boolean isClosed, boolean isNext){
+        this.isClosed = isClosed ;
+        this.isNext = isNext ;
+    }
     @Override
     public String toString() {
         return "Door";
@@ -15,10 +20,13 @@ public class DoorNext extends Decor{
     }
     @Override
     public void computeDecor(Player player){
-        if (!isClosed()) player.changeWorld(1) ;
+        if (!isClosed()) player.changeWorld( (isNext ? 1 : -1) ) ;
     }
     @Override
     public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
         return !isClosed() ;
+    }
+    public boolean canExplose(){
+        return false ;
     }
 }

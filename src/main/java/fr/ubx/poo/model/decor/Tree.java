@@ -13,4 +13,7 @@ public class Tree extends Decor {
     public boolean canMoveIn(Direction dir){
         return false ;
     }
+    public boolean canExplose(){
+        return false ;
+    }
 }

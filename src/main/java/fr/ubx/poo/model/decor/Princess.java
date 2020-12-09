@@ -7,7 +7,11 @@ public class Princess extends Decor{
     public String toString() {
         return "Princess";
     }
+    @Override
     public void computeDecor(Player player){
         player.princessFound();
+    }
+    public boolean canExplose(){
+        return false ;
     }
 }

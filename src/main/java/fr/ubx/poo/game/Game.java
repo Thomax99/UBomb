@@ -209,29 +209,32 @@ public class Game {
             for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
 
                 p = d.nextPosition(p);
-                if (!world.isInside(p) || world.get(p) instanceof Tree || world.get(p) instanceof Stone || world.get(p) instanceof DoorNext || world.get(p) instanceof DoorPrevOpened) break ;
-                if (world.get(p) instanceof Bonus && !(world.get(p) instanceof Key)) {
-                    Bonus bonus = (Bonus) world.get(p);
+                if (!world.isInside(p)) break ;
+                Decor decor = world.get(p) ;
+                if (decor != null){
+                    if (!world.get(p).canExplose()) break ;
                     world.clear(p);
-                    bonus.remove();
+                    decor.remove();
                 }
-                if(player.getPosition().equals(p) && this.nb_level == bomb.getLevel()){
-                    player.damage(now);
-                    somethingExplosed = true ;
-                }
-                Iterator<GameObject> it = monstersBoxes.iterator() ;
-                while(it.hasNext()){
-                    GameObject go = it.next() ;
-                    if (go.getPosition().equals(p) && ! somethingExplosed){
-                        go.remove();
+                else {
+                    if(player.getPosition().equals(p) && this.nb_level == bomb.getLevel()){
+                        player.damage(now);
                         somethingExplosed = true ;
-                        it.remove() ;
                     }
-                }
-                for (Bomb bombAdj : getBombs()){
-                    if (!bombAdj.hasToBeRemoved() && bombAdj.getPosition().equals(p) && !somethingExplosed){
-                        exploser(bombAdj, now) ;
-                        somethingExplosed = true ;
+                    Iterator<GameObject> it = monstersBoxes.iterator() ;
+                    while(it.hasNext()){
+                        GameObject go = it.next() ;
+                        if (go.getPosition().equals(p) && ! somethingExplosed){
+                            go.remove();
+                            somethingExplosed = true ;
+                            it.remove() ;
+                        }
+                    }
+                    for (Bomb bombAdj : getBombs()){
+                        if (!bombAdj.hasToBeRemoved() && bombAdj.getPosition().equals(p) && !somethingExplosed){
+                            exploser(bombAdj, now) ;
+                            somethingExplosed = true ;
+                        }
                     }
                 }
                 world.set(p, new Explosion(now));
@@ -241,7 +244,7 @@ public class Game {
     public void update(long now){
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
         getMonstersAndBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
-        getMonstersAndBoxes().stream().filter(go -> go instanceof Monster).forEach(go -> ((Monster)go).update(now));
+        getMonstersAndBoxes().forEach(go -> go.update(now));
 
         World world = getWorld() ;
 

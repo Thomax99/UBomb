@@ -34,9 +34,11 @@ public class WorldBuilder {
             case Tree:
                 return new Tree();
             case DoorNextClosed:
-                return new DoorNext();
+                return new Door(true, true);
             case DoorPrevOpened:
-                return new DoorPrevOpened();
+                return new Door(false, false);
+            case DoorNextOpened :
+                return new Door(false, true) ;
             case Princess:
                 return new Princess();
             case Key:

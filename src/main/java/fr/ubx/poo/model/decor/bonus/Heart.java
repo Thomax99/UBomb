@@ -12,8 +12,7 @@ public class Heart extends Bonus {
     }
     @Override
     public void computeDecor(Player player){
-        player.addLive() ;
+        player.addLive();
         remove();
     }
-
 }

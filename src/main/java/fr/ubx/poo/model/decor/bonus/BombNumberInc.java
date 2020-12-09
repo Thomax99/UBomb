@@ -11,7 +11,7 @@ public class BombNumberInc extends Bonus {
     }
     @Override
     public void computeDecor(Player player){
-        player.addBomb() ;
+        player.addBomb();
         remove();
     }
 }

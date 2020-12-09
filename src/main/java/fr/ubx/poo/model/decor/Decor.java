@@ -15,7 +15,6 @@ public class Decor extends Entity {
 
     public void computeDecor(Player player){
     }
-
     public boolean hasToBeRemoved(){
         return hasToBeRemoved ;
     }
@@ -24,6 +23,9 @@ public class Decor extends Entity {
     }
     public void update(long now){
         //nothing to update by default
+    }
+    public boolean canExplose(){
+        return true ;
     }
 
 

@@ -13,7 +13,7 @@ import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Player extends Character implements Movable {
+public class Player extends Character {
 
     private final boolean alive = true;
     private boolean isInvincible = false;
@@ -25,7 +25,6 @@ public class Player extends Character implements Movable {
     private int key = 0;
     private int range = 1;
     private int currentBombPut = 0 ;
-
     private boolean winner;
 
     public Player(Game game, Position position) {
@@ -36,20 +35,10 @@ public class Player extends Character implements Movable {
         this.key = game.getInitPlayerKey();
         this.range = game.getInitPlayerPortee();
     }
+
     public void addLive(){
         lives++ ;
     }
-    public void damage(long now){
-        if(!isInvincible){
-            lives-- ;
-            isInvincible = true ;
-            timeInvincible = now ;
-        }
-    }
-    public boolean canTakeBonus(){
-        return true ;
-    }
-
     public Boolean isInvincible(){
         return isInvincible;
     }
@@ -84,68 +73,57 @@ public class Player extends Character implements Movable {
         return range;
     }
 
-    public boolean canBomb(){
-        return bombs>currentBombPut ;
-    }
+    
     public Direction getDirection() {
         return direction;
     }
-
     public void requestMove(Direction direction) {
         if (direction != this.direction) {
             this.direction = direction;
         }
         moveRequested = true;
     }
-    public void requestBomb(){
-        bombRequested = true ;
-    }
-    @Override
-    public boolean canMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        if(game.getWorld().get(nextPos) != null)
-            return game.getWorld().get(nextPos).canMoveIn(direction) ;
-        for(GameObject go : game.getMonstersAndBoxes()){
-            if (go.getPosition().equals(nextPos)) return go.canMoveIn(direction) ;
-        }
-        return game.getWorld().isInside(nextPos) ;
+    public boolean canGoOnMonsterOrBoxes(){
+        return true ;
     }
 
     public void doMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        setPosition(nextPos);
-        if(game.getWorld().get(nextPos) != null){ //there is a good decor at this position
-            game.getWorld().get(nextPos).computeDecor(this);
+        super.doMove(direction);
+        if(game.getWorld().get(getPosition()) != null){ //there is a good decor at this position
+            game.getWorld().get(getPosition()).computeDecor(this);
         }
-        for(GameObject go : game.getMonstersAndBoxes()){ // we need to suppress those fucking instanceofs
+        for(GameObject go : game.getMonstersAndBoxes()){
             if (go instanceof Box){
                 Box box = (Box) go ;
-                if (box.getPosition().equals(nextPos)){
+                if (box.getPosition().equals(getPosition())){
                     box.doMove(direction);
                 }
             }
             else if (go instanceof Monster){
                 Monster monster = (Monster) go ;
-                if (monster.getPosition().equals(nextPos)){
-                    damage(currentTime) ;
+                if (monster.getPosition().equals(getPosition())){
+                    damage(getCurrentTime()) ;
                 }
             }
         }
     }
+
     public void requestOpenDoor(){
         Position nextPos = direction.nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof DoorNext){ // find a way to avoid this
-            DoorNext door = (DoorNext) game.getWorld().get(nextPos) ;
+        if (game.getWorld().get(nextPos) instanceof Door){ // find a way to avoid this
+            Door door = (Door) game.getWorld().get(nextPos) ;
             if(door.isClosed() && getKey() > 0){
                 door.open();
                 useKey() ;
             }
         }
     }
-
+    public void changeWorld(int lv){
+        game.changeWorld(lv);
+    }
     public void update(long now) {
-        currentTime = now ;
-        if ( ((currentTime-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers
+        setCurrentTime(now);
+        if ( ((getCurrentTime()-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers
             isInvincible = false ;
         }
         if (moveRequested) {
@@ -162,6 +140,14 @@ public class Player extends Character implements Movable {
         }
         bombRequested = false ;
     }
+    
+
+    public void requestBomb(){
+        bombRequested = true ;
+    }
+    public boolean canBomb(){
+        return bombs>currentBombPut ;
+    }
     public void explose(long now){
         if(!isInvincible){
             lives-- ;
@@ -172,10 +158,14 @@ public class Player extends Character implements Movable {
     public void bombHasExplosed(){
         currentBombPut--;
     }
-
-    public boolean isWinner() {
-        return winner;
+    public void damage(long now){
+        if(!isInvincible){
+            lives-- ;
+            isInvincible = true ;
+            timeInvincible = now ;
+        }
     }
+
 
     public boolean isAlive() {
         if(lives==0){
@@ -186,12 +176,19 @@ public class Player extends Character implements Movable {
     public void princessFound(){
         winner = true ;
     }
-
-    public void changeWorld(int lv){
-        game.changeWorld(lv);
+    public boolean isWinner() {
+        return winner;
     }
+    
+
     public void remove(){
         // nothing used : hasTobeRemoved() reply false everytime for a player
+    }
+    private void setCurrentTime(long time){
+        currentTime = time ;
+    }
+    private long getCurrentTime(){
+        return currentTime ;
     }
 
 }
