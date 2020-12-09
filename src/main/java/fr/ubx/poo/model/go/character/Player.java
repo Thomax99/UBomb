@@ -133,20 +133,19 @@ public class Player extends Character {
         }
         moveRequested = false;
         if (bombRequested){
-            if (canBomb()){
+            if (canBomb(getPosition())){
                 game.addBomb(new Bomb(game, getPosition(), getRange(), now)) ;
                 currentBombPut++ ;
             }
         }
         bombRequested = false ;
     }
-    
 
     public void requestBomb(){
         bombRequested = true ;
     }
-    public boolean canBomb(){
-        return bombs>currentBombPut ;
+    public boolean canBomb(Position position){
+        return bombs > currentBombPut  && game.getWorld().get(position) == null;
     }
     public void explose(long now){
         if(!isInvincible){

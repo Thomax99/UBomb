@@ -6,8 +6,6 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
 
 public class SpriteBox extends SpriteGameObject{
-    private final ColorAdjust effect = new ColorAdjust();
-
     public SpriteBox(Pane layer, Box box) {
         super(layer, null, box);
         updateImage();

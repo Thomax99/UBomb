@@ -22,5 +22,6 @@ public class SpriteDoor extends SpriteDecor {
     @Override
     public void updateImage() {
         if(!door.isClosed()) setImage(ImageFactory.getInstance().get(DOOR_OPENED)) ;
+        else setImage(ImageFactory.getInstance().get(DOOR_CLOSED)) ;
     }
 }

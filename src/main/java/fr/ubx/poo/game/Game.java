@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -47,7 +48,7 @@ public class Game {
         loadConfig(worldPath);
         worlds = new ArrayList<>() ;
         monstersAndBoxes = new ArrayList<>() ;
-        bombs = new ArrayList<>() ;
+        bombs = new LinkedList<>() ;
         explosion = new ArrayList<>() ;
         initializeGame() ;
         Position positionPlayer = null;
@@ -65,7 +66,7 @@ public class Game {
         monstersAndBoxes.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
-            getMonstersAndBoxes().add(new Monster(this, p)) ;
+           getMonstersAndBoxes().add(new Monster(this, p)) ;
         }
         for(Position p : getWorld().findBoxes()){
             getMonstersAndBoxes().add(new Box(this, p)) ;
@@ -159,12 +160,14 @@ public class Game {
             int c, nb_read = 0;
             while((c = input.read()) != -1){
                 if ((char) c != '\n'){
-                    mapEntities[nb_read/width][nb_read%width] = WorldEntity.fromCode((char) c).get() ;
+                    Optional<WorldEntity> entity = WorldEntity.fromCode((char) c) ;
+                    if (entity.isPresent())
+                        mapEntities[nb_read/width][nb_read%width] = entity.get() ;
+                    else
+                        mapEntities[nb_read/width][nb_read%width] = WorldEntity.Empty ;
                     nb_read++ ;
                 }
-
-
-                            }
+            }
         } catch (IOException ex) {
             System.err.println("Error loading game");
         }
@@ -246,29 +249,14 @@ public class Game {
         getMonstersAndBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
         getMonstersAndBoxes().forEach(go -> go.update(now));
 
-        World world = getWorld() ;
-
-        world.update(now) ;
+        getWorld().update(now) ;
 
         for(Bomb bomb : getBombs()){
-            if (bomb.isExplosing()){
+            if (bomb.isExplosing())
                 exploser(bomb, now) ;
-            }
         }
-
     }
     public Map<Position, Explosion> getExplosions(){
-        Map<Position, Explosion> expl = new Hashtable() ;
-        World world = worlds.get(this.nb_level-1) ;
-        for (int i = 0; i < world.dimension.height; i++){
-            for (int j = 0; j < world.dimension.width; j++){
-                Position p = new Position(j,i) ;
-                Decor d = world.get(p) ;
-                if (d instanceof Explosion){
-                    expl.put(p,(Explosion) d) ;
-                }
-            }
-        }
-        return expl ;
+        return getWorld().getExplosions() ;
     }
 }

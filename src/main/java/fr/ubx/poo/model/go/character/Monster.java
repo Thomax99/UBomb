@@ -27,7 +27,6 @@ public class Monster extends Character {
         else if (value < factor * 0.375) timeAttack = 2 ;
         else if (value < factor*0.625) timeAttack = 3 ;
         else timeAttack = 4 ;
-
         this.explosed = false;
     }
     public Direction getDirection() {
@@ -60,9 +59,6 @@ public class Monster extends Character {
                 break ;
             }
         }
-    }
-
-    public void damage(long now){
     }
 
     public void update(long now) {

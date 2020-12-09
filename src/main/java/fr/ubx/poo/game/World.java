@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Hashtable ;
 import java.util.function.BiConsumer;
 
 public class World {
@@ -26,73 +26,68 @@ public class World {
         grid = WorldBuilder.build(raw, dimension);
     }
 
-    public Position findPlayer() throws PositionNotFoundException {
+    private Position findOneEntity(WorldEntity entity) throws PositionNotFoundException{
         for (int x = 0; x < dimension.width; x++) {
             for (int y = 0; y < dimension.height; y++) {
-                if (raw[y][x] == WorldEntity.Player) {
+                if (raw[y][x] == entity) {
                     return new Position(x, y);
                 }
             }
         }
         throw new PositionNotFoundException("Player");
     }
+
+    public Position findPlayer() throws PositionNotFoundException {
+        return findOneEntity(WorldEntity.Player) ;
+    }
     public Position findPreviousDoorOpened() throws PositionNotFoundException {
-        for (int x = 0; x < dimension.width; x++) {
-            for (int y = 0; y < dimension.height; y++) {
-                if (raw[y][x] == WorldEntity.DoorPrevOpened) {
-                    return new Position(x, y);
-                }
-            }
-        }
-        throw new PositionNotFoundException("Previous door");
+        return findOneEntity(WorldEntity.DoorPrevOpened);
     }
     public Position findNextDoor() throws PositionNotFoundException {
+        return findOneEntity(WorldEntity.DoorNextClosed) ;
+    }
+    
+    private List<Position> findEntity(WorldEntity entity){
+        ArrayList<Position> entitiesPosition = new ArrayList<Position>() ;
         for (int x = 0; x < dimension.width; x++) {
             for (int y = 0; y < dimension.height; y++) {
-                if (raw[y][x] == WorldEntity.DoorNextClosed) {
-                    return new Position(x, y);
+                if (raw[y][x] == entity) {
+                    entitiesPosition.add(new Position(x, y));
                 }
             }
         }
-        throw new PositionNotFoundException("Previous door");
+        return entitiesPosition ;
     }
     public List<Position> findMonsters(){
-        ArrayList<Position> monstersPositions = new ArrayList<Position>() ;
-        for (int x = 0; x < dimension.width; x++) {
-            for (int y = 0; y < dimension.height; y++) {
-                if (raw[y][x] == WorldEntity.Monster) {
-                    monstersPositions.add(new Position(x, y));
-                }
-            }
-        }
-        return monstersPositions ;
+        return findEntity(WorldEntity.Monster) ;
     }
 
     public List<Position> findBoxes(){
-        ArrayList<Position> boxesPositions = new ArrayList<Position>() ;
-        for (int x = 0; x < dimension.width; x++) {
-            for (int y = 0; y < dimension.height; y++) {
-                if (raw[y][x] == WorldEntity.Box) {
-                    boxesPositions.add(new Position(x, y));
+        return findEntity(WorldEntity.Box) ;
+    }
+
+    public Map<Position, Explosion> getExplosions(){
+        Map<Position, Explosion> expl = new Hashtable() ;
+        for (int i = 0; i < dimension.height; i++){
+            for (int j = 0; j < dimension.width; j++){
+                Position p = new Position(j,i) ;
+                Decor d = get(p) ;
+                if (d instanceof Explosion){
+                    expl.put(p,(Explosion) d) ;
                 }
             }
         }
-        return boxesPositions ;
+        return expl ;
     }
-
-
     public Decor get(Position position) {
         return grid.get(position);
     }
-
     public void set(Position position, Decor decor) {
         grid.put(position, decor);
     }
-
     public void clear(Position position) {
         grid.remove(position);
     }
-
     public void forEach(BiConsumer<Position, Decor> fn) {
         grid.forEach(fn);
     }
