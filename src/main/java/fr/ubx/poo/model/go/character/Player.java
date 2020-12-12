@@ -92,18 +92,14 @@ public class Player extends Character {
         if(game.getWorld().get(getPosition()) != null){ //there is a good decor at this position
             game.getWorld().get(getPosition()).computeDecor(this);
         }
-        for(GameObject go : game.getMonstersAndBoxes()){
-            if (go instanceof Box){
-                Box box = (Box) go ;
-                if (box.getPosition().equals(getPosition())){
-                    box.doMove(direction);
-                }
+        for(Monster monster : game.getMonsters()){
+            if (monster.getPosition().equals(getPosition())){
+                damage(getCurrentTime()) ;
             }
-            else if (go instanceof Monster){
-                Monster monster = (Monster) go ;
-                if (monster.getPosition().equals(getPosition())){
-                    damage(getCurrentTime()) ;
-                }
+        }
+        for(Box box : game.getBoxes()){
+            if (box.getPosition().equals(getPosition())){
+                box.doMove(direction);
             }
         }
     }

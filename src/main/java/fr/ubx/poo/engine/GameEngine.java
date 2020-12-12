@@ -75,13 +75,11 @@ public final class GameEngine {
         // Create decor sprites
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
         spritePlayer = SpriteFactory.createPlayer(layer, player);
-        for (GameObject go : game.getMonstersAndBoxes()){ 
-            if (go instanceof Monster){
-                sprites.add(SpriteFactory.createMonster(layer, (Monster) go)) ;
-            }
-            else if (go instanceof Box){
-                sprites.add(SpriteFactory.createBox(layer, (Box) go)) ;
-            }
+        for(Monster monster : game.getMonsters()){
+            sprites.add(SpriteFactory.createMonster(layer, monster)) ;
+        }
+        for(Box box : game.getBoxes()){
+            sprites.add(SpriteFactory.createBox(layer, box)) ;
         }
         for(Bomb bomb : game.getBombs()){
             if (bomb.getLevel() == game.getLevel())
@@ -154,7 +152,6 @@ public final class GameEngine {
 
 
     private void update(long now) {
-        game.getBombs().forEach(bomb -> bomb.update(now));
         spritesExpl.forEach(Sprite::remove);
         spritesExpl.clear() ;
         game.update(now) ;

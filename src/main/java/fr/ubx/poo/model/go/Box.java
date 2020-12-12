@@ -10,7 +10,7 @@ import fr.ubx.poo.model.decor.Tree;
 import fr.ubx.poo.model.decor.bonus.Bonus;
 import fr.ubx.poo.model.go.character.*;
 
-public class Box extends GameObject implements Movable {
+public class Box extends MovableGameObject implements Movable {
     private boolean explosed;
     public Box(Game game, Position position) {
         super(game, position);
@@ -22,36 +22,29 @@ public class Box extends GameObject implements Movable {
         return "Box";
     }
 
+    
+
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
 
         if (game.getWorld().get(nextPos) != null) return false ;
-        for(GameObject go : game.getMonstersAndBoxes()){
-            if(go.getPosition().equals(nextPos)) return false ;
+        for(Monster monster : game.getMonsters()){
+            if(monster.getPosition().equals(nextPos)) return false ;
         }
-        return game.getWorld().isInside(nextPos) ;
+        for(Box box : game.getBoxes()){
+            if(box.getPosition().equals(nextPos)) return false ;
+        }
+        return super.canMove(direction) ;
     }
 
     public boolean hasToBeRemoved(){
         return explosed;
     }
-
     public void remove(){
         this.explosed = true;
     }
-
-    @Override
-    public void doMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        setPosition(nextPos);
-    }
-    @Override
-    public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
+    public boolean canMoveIn(Direction dir){
         return canMove(dir);
     }
-    public void update(long now){
-        //Box is never changing for the moment
-    }
-
 }

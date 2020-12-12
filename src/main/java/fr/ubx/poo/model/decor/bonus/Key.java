@@ -8,7 +8,7 @@ public class Key extends Bonus{
     @Override
     public void computeDecor(Player player){
         player.addKey() ;
-        remove();      
+        remove();
     }
     public boolean canExplose(){
         return false ;

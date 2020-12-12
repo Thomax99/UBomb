@@ -17,6 +17,7 @@ import java.util.function.BiConsumer;
 
 public class World {
     private final Map<Position, Decor> grid;
+    private final Map<Position, Explosion> explosions ;
     private final WorldEntity[][] raw;
     public final Dimension dimension;
 
@@ -24,6 +25,7 @@ public class World {
         this.raw = raw;
         dimension = new Dimension(raw.length, raw[0].length);
         grid = WorldBuilder.build(raw, dimension);
+        explosions = new Hashtable<Position, Explosion>() ;
     }
 
     private Position findOneEntity(WorldEntity entity) throws PositionNotFoundException{
@@ -46,7 +48,6 @@ public class World {
     public Position findNextDoor() throws PositionNotFoundException {
         return findOneEntity(WorldEntity.DoorNextClosed) ;
     }
-    
     private List<Position> findEntity(WorldEntity entity){
         ArrayList<Position> entitiesPosition = new ArrayList<Position>() ;
         for (int x = 0; x < dimension.width; x++) {
@@ -67,17 +68,7 @@ public class World {
     }
 
     public Map<Position, Explosion> getExplosions(){
-        Map<Position, Explosion> expl = new Hashtable() ;
-        for (int i = 0; i < dimension.height; i++){
-            for (int j = 0; j < dimension.width; j++){
-                Position p = new Position(j,i) ;
-                Decor d = get(p) ;
-                if (d instanceof Explosion){
-                    expl.put(p,(Explosion) d) ;
-                }
-            }
-        }
-        return expl ;
+        return explosions ;
     }
     public Decor get(Position position) {
         return grid.get(position);
@@ -85,13 +76,15 @@ public class World {
     public void set(Position position, Decor decor) {
         grid.put(position, decor);
     }
+    public void addExplosion(Position position, long now){
+        explosions.put(position, new Explosion(now)) ;
+    }
     public void clear(Position position) {
         grid.remove(position);
     }
     public void forEach(BiConsumer<Position, Decor> fn) {
         grid.forEach(fn);
     }
-
     public Collection<Decor> values() {
         return grid.values();
     }
@@ -100,11 +93,16 @@ public class World {
         return position.inside(dimension) ;
     }
     public void update(long now){
-        forEach( (Position, dec) -> dec.update(now) ) ;
+        explosions.forEach( (Position, dec) -> dec.update(now) ) ;
         Iterator<Position> it = grid.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
             if (grid.get(pos).hasToBeRemoved() ) it.remove();
+        }
+        it = explosions.keySet().iterator() ;
+        while (it.hasNext()){
+            Position pos = it.next() ;
+            if (explosions.get(pos).hasToBeRemoved() ) it.remove();
         }
     }
 

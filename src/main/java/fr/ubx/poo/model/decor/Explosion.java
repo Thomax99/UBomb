@@ -10,6 +10,7 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
+import fr.ubx.poo.model.Updatable;
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Stone;
 import fr.ubx.poo.model.decor.Tree;
@@ -19,7 +20,7 @@ import fr.ubx.poo.model.go.character.*;
 /***
  * A decor is an element that does not know its own position in the grid.
  */
-public class Explosion extends Decor {
+public class Explosion extends Decor implements Updatable{
     private long start ;
     public Explosion(long start){
         super() ;

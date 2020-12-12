@@ -30,7 +30,8 @@ public class Game {
 
     private final List<World> worlds;
     private final Player player;
-    private final List<List<GameObject>> monstersAndBoxes ; // the array of monsters AND Boxes
+    private final List<List<Monster>> monsters ;
+    private final List<List<Box>> boxes ;
     private final List<Bomb> bombs ;
     private final List<Map<Position, Explosion>> explosion ;
     private final String worldPath;
@@ -47,7 +48,8 @@ public class Game {
         this.worldPath = worldPath;
         loadConfig(worldPath);
         worlds = new ArrayList<>() ;
-        monstersAndBoxes = new ArrayList<>() ;
+        monsters = new ArrayList<>() ;
+        boxes = new ArrayList<>() ;
         bombs = new LinkedList<>() ;
         explosion = new ArrayList<>() ;
         initializeGame() ;
@@ -63,13 +65,14 @@ public class Game {
 
     public void initializeGame(){
         worlds.add(loadWorld(this.nb_level)) ;
-        monstersAndBoxes.add(new LinkedList<>()) ;
+        monsters.add(new LinkedList<>()) ;
+        boxes.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
         for(Position p : getWorld().findMonsters()){
-           getMonstersAndBoxes().add(new Monster(this, p)) ;
+           getMonsters().add(new Monster(this, p)) ;
         }
         for(Position p : getWorld().findBoxes()){
-            getMonstersAndBoxes().add(new Box(this, p)) ;
+            getBoxes().add(new Box(this, p)) ;
         }
     }
 
@@ -180,16 +183,21 @@ public class Game {
     public World getWorld() {
         return getWorld(this.nb_level) ;
     }
-
-    public List<GameObject> getMonstersAndBoxes(){
-        return getMonstersAndBoxes(this.nb_level) ;
+    public List<Box> getBoxes(){
+        return getBoxes(this.nb_level) ;
+    }
+    public List<Monster> getMonsters(){
+        return getMonsters(this.nb_level) ;
+    }
+    public List<Box> getBoxes(int level){
+        return boxes.get(level-1) ;
+    }
+    public List<Monster> getMonsters(int level){
+        return monsters.get(level-1) ;
     }
 
     public World getWorld(int level) {
         return worlds.get(level-1);
-    }
-    public List<GameObject> getMonstersAndBoxes(int level){
-        return monstersAndBoxes.get(level-1) ;
     }
     public Player getPlayer() {
         return this.player;
@@ -202,15 +210,15 @@ public class Game {
         bomb.remove();
         player.bombHasExplosed();
         Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-        List<GameObject> monstersBoxes = getMonstersAndBoxes(bomb.getLevel()) ;
+        List<Monster> monsters = getMonsters(bomb.getLevel()) ;
+        List<Box> boxes = getBoxes(bomb.getLevel()) ;
         World world = getWorld(bomb.getLevel()) ;
-        world.set(bomb.getPosition(), new Explosion(now));
+        world.addExplosion(bomb.getPosition(), now);
         for(int i =  0; i < 4; i++){ // a regler
             Direction d = directions[i] ;
             Position p = bomb.getPosition();
             boolean somethingExplosed = false ;
-            for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
-
+            for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){ 
                 p = d.nextPosition(p);
                 if (!world.isInside(p)) break ;
                 Decor decor = world.get(p) ;
@@ -224,13 +232,22 @@ public class Game {
                         player.damage(now);
                         somethingExplosed = true ;
                     }
-                    Iterator<GameObject> it = monstersBoxes.iterator() ;
-                    while(it.hasNext()){
-                        GameObject go = it.next() ;
-                        if (go.getPosition().equals(p) && ! somethingExplosed){
-                            go.remove();
+                    Iterator<Monster> itm = monsters.iterator() ;
+                    while(itm.hasNext()){
+                        Monster monster = itm.next() ;
+                        if (monster.getPosition().equals(p) && ! somethingExplosed){
+                            monster.remove();
                             somethingExplosed = true ;
-                            it.remove() ;
+                            itm.remove() ;
+                        }
+                    }
+                    Iterator<Box> itb = boxes.iterator() ;
+                    while(itb.hasNext()){
+                        Box box = itb.next() ;
+                        if (box.getPosition().equals(p) && ! somethingExplosed){
+                            box.remove();
+                            somethingExplosed = true ;
+                            itb.remove() ;
                         }
                     }
                     for (Bomb bombAdj : getBombs()){
@@ -240,15 +257,17 @@ public class Game {
                         }
                     }
                 }
-                world.set(p, new Explosion(now));
+                world.addExplosion(p, now);
             }
         }
     }
     public void update(long now){
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
-        getMonstersAndBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
-        getMonstersAndBoxes().forEach(go -> go.update(now));
+        getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
+        getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
 
+        getMonsters().forEach(go -> go.update(now));
+        getBombs().forEach(bomb -> bomb.update(now));
         getWorld().update(now) ;
 
         for(Bomb bomb : getBombs()){
