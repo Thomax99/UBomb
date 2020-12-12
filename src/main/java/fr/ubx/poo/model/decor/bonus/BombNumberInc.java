@@ -10,8 +10,7 @@ public class BombNumberInc extends Bonus {
         return "BombNumberInc" ;
     }
     @Override
-    public void computeDecor(Player player){
-        player.addBomb();
-        remove();
+    public void consumePlayer(Player player) {
+        player.addBomb() ;
     }
 }

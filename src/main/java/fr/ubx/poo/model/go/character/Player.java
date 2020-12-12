@@ -18,7 +18,6 @@ public class Player extends Character {
     private final boolean alive = true;
     private boolean isInvincible = false;
     private long timeInvincible, currentTime ;
-    Direction direction;
     private boolean moveRequested = false, bombRequested = false ;
     private int lives = 1;
     private int bombs = 1;
@@ -29,7 +28,6 @@ public class Player extends Character {
 
     public Player(Game game, Position position) {
         super(game, position);
-        this.direction = Direction.S;
         this.lives = game.getInitPlayerLives();
         this.bombs = game.getInitPlayerBombs();
         this.key = game.getInitPlayerKey();
@@ -72,21 +70,12 @@ public class Player extends Character {
     public int getRange() {
         return range;
     }
-
-    
-    public Direction getDirection() {
-        return direction;
-    }
     public void requestMove(Direction direction) {
-        if (direction != this.direction) {
-            this.direction = direction;
+        if (direction != getDirection()) {
+            setDirection(direction);
         }
         moveRequested = true;
     }
-    public boolean canGoOnMonsterOrBoxes(){
-        return true ;
-    }
-
     public void doMove(Direction direction) {
         super.doMove(direction);
         if(game.getWorld().get(getPosition()) != null){ //there is a good decor at this position
@@ -103,9 +92,16 @@ public class Player extends Character {
             }
         }
     }
+    public boolean canMove(Direction direction) {
+        Position nextPos = direction.nextPosition(getPosition());
+        for(Box box : game.getBoxes()){
+            if (box.getPosition().equals(nextPos) && !box.canMoveIn(direction) ) return false ;
+        }
+        return super.canMove(direction) ;
+    }
 
     public void requestOpenDoor(){
-        Position nextPos = direction.nextPosition(getPosition());
+        Position nextPos = getDirection().nextPosition(getPosition());
         if (game.getWorld().get(nextPos) instanceof Door){ // find a way to avoid this
             Door door = (Door) game.getWorld().get(nextPos) ;
             if(door.isClosed() && getKey() > 0){
@@ -123,8 +119,8 @@ public class Player extends Character {
             isInvincible = false ;
         }
         if (moveRequested) {
-            if (canMove(direction)) {
-                doMove(direction);
+            if (canMove(getDirection())) {
+                doMove(getDirection());
             }
         }
         moveRequested = false;

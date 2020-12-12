@@ -6,9 +6,8 @@ public class Key extends Bonus{
         return "Key";
     }
     @Override
-    public void computeDecor(Player player){
+    public void consumePlayer(Player player) {
         player.addKey() ;
-        remove();
     }
     public boolean canExplose(){
         return false ;

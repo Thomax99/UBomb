@@ -41,4 +41,7 @@ public class Position {
     public boolean inside(Dimension d) {
         return x >= 0 && x < d.width && y >= 0 && y < d.height;
     }
+    public int distance(Position p){
+        return (int) Math.sqrt( (x - p.x)*(x - p.x) + (y - p.y)*(y - p.y) ) ;
+    }
 }

@@ -10,10 +10,8 @@ public class BombRangeDec extends Bonus {
     public String toString(){
         return "BombRangeDec" ;
     }
-
     @Override
-    public void computeDecor(Player player){
+    public void consumePlayer(Player player) {
         player.lessPortee() ;
-        remove();
     }
 }

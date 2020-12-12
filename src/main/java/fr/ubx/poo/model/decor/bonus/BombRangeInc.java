@@ -12,8 +12,7 @@ public class BombRangeInc extends Bonus {
     }
 
     @Override
-    public void computeDecor(Player player){
+    public void consumePlayer(Player player) {
         player.addPortee() ;
-        remove();
     }
 }

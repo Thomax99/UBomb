@@ -9,12 +9,8 @@ public class BombNumberDec extends Bonus {
     public String toString(){
         return "BombNumberDec" ;
     }
-
     @Override
-    public void computeDecor(Player player){
-        player.lessBomb();
-        remove();
+    public void consumePlayer(Player player) {
+        player.lessBomb() ;
     }
-
-
 }

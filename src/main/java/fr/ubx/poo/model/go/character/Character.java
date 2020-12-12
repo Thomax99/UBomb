@@ -18,21 +18,20 @@ import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
 public abstract class Character extends MovableGameObject implements Updatable {
+    private Direction direction ;
     public Character(Game game, Position position){
         super(game, position) ;
-    }
-    public boolean canGoOnMonsterOrBoxes(){
-        return false ;
+        this.direction = Direction.S ;
     }
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        for(Box box : game.getBoxes()){
-            if (box.getPosition().equals(nextPos) && (!canGoOnMonsterOrBoxes() || !box.canMoveIn(direction) )) return false ;
-        }
-        for(Monster monster : game.getMonsters()){
-            if (monster.getPosition().equals(nextPos) && (!canGoOnMonsterOrBoxes() || !monster.canMoveIn(direction) )) return false ;
-        }
         return super.canMove(direction) && (game.getWorld().get(nextPos) == null || game.getWorld().get(nextPos).canMoveIn(direction));
+    }
+    protected void setDirection(Direction d){
+        direction = d ;
+    }
+    public Direction getDirection() {
+        return direction;
     }
 }
