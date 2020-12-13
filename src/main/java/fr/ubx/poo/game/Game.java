@@ -194,10 +194,10 @@ public class Game {
                 //Game object explosion part
 
                 somethingExplosed = somethingExplosed || player.explosion(p, now) ;
-                monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
-                boxes.stream().map(box -> box.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
-                monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
-                getBombs().stream().map(bombAdj -> bombAdj.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                somethingExplosed = monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                somethingExplosed = boxes.stream().map(box -> box.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                somethingExplosed = monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                somethingExplosed = getBombs().stream().map(bombAdj -> bombAdj.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
                 world.addExplosion(p, now);
             }
         }
