@@ -75,16 +75,9 @@ public final class GameEngine {
         // Create decor sprites
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
         spritePlayer = SpriteFactory.createPlayer(layer, player);
-        for(Monster monster : game.getMonsters()){
-            sprites.add(SpriteFactory.createMonster(layer, monster)) ;
-        }
-        for(Box box : game.getBoxes()){
-            sprites.add(SpriteFactory.createBox(layer, box)) ;
-        }
-        for(Bomb bomb : game.getBombs()){
-            if (bomb.getLevel() == game.getLevel())
-                spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
-        }
+
+        game.getMonsters().forEach(monster -> sprites.add(SpriteFactory.createMonster(layer, monster)));
+        game.getBoxes().forEach(box -> sprites.add(SpriteFactory.createBox(layer, box)) );
     }
 
     protected final void buildAndSetGameLoop() {
@@ -152,18 +145,20 @@ public final class GameEngine {
 
 
     private void update(long now) {
-        spritesExpl.forEach(Sprite::remove);
-        spritesExpl.clear() ;
         game.update(now) ;
-        game.getExplosions().forEach((pos, exp)  -> spritesExpl.add(SpriteFactory.createDecor(layer, pos, exp))) ;
-        spritesBomb.forEach(Sprite::remove);
-        spritesBomb.clear() ;
-        for(Bomb bomb: game.getBombs()){
-            if (bomb.getLevel() == game.getLevel())
-                spritesBomb.add(SpriteFactory.createBomb(layer, bomb)) ;
-        }
 
-        if(game.hasAChange()){
+        if(game.hasNewExplosions()){
+            spritesExpl.forEach(Sprite::remove);
+            spritesExpl.clear() ;
+            game.getExplosions().forEach((pos, exp)  -> spritesExpl.add(SpriteFactory.createDecor(layer, pos, exp))) ;
+            game.newExplosionsPut();
+        }
+        if(game.hasBombChange()){
+            spritesBomb.forEach(Sprite::remove);
+            spritesBomb.clear() ;
+            game.getBombs().stream().filter(bomb -> bomb.getLevel() == game.getLevel()).forEach(bomb -> spritesBomb.add(SpriteFactory.createBomb(layer, bomb))) ;
+        }
+        if(game.hasChangedWorld()){
             sprites.forEach(Sprite::remove);
             sprites.clear();
             stage.close();

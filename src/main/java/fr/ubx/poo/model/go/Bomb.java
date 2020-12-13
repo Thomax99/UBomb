@@ -48,7 +48,6 @@ public class Bomb extends GameObject {
     public boolean explosion(Position p, long now){
         if(!hasToBeRemoved() && getPosition().equals(p)){
             remove() ;
-            game.getPlayer().bombHasExplosed();
             game.exploser(this, now);
             return true ;
         }

@@ -37,7 +37,7 @@ public class Game {
     private final List<Map<Position, Explosion>> explosion ;
     private final String worldPath;
     private int nb_level, level_max ;
-    private boolean hasAChange = false ;
+    private boolean hasChangedWorld = false, hasBombChange = false, hasNewExplosions = false ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -101,13 +101,13 @@ public class Game {
             }
         }
         player.setPosition(positionPlayer);
-        hasAChange = true ;
+        hasChangedWorld = true ;
     }
-    public boolean hasAChange(){
-        return hasAChange ;
+    public boolean hasChangedWorld(){
+        return hasChangedWorld ;
     }
     public void changeMade(){
-        hasAChange = false ;
+        hasChangedWorld = false ;
     }
 
     public Game(String worldPath) {
@@ -158,11 +158,23 @@ public class Game {
     public Player getPlayer() {
         return this.player;
     }
-    public Bomb addBomb(Bomb bomb){
+    public void addBomb(Bomb bomb){
         getBombs().add(bomb) ;
-        return bomb;
+        hasBombChange = true ;
+    }
+    public void bombChange(){
+        hasBombChange = false ;
+    }
+    public boolean hasBombChange(){
+        return hasBombChange ;
+    }
+    public boolean canBomb(Position p){
+        return getWorld().canBomb(p) ;
     }
     public void exploser(Bomb bomb, long now){
+        getPlayer().bombHasExplosed();
+        hasNewExplosions = true ;
+        hasBombChange = true ;
         Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
         List<Monster> monsters = getMonsters(bomb.getLevel()) ;
         List<Box> boxes = getBoxes(bomb.getLevel()) ;
@@ -180,17 +192,21 @@ public class Game {
                 somethingExplosed = world.explose(p) ;
 
                 //Game object explosion part
-                ToIntFunction<GameObject> func = go -> {
-                    if(go.explosion(p, now)) return 1 ;
-                    return 0 ;
-                } ;
+
                 somethingExplosed = somethingExplosed || player.explosion(p, now) ;
-                somethingExplosed = somethingExplosed || monsters.stream().mapToInt(func).sum() == 1 ;
-                somethingExplosed = somethingExplosed || boxes.stream().mapToInt(func).sum() == 1 ;
-                somethingExplosed = somethingExplosed || getBombs().stream().mapToInt(func).sum() == 1 ;
+                monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                boxes.stream().map(box -> box.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                getBombs().stream().map(bombAdj -> bombAdj.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
                 world.addExplosion(p, now);
             }
         }
+    }
+    public boolean hasNewExplosions(){
+        return hasNewExplosions ;
+    }
+    public void newExplosionsPut(){
+        hasNewExplosions = true ;
     }
     public void update(long now){
         getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;

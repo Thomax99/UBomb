@@ -107,7 +107,7 @@ public class World {
     }
 
     public boolean isEmpty(Position position) {
-        return grid.get(position) == null;
+        return get(position) == null;
     }
     /**
      * 
@@ -131,5 +131,8 @@ public class World {
                 return true ;
             }
         return false ;
+    }
+    public boolean canBomb(Position p){
+        return get(p) == null ;
     }
 }

@@ -78,19 +78,10 @@ public class Player extends Character {
     }
     public void doMove(Direction direction) {
         super.doMove(direction);
-        if(game.getWorld().get(getPosition()) != null){ //there is a good decor at this position
+        if(game.getWorld().get(getPosition()) != null) //there is a good decor at this position
             game.getWorld().get(getPosition()).computeDecor(this);
-        }
-        for(Monster monster : game.getMonsters()){
-            if (monster.getPosition().equals(getPosition())){
-                damage(getCurrentTime()) ;
-            }
-        }
-        for(Box box : game.getBoxes()){
-            if (box.getPosition().equals(getPosition())){
-                box.doMove(direction);
-            }
-        }
+        game.getMonsters().stream().filter(monster -> monster.getPosition().equals(getPosition())).forEach(monster -> damage(getCurrentTime())) ;
+        game.getBoxes().stream().filter(box -> box.getPosition().equals(getPosition())).forEach(box -> box.doMove(direction));
     }
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
@@ -137,7 +128,7 @@ public class Player extends Character {
         bombRequested = true ;
     }
     public boolean canBomb(Position position){
-        return bombs > currentBombPut  && game.getWorld().get(position) == null;
+        return bombs > currentBombPut  && game.canBomb(position) ;
     }
     public void bombHasExplosed(){
         currentBombPut--;
