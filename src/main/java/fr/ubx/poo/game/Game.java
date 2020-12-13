@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.function.ToIntFunction;
+
+import javax.lang.model.util.ElementScanner6;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -69,12 +72,8 @@ public class Game {
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
-        for(Position p : getWorld().findMonsters()){
-           getMonsters().add(new Monster(this, p)) ;
-        }
-        for(Position p : getWorld().findBoxes()){
-            getBoxes().add(new Box(this, p)) ;
-        }
+        getWorld().findMonsters().forEach(p -> getMonsters().add(new Monster(this, p) )) ;
+        getWorld().findBoxes().forEach(p -> getBoxes().add(new Box(this, p) )) ;
     }
 
     public void changeWorld(int new_level){
@@ -84,21 +83,19 @@ public class Game {
             level_max++ ;
         }
         Position positionPlayer = null ;
-        if (new_level == 1){
-            try {
+        try{
+            if(new_level == 1)
                 positionPlayer = getWorld().findPreviousDoorOpened();
-            } catch (PositionNotFoundException e) {
-                System.err.println("Position not found : " + e.getLocalizedMessage());
-                throw new RuntimeException(e);
-            }
-        }
-        else if (new_level == -1){
-            try {
+            else if (new_level == -1)
                 positionPlayer = getWorld().findNextDoor();
-            } catch (PositionNotFoundException e) {
+            else{
+                System.err.println("unauthorized level change");
+                throw new RuntimeException("Can't change world with value : "+ new_level);
+
+            }
+        } catch (PositionNotFoundException e) {
                 System.err.println("Position not found : " + e.getLocalizedMessage());
                 throw new RuntimeException(e);
-            }
         }
         player.setPosition(positionPlayer);
         hasChangedWorld = true ;
@@ -217,11 +214,7 @@ public class Game {
         getBombs().forEach(bomb -> bomb.update(now));
         getWorld().update(now) ;
 
-        for(Bomb bomb : getBombs()){
-            if (bomb.isExplosing()){
-                bomb.explosion(bomb.getPosition(), now) ;
-            }
-        }
+        getBombs().stream().filter(bomb -> bomb.isExplosing()).forEach(bomb -> bomb.explosion(bomb.getPosition(), now));
     }
     public Map<Position, Explosion> getExplosions(){
         return getWorld().getExplosions() ;
