@@ -139,13 +139,6 @@ public class Player extends Character {
     public boolean canBomb(Position position){
         return bombs > currentBombPut  && game.getWorld().get(position) == null;
     }
-    public void explose(long now){
-        if(!isInvincible){
-            lives-- ;
-            isInvincible = true ;
-            timeInvincible = now ;
-        }
-    }
     public void bombHasExplosed(){
         currentBombPut--;
     }
@@ -157,12 +150,8 @@ public class Player extends Character {
         }
     }
 
-
     public boolean isAlive() {
-        if(lives==0){
-            return false;
-        }
-        return alive;
+        return lives != 0 && alive;
     }
     public void princessFound(){
         winner = true ;
@@ -170,7 +159,6 @@ public class Player extends Character {
     public boolean isWinner() {
         return winner;
     }
-    
 
     public void remove(){
         // nothing used : hasTobeRemoved() reply false everytime for a player

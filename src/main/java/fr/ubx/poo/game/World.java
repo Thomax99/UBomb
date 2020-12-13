@@ -36,7 +36,7 @@ public class World {
                 }
             }
         }
-        throw new PositionNotFoundException("Player");
+        throw new PositionNotFoundException("Entity");
     }
 
     public Position findPlayer() throws PositionNotFoundException {

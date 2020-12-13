@@ -167,6 +167,8 @@ public class Game {
         List<Monster> monsters = getMonsters(bomb.getLevel()) ;
         List<Box> boxes = getBoxes(bomb.getLevel()) ;
         World world = getWorld(bomb.getLevel()) ;
+        world.addExplosion(bomb.getPosition(), now);
+
         for(Direction d : directions){ // a regler
             Position pos = bomb.getPosition();
             boolean somethingExplosed = false ;
