@@ -44,6 +44,16 @@ public class Bomb extends GameObject {
     public int getState() {
         return state;
     }
+    @Override
+    public boolean explosion(Position p, long now){
+        if(!hasToBeRemoved() && getPosition().equals(p)){
+            remove() ;
+            game.getPlayer().bombHasExplosed();
+            game.exploser(this, now);
+            return true ;
+        }
+        return false ;
+    }
 
     @Override
     public String toString() {

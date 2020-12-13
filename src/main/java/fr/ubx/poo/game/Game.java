@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.function.ToIntFunction;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -129,6 +130,86 @@ public class Game {
         return nb_level ;
     }
 
+    public List<Bomb> getBombs(){
+        return bombs;
+    }
+
+    public World getWorld() {
+        return getWorld(this.nb_level) ;
+    }
+    public World getWorld(int level) {
+        return worlds.get(level-1);
+    }
+
+    public List<Monster> getMonsters(){
+        return getMonsters(this.nb_level) ;
+    }
+    public List<Monster> getMonsters(int level){
+        return monsters.get(level-1) ;
+    }
+
+    public List<Box> getBoxes(){
+        return getBoxes(this.nb_level) ;
+    }
+    public List<Box> getBoxes(int level){
+        return boxes.get(level-1) ;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+    public Bomb addBomb(Bomb bomb){
+        getBombs().add(bomb) ;
+        return bomb;
+    }
+    public void exploser(Bomb bomb, long now){
+        Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
+        List<Monster> monsters = getMonsters(bomb.getLevel()) ;
+        List<Box> boxes = getBoxes(bomb.getLevel()) ;
+        World world = getWorld(bomb.getLevel()) ;
+        for(Direction d : directions){ // a regler
+            Position pos = bomb.getPosition();
+            boolean somethingExplosed = false ;
+            for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
+                //decor explosion part
+                final Position p = d.nextPosition(pos) ; //this variable is declared as final because we need a final variable to use Streams interfaces
+                pos = p ;
+                if(!world.canExplose(p)) break ;
+                somethingExplosed = world.explose(p) ;
+
+                //Game object explosion part
+                ToIntFunction<GameObject> func = go -> {
+                    if(go.explosion(p, now)) return 1 ;
+                    return 0 ;
+                } ;
+                somethingExplosed = somethingExplosed || player.explosion(p, now) ;
+                somethingExplosed = somethingExplosed || monsters.stream().mapToInt(func).sum() == 1 ;
+                somethingExplosed = somethingExplosed || boxes.stream().mapToInt(func).sum() == 1 ;
+                somethingExplosed = somethingExplosed || getBombs().stream().mapToInt(func).sum() == 1 ;
+                world.addExplosion(p, now);
+            }
+        }
+    }
+    public void update(long now){
+        getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
+        getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
+        getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
+
+        getMonsters().forEach(go -> go.update(now));
+        getBombs().forEach(bomb -> bomb.update(now));
+        getWorld().update(now) ;
+
+        for(Bomb bomb : getBombs()){
+            if (bomb.isExplosing()){
+                bomb.explosion(bomb.getPosition(), now) ;
+            }
+        }
+    }
+    public Map<Position, Explosion> getExplosions(){
+        return getWorld().getExplosions() ;
+    }
+
+
     private void loadConfig(String path) {
         try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
             Properties prop = new Properties();
@@ -175,107 +256,5 @@ public class Game {
             System.err.println("Error loading game");
         }
         return new World(mapEntities) ;
-    }
-    public List<Bomb> getBombs() {
-        return bombs;
-    }
-
-    public World getWorld() {
-        return getWorld(this.nb_level) ;
-    }
-    public List<Box> getBoxes(){
-        return getBoxes(this.nb_level) ;
-    }
-    public List<Monster> getMonsters(){
-        return getMonsters(this.nb_level) ;
-    }
-    public List<Box> getBoxes(int level){
-        return boxes.get(level-1) ;
-    }
-    public List<Monster> getMonsters(int level){
-        return monsters.get(level-1) ;
-    }
-
-    public World getWorld(int level) {
-        return worlds.get(level-1);
-    }
-    public Player getPlayer() {
-        return this.player;
-    }
-    public Bomb addBomb(Bomb bomb){
-        getBombs().add(bomb) ;
-        return bomb;
-    }
-    public void exploser(Bomb bomb, long now){
-        bomb.remove();
-        player.bombHasExplosed();
-        Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-        List<Monster> monsters = getMonsters(bomb.getLevel()) ;
-        List<Box> boxes = getBoxes(bomb.getLevel()) ;
-        World world = getWorld(bomb.getLevel()) ;
-        world.addExplosion(bomb.getPosition(), now);
-        for(int i =  0; i < 4; i++){ // a regler
-            Direction d = directions[i] ;
-            Position p = bomb.getPosition();
-            boolean somethingExplosed = false ;
-            for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){ 
-                p = d.nextPosition(p);
-                if (!world.isInside(p)) break ;
-                Decor decor = world.get(p) ;
-                if (decor != null){
-                    if (!world.get(p).canExplose()) break ;
-                    world.clear(p);
-                    decor.remove();
-                }
-                else {
-                    if(player.getPosition().equals(p) && this.nb_level == bomb.getLevel()){
-                        player.damage(now);
-                        somethingExplosed = true ;
-                    }
-                    Iterator<Monster> itm = monsters.iterator() ;
-                    while(itm.hasNext()){
-                        Monster monster = itm.next() ;
-                        if (monster.getPosition().equals(p) && ! somethingExplosed){
-                            monster.remove();
-                            somethingExplosed = true ;
-                            itm.remove() ;
-                        }
-                    }
-                    Iterator<Box> itb = boxes.iterator() ;
-                    while(itb.hasNext()){
-                        Box box = itb.next() ;
-                        if (box.getPosition().equals(p) && ! somethingExplosed){
-                            box.remove();
-                            somethingExplosed = true ;
-                            itb.remove() ;
-                        }
-                    }
-                    for (Bomb bombAdj : getBombs()){
-                        if (!bombAdj.hasToBeRemoved() && bombAdj.getPosition().equals(p) && !somethingExplosed){
-                            exploser(bombAdj, now) ;
-                            somethingExplosed = true ;
-                        }
-                    }
-                }
-                world.addExplosion(p, now);
-            }
-        }
-    }
-    public void update(long now){
-        getBombs().removeIf(bomb -> bomb.hasToBeRemoved()) ;
-        getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
-        getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
-
-        getMonsters().forEach(go -> go.update(now));
-        getBombs().forEach(bomb -> bomb.update(now));
-        getWorld().update(now) ;
-
-        for(Bomb bomb : getBombs()){
-            if (bomb.isExplosing())
-                exploser(bomb, now) ;
-        }
-    }
-    public Map<Position, Explosion> getExplosions(){
-        return getWorld().getExplosions() ;
     }
 }

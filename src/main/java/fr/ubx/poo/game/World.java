@@ -109,4 +109,27 @@ public class World {
     public boolean isEmpty(Position position) {
         return grid.get(position) == null;
     }
+    /**
+     * 
+     * @param p the position that we would like to explose
+     * @return if this position could explose (if there is an object which can't explose or if the position is outside, return false. Otherwise, return true)
+     */
+    public boolean canExplose(Position p){
+        Decor decor = get(p) ;
+        return isInside(p) && (decor == null || decor.canExplose()) ;
+    }
+    /**
+     * 
+     * @param p the position that we need to explose.
+     * @return if something has explosed at this position
+     */
+    public boolean explose(Position p){
+        Decor decor = get(p) ;
+        if (decor != null && decor.canExplose()){
+                clear(p);
+                decor.remove();
+                return true ;
+            }
+        return false ;
+    }
 }

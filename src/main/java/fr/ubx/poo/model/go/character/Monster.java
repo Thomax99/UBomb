@@ -64,6 +64,13 @@ public class Monster extends Character {
     public void remove(){
         this.explosed = true;
     }
+    public boolean explosion(Position p, long now){
+        if(getPosition().equals(p)){
+            remove() ;
+            return true ;
+        }
+        return false ;
+    }
     public static int getSpeed(int level){
         double value = Math.random(), factor = Math.pow( (double) (1.5), (double) level) ;
         if (value < factor * 0.125 ) return 1 ;

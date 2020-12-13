@@ -47,4 +47,12 @@ public class Box extends MovableGameObject implements Movable {
     public boolean canMoveIn(Direction dir){
         return canMove(dir);
     }
+    @Override
+    public boolean explosion(Position p, long now){
+        if(getPosition().equals(p)){
+            remove();
+            return true ;
+        }
+        return false ;
+    }
 }

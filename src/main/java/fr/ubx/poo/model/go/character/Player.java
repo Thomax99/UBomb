@@ -181,5 +181,13 @@ public class Player extends Character {
     private long getCurrentTime(){
         return currentTime ;
     }
+    @Override
+    public boolean explosion(Position p, long now){
+        if(getPosition().equals(p)){
+            damage(now);
+            return true ;
+        }
+        return false ;
+    }
 
 }
