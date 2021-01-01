@@ -85,10 +85,8 @@ public class Player extends Character {
     }
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        for(Box box : game.getBoxes()){
-            if (box.getPosition().equals(nextPos) && !box.canMoveIn(direction) ) return false ;
-        }
-        return super.canMove(direction) ;
+        return game.getBoxes().stream().map(box -> !box.getPosition().equals(nextPos) || box.canMoveIn(direction)).reduce(super.canMove(direction), (b1, b2) -> b1 && b2 ) ;
+
     }
 
     public void requestOpenDoor(){

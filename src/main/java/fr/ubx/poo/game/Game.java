@@ -56,7 +56,7 @@ public class Game {
         boxes = new ArrayList<>() ;
         bombs = new LinkedList<>() ;
         explosion = new ArrayList<>() ;
-        initializeGame() ;
+        initializeWorld() ;
         Position positionPlayer = null;
         try {
             positionPlayer = getWorld().findPlayer();
@@ -65,10 +65,13 @@ public class Game {
             throw new RuntimeException(e);
         }
         player = new Player(this, positionPlayer);
+        initializeEntities() ;
+    }
+    private void initializeWorld(){
+        worlds.add(loadWorld(this.nb_level)) ;
     }
 
-    public void initializeGame(){
-        worlds.add(loadWorld(this.nb_level)) ;
+    private void initializeEntities(){
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
         explosion.add(new Hashtable<>()) ;
@@ -79,7 +82,8 @@ public class Game {
     public void changeWorld(int new_level){
         this.nb_level+=new_level ;
         if (this.nb_level > level_max){
-            initializeGame();
+            initializeWorld();
+            initializeEntities() ;
             level_max++ ;
         }
         Position positionPlayer = null ;

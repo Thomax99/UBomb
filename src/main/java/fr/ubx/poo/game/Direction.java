@@ -12,24 +12,41 @@ public enum Direction {
         public Position nextPosition(Position pos, int delta) {
             return new Position(pos.x, pos.y - delta);
         }
+        @Override
+        public Direction oppositeDirection(){
+            return Direction.S ;
+        };
+
     },
     E {
         @Override
         public Position nextPosition(Position pos, int delta) {
             return new Position(pos.x + delta, pos.y);
         }
+        @Override
+        public Direction oppositeDirection(){
+            return Direction.W ;
+        };
     },
     S {
         @Override
         public Position nextPosition(Position pos, int delta) {
             return new Position(pos.x, pos.y + delta);
         }
+        @Override
+        public Direction oppositeDirection(){
+            return Direction.N ;
+        };
     },
     W {
         @Override
         public Position nextPosition(Position pos, int delta) {
             return new Position(pos.x - delta, pos.y);
         }
+        @Override
+        public Direction oppositeDirection(){
+            return Direction.E ;
+        };
     },
     ;
 
@@ -42,6 +59,11 @@ public enum Direction {
     public static Direction random() {
         return values()[randomGenerator.nextInt(values().length)];
     }
+    /**
+     * 
+     * @return the opposite diretion of this direction
+     */
+    public abstract Direction oppositeDirection() ;
 
 
     public abstract Position nextPosition(Position pos, int delta);
