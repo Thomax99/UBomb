@@ -15,6 +15,7 @@ public class Box extends MovableGameObject implements Movable {
     public Box(Game game, Position position) {
         super(game, position);
         this.explosed = false;
+        setLevel(game.getLevel()) ;
     }
 
     @Override
@@ -25,12 +26,20 @@ public class Box extends MovableGameObject implements Movable {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
+        for (Monster monster : game.getMonsters()){
+            if (monster.getPosition().equals(nextPos)) return false ;
+        }
+        for (Box box : game.getBoxes()){
+            if (box.getPosition().equals(nextPos)) return false ;
+        }
+        return super.canMove(direction) && game.getWorld().get(nextPos) == null ;
+        /*
         return game.getMonsters().stream().map(monster -> ! monster.getPosition().equals(nextPos))
                 .reduce(
                     game.getBoxes().stream().map(box -> !box.getPosition().equals(nextPos))
                         .reduce(super.canMove(direction) && game.getWorld().get(nextPos) == null, (b1, b2) -> b1 && b2),
                     (b1, b2) -> b1 && b2
-                );
+                );*/
     }
 
     public boolean hasToBeRemoved(){
@@ -39,6 +48,7 @@ public class Box extends MovableGameObject implements Movable {
     public void remove(){
         this.explosed = true;
     }
+    @Override
     public boolean canMoveIn(Direction dir){
         return canMove(dir);
     }

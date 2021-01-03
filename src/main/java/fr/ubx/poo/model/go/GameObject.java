@@ -14,10 +14,17 @@ import fr.ubx.poo.model.Updatable;
  */
 public abstract class GameObject extends Entity {
     protected final Game game;
+    private int level ;
     private Position position;
     public GameObject(Game game, Position position) {
         this.game = game;
         this.position = position;
+    }
+    protected void setLevel(int level){
+        this.level = level ;
+    }
+    public int getLevel(){
+        return level ;
     }
 
 
@@ -35,6 +42,4 @@ public abstract class GameObject extends Entity {
      * the explosion of the game Object if it has to explose.
      */
     public abstract boolean explosion(Position p, long now) ;
-
-
 }

@@ -10,15 +10,12 @@ import java.util.TimerTask;
 import java.util.List ;
 import java.util.Iterator;
 
-public class Bomb extends GameObject {
+public class Bomb extends Explosive {
 
-    private int state, range, level ;
-    private boolean hasExplosed = false ;
+    private int state ;
     private long start;
     public Bomb(Game game, Position position, int range, long start) {
-        super(game, position);
-        this.range = range ;
-        this.level = game.getLevel() ;
+        super(game, position, range);
         state = 3;
         this.start = start ;
     }
@@ -28,30 +25,12 @@ public class Bomb extends GameObject {
     public boolean isExplosing(){
         return state == -1  ;
     }
-    public void remove() {
-        hasExplosed = true ;
-    }
-    public boolean hasToBeRemoved(){
-        return hasExplosed ;
-    }
-    public int getLevel(){
-        return level ;
-    }
-    public int getRange(){
-        return range ;
-    }
-
     public int getState() {
         return state;
     }
     @Override
-    public boolean explosion(Position p, long now){
-        if(!hasToBeRemoved() && getPosition().equals(p)){
-            remove() ;
-            game.exploser(this, now);
-            return true ;
-        }
-        return false ;
+    public boolean isBomb(){
+        return true ;
     }
 
     @Override

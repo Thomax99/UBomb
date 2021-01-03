@@ -37,7 +37,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>(), spritesBomb = new ArrayList<>(), spritesExpl = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>(), spritesExplosive = new ArrayList<>(), spritesExpl = new ArrayList<>();
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -154,9 +154,10 @@ public final class GameEngine {
             game.newExplosionsPut();
         }
         if(game.hasBombChange()){
-            spritesBomb.forEach(Sprite::remove);
-            spritesBomb.clear() ;
-            game.getBombs().stream().filter(bomb -> bomb.getLevel() == game.getLevel()).forEach(bomb -> spritesBomb.add(SpriteFactory.createBomb(layer, bomb))) ;
+            spritesExplosive.forEach(Sprite::remove);
+            spritesExplosive.clear() ;
+            game.getBombs().stream().filter(bomb -> bomb.getLevel() == game.getLevel()).forEach(bomb -> spritesExplosive.add(SpriteFactory.createBomb(layer, bomb))) ;
+            game.getLandmines().stream().filter(landmine -> landmine.getLevel() == game.getLevel()).forEach(landmine -> spritesExplosive.add(SpriteFactory.createLandmine(layer, landmine))) ;
         }
         if(game.hasChangedWorld()){
             sprites.forEach(Sprite::remove);
@@ -178,7 +179,7 @@ public final class GameEngine {
 
     private void render() {
         sprites.forEach(Sprite::render);
-        spritesBomb.forEach(Sprite::render);
+        spritesExplosive.forEach(Sprite::render);
         spritesExpl.forEach(Sprite::render);
         // last rendering to have player in the foreground
         spritePlayer.render();

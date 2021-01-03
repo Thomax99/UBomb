@@ -53,6 +53,8 @@ public class WorldBuilder {
                 return new BombRangeDec() ;
             case BombRangeInc:
                 return new BombRangeInc() ;
+            case Landminer:
+                return new Landminer() ;
             default:
                 return null;
         }

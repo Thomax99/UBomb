@@ -39,6 +39,8 @@ public final class SpriteFactory {
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, (Bonus) decor);
         if (decor instanceof BombRangeInc)
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
+        if (decor instanceof Landminer)
+            return new SpriteBonus(layer, factory.get(BONUS_LANDMINE), position, (Bonus) decor);
         if (decor instanceof Explosion)
             return new SpriteExplosion(layer, factory.get(EXPLOSION), position, (Explosion) decor);
         return null;
@@ -51,6 +53,9 @@ public final class SpriteFactory {
     }
     public static Sprite createBomb(Pane layer, Bomb bomb) {
         return new SpriteBomb(layer, bomb);
+    }
+    public static Sprite createLandmine(Pane layer, Landmine landmine) {
+        return new SpriteLandmine(layer, landmine);
     }
     public static Sprite createPlayer(Pane layer, Player player) {
         return new SpritePlayer(layer, player);

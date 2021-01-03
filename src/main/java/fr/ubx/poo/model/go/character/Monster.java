@@ -26,6 +26,7 @@ public class Monster extends Character {
     Direction direction;
     public Monster(Game game, Position position) {
         super(game, position);
+        setLevel(game.getLevel()) ;
 
         speedMoving = Automovable.getSpeed(game.getLevel()-1) ;
         this.automovingPolicy = Automovable.getRandomPolicy(this, game.getPlayer()) ;

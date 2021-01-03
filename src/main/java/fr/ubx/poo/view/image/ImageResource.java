@@ -40,6 +40,9 @@ public enum ImageResource {
     BONUS_BOMB_DEC("bonus_bomb_nb_dec.png"),
     BONUS_BOMB_RANGE_DEC("bonus_bomb_range_dec.png"),
     BONUS_BOMB_RANGE_INC("bonus_bomb_range_inc.png"),
+    LANDMINE("landmine.png"),
+    BONUS_LANDMINE("bonus_landmine.png"),
+
     ;
 
     private final String FileName;

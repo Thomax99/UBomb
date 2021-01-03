@@ -37,7 +37,7 @@ public class Game {
     private final List<List<Monster>> monsters ;
     private final List<List<Box>> boxes ;
     private final List<Bomb> bombs ;
-    private final List<Map<Position, Explosion>> explosion ;
+    private final List<Landmine> landmines ;
     private final String worldPath;
     private int nb_level, level_max ;
     private boolean hasChangedWorld = false, hasBombChange = false, hasNewExplosions = false ;
@@ -46,7 +46,7 @@ public class Game {
     public int initPlayerBombs;
     public int initPlayerKey;
     public int initPlayerPortee;
-
+    
     public Game(String worldPath, int nb_level){
         this.nb_level = level_max = nb_level ;
         this.worldPath = worldPath;
@@ -55,15 +55,17 @@ public class Game {
         monsters = new ArrayList<>() ;
         boxes = new ArrayList<>() ;
         bombs = new LinkedList<>() ;
-        explosion = new ArrayList<>() ;
+        landmines = new LinkedList<>() ;
         initializeWorld() ;
         Position positionPlayer = null;
+
         try {
             positionPlayer = getWorld().findPlayer();
         } catch (PositionNotFoundException e) {
             System.err.println("Position not found : " + e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
+
         player = new Player(this, positionPlayer);
         initializeEntities() ;
     }
@@ -74,7 +76,6 @@ public class Game {
     private void initializeEntities(){
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
-        explosion.add(new Hashtable<>()) ;
         getWorld().findMonsters().forEach(p -> getMonsters().add(new Monster(this, p) )) ;
         getWorld().findBoxes().forEach(p -> getBoxes().add(new Box(this, p) )) ;
     }
@@ -134,7 +135,9 @@ public class Game {
     public List<Bomb> getBombs(){
         return bombs;
     }
-
+    public List<Landmine> getLandmines(){
+        return landmines;
+    }
     public World getWorld() {
         return getWorld(this.nb_level) ;
     }
@@ -160,7 +163,11 @@ public class Game {
         return this.player;
     }
     public void addBomb(Bomb bomb){
-        getBombs().add(bomb) ;
+        bombs.add(bomb) ;
+        hasBombChange = true ;
+    }
+    public void addLandmine(Landmine landmine){
+        landmines.add(landmine) ;
         hasBombChange = true ;
     }
     public void bombChange(){
@@ -172,20 +179,24 @@ public class Game {
     public boolean canBomb(Position p){
         return getWorld().canBomb(p) ;
     }
-    public void exploser(Bomb bomb, long now){
+    public void exploser(Explosive explosive , long now){
         getPlayer().bombHasExplosed();
         hasNewExplosions = true ;
         hasBombChange = true ;
         Direction directions[] = {Direction.S, Direction.N, Direction.W, Direction.E};
-        List<Monster> monsters = getMonsters(bomb.getLevel()) ;
-        List<Box> boxes = getBoxes(bomb.getLevel()) ;
-        World world = getWorld(bomb.getLevel()) ;
-        world.addExplosion(bomb.getPosition(), now);
+        List<Monster> monsters = getMonsters(explosive.getLevel()) ;
+        List<Box> boxes = getBoxes(explosive.getLevel()) ;
+        World world = getWorld(explosive.getLevel()) ;
 
+        //management of the explosion on the position of the explosion (useful for landmines)
+        final Position position = explosive.getPosition() ;
+        world.addExplosion(position, now);
+        player.explosion(position, now) ;
+        monsters.forEach(monster -> monster.explosion(position, now));
         for(Direction d : directions){ // a regler
-            Position pos = bomb.getPosition();
+            Position pos = explosive.getPosition();
             boolean somethingExplosed = false ;
-            for (int j = 0; j < bomb.getRange() && !somethingExplosed; j++){
+            for (int j = 0; j < explosive.getRange() && !somethingExplosed; j++){
                 //decor explosion part
                 final Position p = d.nextPosition(pos) ; //this variable is declared as final because we need a final variable to use Streams interfaces
                 pos = p ;
@@ -199,6 +210,7 @@ public class Game {
                 somethingExplosed = boxes.stream().map(box -> box.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
                 somethingExplosed = monsters.stream().map(monster -> monster.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
                 somethingExplosed = getBombs().stream().map(bombAdj -> bombAdj.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
+                somethingExplosed = getLandmines().stream().map(landmineAdj -> landmineAdj.explosion(p, now)).reduce(somethingExplosed, (b1, b2) -> b1 || b2 ) ;
                 world.addExplosion(p, now);
             }
         }
@@ -218,12 +230,25 @@ public class Game {
         getBombs().forEach(bomb -> bomb.update(now));
         getWorld().update(now) ;
 
+        for(Landmine landmine : getLandmines()){
+            if (getPlayer().getPosition().equals(landmine.getPosition())){
+                landmine.explosion(landmine.getPosition(), now) ;
+                break ;
+            }
+            for (Monster monster : getMonsters()){
+                if (monster.getPosition().equals(landmine.getPosition())){
+                    landmine.explosion(landmine.getPosition(), now) ;
+                    break ;
+                }
+            }
+
+        }
+
         getBombs().stream().filter(bomb -> bomb.isExplosing()).forEach(bomb -> bomb.explosion(bomb.getPosition(), now));
     }
     public Map<Position, Explosion> getExplosions(){
         return getWorld().getExplosions() ;
     }
-
 
     private void loadConfig(String path) {
         try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {

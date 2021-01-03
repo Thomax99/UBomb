@@ -133,6 +133,6 @@ public class World {
         return false ;
     }
     public boolean canBomb(Position p){
-        return get(p) == null ;
+        return get(p) == null && isInside(p) ;
     }
 }

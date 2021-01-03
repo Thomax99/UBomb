@@ -28,5 +28,4 @@ public abstract class MovableGameObject extends GameObject implements Movable {
         setPosition(nextPos);
     }
 
-
 }

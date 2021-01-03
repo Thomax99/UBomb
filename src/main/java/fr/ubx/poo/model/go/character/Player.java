@@ -18,7 +18,7 @@ public class Player extends Character {
     private final boolean alive = true;
     private boolean isInvincible = false;
     private long timeInvincible, currentTime ;
-    private boolean moveRequested = false, bombRequested = false ;
+    private boolean moveRequested = false, bombRequested = false, bombIsLandmine =false ;
     private int lives = 1;
     private int bombs = 1;
     private int key = 0;
@@ -63,6 +63,9 @@ public class Player extends Character {
     }
     public void addPortee(){
         range++;
+    }
+    public void hasLandmine(){
+        bombIsLandmine = true;
     }
     public void lessPortee(){
         range = (range <= 1 ? 1 : range-1);
@@ -114,7 +117,16 @@ public class Player extends Character {
         }
         moveRequested = false;
         if (bombRequested){
-            if (canBomb(getPosition())){
+            if (bombIsLandmine){
+                //the landmine is a bomb which will be placed in front of the player
+                Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
+                if (canBomb(nextPosition)){
+                    game.addLandmine(new Landmine(game, nextPosition, range)) ;
+                    bombIsLandmine = false ;
+                    currentBombPut++ ;
+                }
+            }
+            else if (canBomb(getPosition())){
                 game.addBomb(new Bomb(game, getPosition(), getRange(), now)) ;
                 currentBombPut++ ;
             }
@@ -126,7 +138,7 @@ public class Player extends Character {
         bombRequested = true ;
     }
     public boolean canBomb(Position position){
-        return bombs > currentBombPut  && game.canBomb(position) ;
+        return bombs > currentBombPut && game.canBomb(position) ;
     }
     public void bombHasExplosed(){
         currentBombPut--;
