@@ -83,6 +83,7 @@ public class Player extends Character {
         }
         moveRequested = true;
     }
+    @Override
     public void doMove(Direction direction) {
         super.doMove(direction);
         if(game.getWorld().get(getPosition()) != null) //there is a good decor at this position
@@ -90,6 +91,7 @@ public class Player extends Character {
         game.getMonsters().stream().filter(monster -> monster.getPosition().equals(getPosition())).forEach(monster -> damage(getCurrentTime())) ;
         game.getBoxes().stream().filter(box -> box.getPosition().equals(getPosition())).forEach(box -> box.doMove(direction));
     }
+    @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         return game.getBoxes().stream().map(box -> !box.getPosition().equals(nextPos) || box.canMoveIn(direction)).reduce(super.canMove(direction), (b1, b2) -> b1 && b2 ) ;
