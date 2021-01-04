@@ -33,6 +33,10 @@ public class Player extends Character {
         this.key = game.getInitPlayerKey();
         this.range = game.getInitPlayerPortee();
     }
+    @Override
+    public int getLevel(){
+        return game.getLevel() ;
+    }
 
     public void addLive(){
         lives++ ;
@@ -121,13 +125,13 @@ public class Player extends Character {
                 //the landmine is a bomb which will be placed in front of the player
                 Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
                 if (canBomb(nextPosition)){
-                    game.addLandmine(new Landmine(game, nextPosition, range)) ;
+                    game.addLandmine(nextPosition, range) ;
                     bombIsLandmine = false ;
                     currentBombPut++ ;
                 }
             }
             else if (canBomb(getPosition())){
-                game.addBomb(new Bomb(game, getPosition(), getRange(), now)) ;
+                game.addBomb(getPosition(), range, now) ;
                 currentBombPut++ ;
             }
         }
@@ -171,12 +175,8 @@ public class Player extends Character {
         return currentTime ;
     }
     @Override
-    public boolean explosion(Position p, long now){
-        if(getPosition().equals(p)){
-            damage(now);
-            return true ;
-        }
-        return false ;
+    public void explosion(long now){
+        damage(now);
     }
 
 }

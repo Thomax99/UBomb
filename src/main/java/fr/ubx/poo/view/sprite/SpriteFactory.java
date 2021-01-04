@@ -10,6 +10,7 @@ import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.*;
 import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.model.decor.explosives.*;
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.view.image.ImageFactory;
 import javafx.scene.layout.Pane;
@@ -43,6 +44,11 @@ public final class SpriteFactory {
             return new SpriteBonus(layer, factory.get(BONUS_LANDMINE), position, (Bonus) decor);
         if (decor instanceof Explosion)
             return new SpriteExplosion(layer, factory.get(EXPLOSION), position, (Explosion) decor);
+        if (decor instanceof Bomb)
+            return new SpriteBomb(layer, position, (Bomb) decor);
+        if (decor instanceof Landmine)
+            return new SpriteLandmine(layer, position, (Landmine) decor);
+
         return null;
     }
     public static Sprite createMonster(Pane layer, Monster monster){
@@ -50,12 +56,6 @@ public final class SpriteFactory {
     }
     public static Sprite createBox(Pane layer, Box box){
         return new SpriteBox(layer, box) ;
-    }
-    public static Sprite createBomb(Pane layer, Bomb bomb) {
-        return new SpriteBomb(layer, bomb);
-    }
-    public static Sprite createLandmine(Pane layer, Landmine landmine) {
-        return new SpriteLandmine(layer, landmine);
     }
     public static Sprite createPlayer(Pane layer, Player player) {
         return new SpritePlayer(layer, player);

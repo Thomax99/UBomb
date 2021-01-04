@@ -8,10 +8,7 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
 import fr.ubx.poo.model.Updatable;
-import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.go.MovableGameObject;
-import fr.ubx.poo.model.go.Bomb;
-import fr.ubx.poo.model.go.Box;
 
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;

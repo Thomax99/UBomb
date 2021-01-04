@@ -18,10 +18,7 @@ public abstract class MovableGameObject extends GameObject implements Movable {
     }
     public boolean canMove(Direction direction){
         Position nextPos = direction.nextPosition(getPosition());
-        for (Bomb bo : game.getBombs()){
-            if (bo.getPosition().equals(nextPos)) return false ;
-        }
-        return game.getWorld().isInside(nextPos) ;
+        return game.getWorld().isInside(nextPos) && !game.positionIsBomb(nextPos, getLevel()) ;
     }
     public void doMove(Direction direction){
         Position nextPos = direction.nextPosition(getPosition());

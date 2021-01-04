@@ -3,6 +3,7 @@ package fr.ubx.poo.model;
 import fr.ubx.poo.game.Direction;
 
 public abstract class Entity {
+    private int level ; // the level of the entity
     /**
      * 
      * @param dir the direction in which something is going
@@ -15,4 +16,17 @@ public abstract class Entity {
         return false ;
     }
     public abstract void remove() ;
+    public void setLevel(int level){
+        this.level = level ;
+    }
+    public int getLevel(){
+        return level ;
+    }
+    /**
+     * function used to notify a gameObject that an explosion on it
+     * @param now the moment that an explosion occur on the gameObject
+     */
+    public void explosion(long now){
+        remove(); //by default, the gameObject in which an explosion occur are removed
+    }
 }

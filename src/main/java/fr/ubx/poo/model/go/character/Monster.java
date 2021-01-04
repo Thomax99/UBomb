@@ -13,7 +13,6 @@ import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.go.character.automovablepolicies.Automovable;
 import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.model.go.character.automovablepolicies.*;
-import fr.ubx.poo.model.go.Bomb;
 import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
@@ -37,11 +36,10 @@ public class Monster extends Character {
             lastMoveTime = now ;
             //time to move
             Direction d = automovingPolicy.computeMove() ;
-            if (d == null){
-                throw new RuntimeException("impossible to move: ");
+            if (d != null){ //sometimes it's impossible to do a move
+                setDirection(d);
+                doMove(d);
             }
-            setDirection(d);
-            doMove(d);
         }
     }
     public boolean hasToBeRemoved() {
@@ -56,12 +54,4 @@ public class Monster extends Character {
     public void remove(){
         this.explosed = true;
     }
-    public boolean explosion(Position p, long now){
-        if(getPosition().equals(p)){
-            remove() ;
-            return true ;
-        }
-        return false ;
-    }
-
 }

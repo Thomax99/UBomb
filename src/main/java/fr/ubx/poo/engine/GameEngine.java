@@ -11,7 +11,10 @@ import fr.ubx.poo.view.sprite.SpriteExplosion;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
+import fr.ubx.poo.model.decor.Explosion;
 import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.model.decor.explosives.*;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -27,6 +30,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map ;
+
 import java.util.Hashtable ;
 
 
@@ -156,8 +160,12 @@ public final class GameEngine {
         if(game.hasBombChange()){
             spritesExplosive.forEach(Sprite::remove);
             spritesExplosive.clear() ;
-            game.getBombs().stream().filter(bomb -> bomb.getLevel() == game.getLevel()).forEach(bomb -> spritesExplosive.add(SpriteFactory.createBomb(layer, bomb))) ;
-            game.getLandmines().stream().filter(landmine -> landmine.getLevel() == game.getLevel()).forEach(landmine -> spritesExplosive.add(SpriteFactory.createLandmine(layer, landmine))) ;
+            game.getExplosives().forEach((pos, explosive) -> {
+                                    if (explosive.isBomb())
+                                        spritesExplosive.add(SpriteFactory.createDecor(layer, pos, (Bomb) explosive)) ;
+                                    else
+                                        spritesExplosive.add(SpriteFactory.createDecor(layer, pos, (Landmine) explosive)) ;
+                                });
         }
         if(game.hasChangedWorld()){
             sprites.forEach(Sprite::remove);

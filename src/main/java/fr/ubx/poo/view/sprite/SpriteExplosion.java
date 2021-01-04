@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import fr.ubx.poo.game.Position;
 
 public class SpriteExplosion extends SpriteDecor{
-    private final ColorAdjust effect = new ColorAdjust();
     private Explosion exp ;
 
     public SpriteExplosion(Pane layer, Image image, Position position, Explosion exp) {
