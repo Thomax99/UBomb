@@ -473,7 +473,7 @@ public class Game {
         for(Box box : getBoxes()){
             if (box.getPosition().equals(position)) return false ; //a monster can't go on a box everytime
         }
-        return getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position); //another not allowed position for a monster is a princess position ;
+        return !getWorld().positionIsDoor(position) && !getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position); //another not allowed position for a monster is a princess position ;
     }
     /**
      * This function compute if it is possible for a player to go at a given position, if he came from a given direction

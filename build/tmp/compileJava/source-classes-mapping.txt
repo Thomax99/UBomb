@@ -29,15 +29,13 @@ fr/ubx/poo/view/image/ImageFactory.java
  fr.ubx.poo.view.image.ImageFactory$Holder
 fr/ubx/poo/model/Movable.java
  fr.ubx.poo.model.Movable
-fr/ubx/poo/game/WorldBuilder.java
- fr.ubx.poo.game.WorldBuilder
- fr.ubx.poo.game.WorldBuilder$1
-fr/ubx/poo/Main.java
- fr.ubx.poo.Main
 fr/ubx/poo/model/go/MovableGameObject.java
  fr.ubx.poo.model.go.MovableGameObject
 fr/ubx/poo/view/sprite/SpriteGameObject.java
  fr.ubx.poo.view.sprite.SpriteGameObject
+fr/ubx/poo/game/WorldBuilder.java
+ fr.ubx.poo.game.WorldBuilder
+ fr.ubx.poo.game.WorldBuilder$1
 fr/ubx/poo/model/go/character/Character.java
  fr.ubx.poo.model.go.character.Character
 fr/ubx/poo/view/sprite/SpriteLandmine.java
@@ -74,6 +72,8 @@ fr/ubx/poo/model/go/Box.java
  fr.ubx.poo.model.go.Box
 fr/ubx/poo/model/go/GameObject.java
  fr.ubx.poo.model.go.GameObject
+fr/ubx/poo/Main.java
+ fr.ubx.poo.Main
 fr/ubx/poo/model/decor/Scarecrow.java
  fr.ubx.poo.model.decor.Scarecrow
 fr/ubx/poo/view/sprite/SpriteExplosion.java

@@ -18,7 +18,6 @@ import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
 public class Monster extends Character {
-    private boolean explosed;
     private long lastMoveTime = 0 ;
     private int speedMoving;
     private Automovable automovingPolicy ;
@@ -26,10 +25,8 @@ public class Monster extends Character {
     public Monster(Game game, Position position) {
         super(game, position);
         setLevel(game.getLevel()) ;
-
         speedMoving = Automovable.getSpeed(game.getLevel()-1) ;
         this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
-        this.explosed = false;
     }
     public void update(long now) {
         if((now-lastMoveTime) /1000000000L >= speedMoving){
@@ -42,15 +39,9 @@ public class Monster extends Character {
             }
         }
     }
-    public boolean hasToBeRemoved() {
-        return this.explosed;
-    }
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         return game.positionAllowedToMonsters(nextPos) ;
-    }
-    public void remove(){
-        this.explosed = true;
     }
 }

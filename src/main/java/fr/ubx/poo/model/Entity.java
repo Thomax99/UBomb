@@ -7,10 +7,20 @@ import fr.ubx.poo.game.Direction;
  */
 public abstract class Entity {
     private int level ; // the level of the entity
+    private boolean hasToBeRemoved = false ;
+    /**
+     * used to know if an object is currently living or not
+     * @return if an object has to be removed or not
+     */
     public boolean hasToBeRemoved(){
-        return false ;
+        return hasToBeRemoved ; //most of time the couple hasToBeRemoved - remove is implemented on this way, so we use it
     }
-    public abstract void remove() ;
+    /**
+     * Used to signal an object that he has to be removed
+     */
+    public void remove(){
+        hasToBeRemoved = true ;
+    }
     /**
      * 
      * @param level the level in which the entity is

@@ -101,7 +101,7 @@ public class Player extends Character {
 
     public void requestOpenDoor(){
         Position nextPos = getDirection().nextPosition(getPosition());
-        if (game.getWorld().get(nextPos) instanceof Door){ // find a way to avoid this
+        if (game.getWorld().positionIsDoor(nextPos)){
             Door door = (Door) game.getWorld().get(nextPos) ;
             if(door.isClosed() && getKey() > 0){
                 door.open();
@@ -176,10 +176,6 @@ public class Player extends Character {
     public boolean isWinner() {
         return winner;
     }
-
-    public void remove(){
-        // nothing used : hasTobeRemoved() reply false everytime for a player
-    }
     private void setCurrentTime(long time){
         currentTime = time ;
     }
@@ -189,6 +185,10 @@ public class Player extends Character {
     @Override
     public void explosion(long now){
         damage(now);
+    }
+    @Override
+    public boolean hasToBeRemoved(){
+        return false ; // a player is never removed of a game
     }
 
 }

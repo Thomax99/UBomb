@@ -10,11 +10,12 @@ import fr.ubx.poo.model.decor.Tree;
 import fr.ubx.poo.model.decor.bonus.Bonus;
 import fr.ubx.poo.model.go.character.*;
 
-public class Box extends MovableGameObject implements Movable {
-    private boolean explosed;
+/**
+ * This class represents the Box object. A box is a gameObject which can move.
+ */
+public class Box extends MovableGameObject {
     public Box(Game game, Position position) {
         super(game, position);
-        this.explosed = false;
         setLevel(game.getLevel()) ;
     }
 
@@ -27,12 +28,5 @@ public class Box extends MovableGameObject implements Movable {
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         return game.positionAllowedToBoxes(nextPos) ;
-    }
-
-    public boolean hasToBeRemoved(){
-        return explosed;
-    }
-    public void remove(){
-        this.explosed = true;
     }
 }

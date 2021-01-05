@@ -51,7 +51,12 @@ public class World {
     public Position findNextDoor() throws PositionNotFoundException {
         return findOneEntity(WorldEntity.DoorNextClosed) ;
     }
-    private List<Position> findEntity(WorldEntity entity){
+    /**
+     * Used to find the positions of an given entity
+     * @param entity the entity that we would like to have all the positions
+     * @return the list of the positions of all the entities
+     */
+    private List<Position> findEntities(WorldEntity entity){
         ArrayList<Position> entitiesPosition = new ArrayList<Position>() ;
         for (int x = 0; x < dimension.width; x++) {
             for (int y = 0; y < dimension.height; y++) {
@@ -63,11 +68,11 @@ public class World {
         return entitiesPosition ;
     }
     public List<Position> findMonsters(){
-        return findEntity(WorldEntity.Monster) ;
+        return findEntities(WorldEntity.Monster) ;
     }
 
     public List<Position> findBoxes(){
-        return findEntity(WorldEntity.Box) ;
+        return findEntities(WorldEntity.Box) ;
     }
 
     public Map<Position, Explosion> getExplosions(){
@@ -122,7 +127,18 @@ public class World {
      */
     public boolean positionIsPrincess(Position position){
         Decor decor = get(position) ;
-        return decor == null || !decor.isPrincess() ;
+        return decor != null && decor.isPrincess() ;
+    }
+    /**
+     * This function is used to know that there is a door at a given position
+     * Useful for example for the monsters which can't go on a door position or for the player 
+     * to know if he is in front of a door to open it
+     * @param position the given position
+     * @return if there is a door or not
+     */
+    public boolean positionIsDoor(Position position){
+        Decor decor = get(position) ;
+        return decor != null && decor.isDoor() ;
     }
 
     public boolean isEmpty(Position position) {

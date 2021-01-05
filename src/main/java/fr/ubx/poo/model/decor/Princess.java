@@ -11,9 +11,11 @@ public class Princess extends Decor{
     public void computeDecor(Player player){
         player.princessFound();
     }
+    @Override
     public boolean canExplose(){
         return false ;
     }
+    @Override
     public boolean isPrincess(){
         return true ;
     }
