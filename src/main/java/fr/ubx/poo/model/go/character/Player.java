@@ -23,7 +23,6 @@ public class Player extends Character {
     private int bombs = 1;
     private int key = 0;
     private int range = 1;
-    private int currentBombPut = 0 ;
     private boolean winner;
 
     public Player(Game game, Position position) {
@@ -138,12 +137,12 @@ public class Player extends Character {
                 if (canBomb(nextPosition)){
                     game.addLandmine(nextPosition, range) ;
                     bombIsLandmine = false ;
-                    currentBombPut++ ;
+                    bombs-- ;
                 }
             }
             else if (canBomb(getPosition())){
                 game.addBomb(getPosition(), range, now) ;
-                currentBombPut++ ;
+                bombs-- ;
             }
         }
         bombRequested = false ;
@@ -153,10 +152,10 @@ public class Player extends Character {
         bombRequested = true ;
     }
     public boolean canBomb(Position position){
-        return bombs > currentBombPut && game.canBomb(position) ;
+        return bombs > 0 && game.canBomb(position) ;
     }
     public void bombHasExplosed(){
-        currentBombPut--;
+        bombs++;
     }
     public void damage(long now){
         if(!isInvincible){

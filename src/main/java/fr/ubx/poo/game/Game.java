@@ -32,24 +32,31 @@ import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;
 
 public class Game {
-
     private final List<World> worlds;
     private final Player player;
     private final List<List<Monster>> monsters ;
     private final List<List<Box>> boxes ;
     private final Map<Position, Explosive> explosives ;
     private final String worldPath;
-    private int nb_level, level_max ;
-    private boolean hasChangedWorld = false, hasLevelChange = false, hasNewExplosions = false ;
+    private int nb_level, level_max_initialised, nb_total_levels ;
+    private boolean hasChangedWorld = false, hasLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
     public int initPlayerKey;
     public int initPlayerPortee;
-    
-    public Game(String worldPath, int nb_level){
-        this.nb_level = level_max = nb_level ;
+    /**
+     * 
+     * @param worldPath the path to find the levels in case that the Game is not random and the configuration EVERYTIME
+     * you need a valid path !!
+     * @param isRandom if the game is randomly generate or not
+     * @param nb_levels the number of levels that we would like to play in case of isRandom is true. Otherwise, never used.
+     */
+    public Game(String worldPath, boolean isRandom, int nb_levels){
+        this.nb_level = level_max_initialised = 1 ;
+        this.nb_total_levels = nb_levels ;
         this.worldPath = worldPath;
+        this.randomlyGenerate = isRandom ;
         loadConfig(worldPath);
         worlds = new ArrayList<>() ;
         monsters = new ArrayList<>() ;
@@ -69,7 +76,11 @@ public class Game {
         initializeEntities() ;
     }
     private void initializeWorld(){
-        worlds.add(loadWorld(this.nb_level)) ;
+        if (randomlyGenerate)
+            //the initialization is not from the files
+            worlds.add(new World(WorldBuilder.randomBuild(nb_level, nb_total_levels))) ;
+        else
+            worlds.add(loadWorld(this.nb_level)) ;
     }
 
     private void initializeEntities(){
@@ -81,10 +92,10 @@ public class Game {
 
     public void changeWorld(int new_level){
         this.nb_level+=new_level ;
-        if (this.nb_level > level_max){
+        if (this.nb_level > level_max_initialised){
             initializeWorld();
             initializeEntities() ;
-            level_max++ ;
+            level_max_initialised++ ;
         }
         Position positionPlayer = null ;
         try{
@@ -111,9 +122,6 @@ public class Game {
         hasChangedWorld = false ;
     }
 
-    public Game(String worldPath) {
-        this(worldPath,1) ;
-    }
 
     public int getInitPlayerLives() {
         return initPlayerLives;
