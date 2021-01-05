@@ -74,7 +74,7 @@ public class WorldBuilder {
         //they are managed, ie an has 0.2 probability to be a decor which has 0.3 probability to be a bonus, ...
         double emptyProba = 0.7, boxProba = 0.1, decorProba = 0.15, monsterProba = 0.05 ;
         double stoneProba = 0.4, treeProba = 0.3, bonusProba = 0.1 ;
-        double numberIncProba, numberDecProba, rangeIncProba, rangeDecProba = 0.2, heartProba = 0.05, landminerProba = 0.1, scarecrowProba = 0.05 ;
+        double numberIncProba, numberDecProba, rangeIncProba, rangeDecProba = 0.2, heartProba = 0.05, landminerProba = 0.2, scarecrowProba = 0.05 ;
         numberIncProba = numberDecProba = rangeIncProba = heartProba = 0.15 ;
         for(int i = 0; i < height; i++){
             for (int j = 0; j < width; j++){
