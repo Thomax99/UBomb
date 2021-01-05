@@ -215,6 +215,12 @@ public class Game {
     public boolean canBomb(Position p){
         return getWorld().canBomb(p) ;
     }
+    public boolean canLandmine(Position p){
+        for(Box box : getBoxes()){
+            if (p.equals(box.getPosition())) return false ; // a landmine can't be put on a box
+        }
+        return canBomb(p) ; //otherwise a Landmine could be put as a bomb
+    }
     public boolean canScarecrow(Position p){
         return getWorld().canScarecrow(p) ;
     }

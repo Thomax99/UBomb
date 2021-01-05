@@ -125,16 +125,16 @@ public class Player extends Character {
         }
         moveRequested = false;
         if (bombRequested){
-            if (bombIsScarecrow){
-                if (game.canScarecrow(getPosition())){
-                    game.addScarecrow(getPosition());
-                    bombIsScarecrow = false ;
-                }
+            if (bombIsScarecrow && game.canScarecrow(getPosition() ) ) {
+                // in case that we can't put a scarecrow on the game (for instance if there is already a scarecrow)
+                // we put a landmine or a bomb, according to bombIsLandmine
+                game.addScarecrow(getPosition());
+                bombIsScarecrow = false ;
             }
             else if (bombIsLandmine){
                 //the landmine is a bomb which will be placed in front of the player
                 Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
-                if (canBomb(nextPosition)){
+                if (canLandmine(nextPosition)){
                     game.addLandmine(nextPosition, range) ;
                     bombIsLandmine = false ;
                     bombs-- ;
@@ -153,6 +153,9 @@ public class Player extends Character {
     }
     public boolean canBomb(Position position){
         return bombs > 0 && game.canBomb(position) ;
+    }
+    public boolean canLandmine(Position position){
+        return bombs > 0 && game.canLandmine(position) ;
     }
     public void bombHasExplosed(){
         bombs++;

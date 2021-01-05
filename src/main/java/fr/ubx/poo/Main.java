@@ -28,7 +28,6 @@ public class Main extends Application {
                 System.err.println("The parameter " + param2+" is not a number");
             }
         }
-        System.out.println(nb_levels) ;
         ImageFactory.getInstance().load();
         String path = getClass().getResource("/sample").getFile();
         Game game = new Game(path, isRandom, nb_levels);
