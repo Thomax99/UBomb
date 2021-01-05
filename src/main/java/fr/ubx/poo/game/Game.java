@@ -38,7 +38,7 @@ public class Game {
     private final List<List<Box>> boxes ;
     private final Map<Position, Explosive> explosives ;
     private final String worldPath;
-    private int nb_level, level_max_initialised, nb_total_levels ;
+    private int nb_level, level_max_initialized, nb_total_levels ;
     private boolean hasChangedWorld = false, hasLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
     private String initPrefString ;
     public int initPlayerLives;
@@ -53,7 +53,7 @@ public class Game {
      * @param nb_levels the number of levels that we would like to play in case of isRandom is true. Otherwise, never used.
      */
     public Game(String worldPath, boolean isRandom, int nb_levels){
-        this.nb_level = level_max_initialised = 1 ;
+        this.nb_level = level_max_initialized = 1 ;
         this.nb_total_levels = nb_levels ;
         this.worldPath = worldPath;
         this.randomlyGenerate = isRandom ;
@@ -75,6 +75,9 @@ public class Game {
         player = new Player(this, positionPlayer);
         initializeEntities() ;
     }
+    /**
+     * This function is used to initialize a new world in function of the private variables nb_level, randomlyGenerate and nb_total_levels if randomlyGenerate
+     */
     private void initializeWorld(){
         if (randomlyGenerate)
             //the initialization is not from the files
@@ -90,12 +93,16 @@ public class Game {
         getWorld().findBoxes().forEach(p -> getBoxes().add(new Box(this, p) )) ;
     }
 
+    /**
+     * This function is used to notify a game that the World in which the player is has changed (for instance he takes a door)
+     * @param new_level The addition of this parameter and the game current level gives the level in which the player is
+     */
     public void changeWorld(int new_level){
         this.nb_level+=new_level ;
-        if (this.nb_level > level_max_initialised){
+        if (this.nb_level > level_max_initialized){
             initializeWorld();
             initializeEntities() ;
-            level_max_initialised++ ;
+            level_max_initialized++ ;
         }
         Position positionPlayer = null ;
         try{
@@ -121,8 +128,6 @@ public class Game {
     public void changeMade(){
         hasChangedWorld = false ;
     }
-
-
     public int getInitPlayerLives() {
         return initPlayerLives;
     }
@@ -144,14 +149,12 @@ public class Game {
     public World getWorld(int level) {
         return worlds.get(level-1);
     }
-
     public List<Monster> getMonsters(){
         return getMonsters(this.nb_level) ;
     }
     public List<Monster> getMonsters(int level){
         return monsters.get(level-1) ;
     }
-
     public List<Box> getBoxes(){
         return getBoxes(this.nb_level) ;
     }
@@ -182,33 +185,77 @@ public class Game {
         Explosive explosive = explosives.get(pos) ;
         return explosive != null && explosive.isBomb() && explosive.getLevel() == level ;
     }
+    /**
+     * This function is used to add a bomb on a given position, with a given range, at a given time
+     * This function doesn't verify if it is allowed to put a bomb on this position, you need to use the function canBomb
+     * to put legal bombs
+     * @param pos the position in which the bomb is put
+     * @param range the range of the bomb
+     * @param start the time that you put a bomb
+     */
     public void addBomb(Position pos, int range, long start){
         explosives.put(pos, new Bomb(range, getLevel(), start)) ;
         hasLevelChange = true ;
     }
+    /**
+     * This function is used to add a landmine on a given position, with a given range
+     * This function doesn't verify if it is allowed to put a landmine on this position, you need to use the function canLandmine
+     * to put legal landmines
+     * @param pos the position in which the landmine is put
+     * @param range the range of the landmine
+     */
     public void addLandmine(Position pos, int range){
         explosives.put(pos, new Landmine(range, getLevel())) ;
         hasLevelChange = true ;
     }
+    /**
+     * This function is used to add a scarecrow on a given position
+     * This function doesn't verify if it is allowed to put a scarecrow on this position, you need to use the function canScarecrow
+     * to put legal scarecrows
+     * @param pos the position in which the scarecrow is put
+     */
     public void addScarecrow(Position pos){
         getWorld().putScarecrow(pos);
         hasLevelChange = true ;
     }
+    /**
+     * 
+     * @return if there is a scarecrow on the current world
+     */
     public boolean hasScarecrow(){
         return getWorld().hasScarecrow() ;
     }
+    /**
+     * 
+     * @return if there is a scarecrow on the current world, return this position. Otherwise, return null
+     */
     public Position getScarecrowPosition(){
         return getWorld().getScarecrowPosition() ;
     }
+    /**
+     * 
+     * @return the scarecrow. Useful for the management of the sprites
+     */
     public Scarecrow getScarecrow(){
         return getWorld().getScarecrow() ;
     }
+    /**
+     * This function is used to give all the explosives engines which are actually on the world
+     * @return a Map which contains the Explosive objects at the good locations
+     */
     public Map<Position, Explosive> getExplosives(){
         return explosives ;
     }
+    /**
+     * Function used to notify the world that the gameEngine has made the change in case of the level has been changed
+     */
     public void levelChanged(){
         hasLevelChange = false ;
     }
+    /**
+     * Function used by the gameEngine to know if the level has been changed or not
+     * @return if there was a level changed
+     */
     public boolean hasLevelChange(){
         return hasLevelChange ;
     }
@@ -263,14 +310,13 @@ public class Game {
         if (explosive == null) throw new RuntimeException("Error : the only positions which can explode has to have an explosive engine on it") ;
         explosive.explosion(now) ; // we notify the explosion
 
+        //gathering of all the needed variables
         Direction directions[] = Direction.values();
         List<Monster> monsters = getMonsters(explosive.getLevel()) ;
         List<Box> boxes = getBoxes(explosive.getLevel()) ;
         World world = getWorld(explosive.getLevel()) ;
 
         final Position startPosition = position ; //we make a copy of the position to reinitialize it at each loop turn
-
-
 
         //management of the explosion on the position of the explosion (useful for landmines)
         world.addExplosion(position, now);
