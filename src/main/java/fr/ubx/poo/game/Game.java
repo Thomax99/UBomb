@@ -447,4 +447,58 @@ public class Game {
         }
         return new World(mapEntities) ;
     }
+    /**
+     * This function compute if it is possible for a gameObject which can move to go at a given position
+     * @param position the given position
+     * @return if it is possible for a gameObject to go at this position
+     */
+    public boolean positionAllowedToMovableGameObjects(Position position){
+        return getWorld().isInside(position) && !positionIsBomb(position, getLevel()) ; // a gameobject can't go outside of the world or on a bomb
+    }
+    /**
+     * This function compute if it is possible for a Character to go at a given position
+     * @param position the given position
+     * @return if it is possible for a character to go at this position
+     */
+    public boolean positionAllowedToCharacters(Position position){
+        return positionAllowedToMovableGameObjects(position) && (getWorld().canMoveIn(position)) ;
+        //a character can't go on an unauthorized decor
+    }
+    /**
+     * This function compute if it is possible for a monster to go at a given position
+     * @param position the given position
+     * @return if it is possible for a monster to go at this position
+     */
+    public boolean positionAllowedToMonsters(Position position){
+        for(Box box : getBoxes()){
+            if (box.getPosition().equals(position)) return false ; //a monster can't go on a box everytime
+        }
+        return getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position); //another not allowed position for a monster is a princess position ;
+    }
+    /**
+     * This function compute if it is possible for a player to go at a given position, if he came from a given direction
+     * @param position the given position
+     * @param dir the given direction
+     * @return if it is possible for a player to go at this position
+     */
+    public boolean positionAllowedToPlayer(Position position, Direction dir){
+        for(Box box : getBoxes()){
+            if (box.getPosition().equals(position) && !box.canMove(dir)) return false ; //a monster can't go on a box if it can move in this direction
+        }
+        return positionAllowedToCharacters(position);
+    }
+    /**
+     * This function compute if it is possible for a box to go at a given position
+     * @param position the given position
+     * @return if it is possible for a box to go at this position
+     */
+    public boolean positionAllowedToBoxes(Position position){
+        for(Monster monster : getMonsters()){
+            if (monster.getPosition().equals(position)) return false ; // a box can't go on a monster
+        }
+        for (Box box : getBoxes()){
+            if (box.getPosition().equals(position)) return false ; // or on another box
+        }
+        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position) ; //a box can't go on a decor
+    }
 }

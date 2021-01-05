@@ -26,4 +26,8 @@ public class Bomb extends Explosive {
     public String toString() {
         return "Bomb";
     }
+    @Override
+    public boolean canMoveIn() {
+        return false ;
+    }
 }

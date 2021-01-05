@@ -48,9 +48,7 @@ public class Monster extends Character {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        return game.getBoxes().stream()
-            .map(box -> !box.getPosition().equals(nextPos))
-                .reduce(super.canMove(direction), (b1, b2) -> b1 && b2) ;
+        return game.positionAllowedToMonsters(nextPos) ;
     }
     public void remove(){
         this.explosed = true;

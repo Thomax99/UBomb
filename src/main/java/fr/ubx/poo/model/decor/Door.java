@@ -23,7 +23,7 @@ public class Door extends Decor{
         if (!isClosed()) player.changeWorld( (isNext ? 1 : -1) ) ;
     }
     @Override
-    public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
+    public boolean canMoveIn(){
         return !isClosed() ;
     }
     public boolean canExplose(){

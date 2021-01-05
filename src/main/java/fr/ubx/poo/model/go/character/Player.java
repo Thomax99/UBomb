@@ -18,9 +18,9 @@ public class Player extends Character {
     private final boolean alive = true;
     private boolean isInvincible = false;
     private long timeInvincible, currentTime ;
-    private boolean moveRequested = false, bombRequested = false, bombIsLandmine =false, bombIsScarecrow = false ;
+    private boolean moveRequested = false, bombRequested = false, bombIsScarecrow = false ;
     private int lives = 1;
-    private int bombs = 1;
+    private int bombs = 1, landmines = 0;
     private int key = 0;
     private int range = 1;
     private boolean winner;
@@ -68,7 +68,7 @@ public class Player extends Character {
         range++;
     }
     public void hasLandmine(){
-        bombIsLandmine = true;
+        landmines++;
     }
     public void hasScarecrow(){
         bombIsScarecrow = true ;
@@ -96,8 +96,7 @@ public class Player extends Character {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        return game.getBoxes().stream().map(box -> !box.getPosition().equals(nextPos) || box.canMoveIn(direction)).reduce(super.canMove(direction), (b1, b2) -> b1 && b2 ) ;
-
+        return game.positionAllowedToPlayer(nextPos, direction) ;
     }
 
     public void requestOpenDoor(){
@@ -131,12 +130,12 @@ public class Player extends Character {
                 game.addScarecrow(getPosition());
                 bombIsScarecrow = false ;
             }
-            else if (bombIsLandmine){
+            else if (landmines > 0){
                 //the landmine is a bomb which will be placed in front of the player
                 Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
                 if (canLandmine(nextPosition)){
                     game.addLandmine(nextPosition, range) ;
-                    bombIsLandmine = false ;
+                    landmines-- ;
                     bombs-- ;
                 }
             }

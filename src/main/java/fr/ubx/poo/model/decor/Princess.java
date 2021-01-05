@@ -14,4 +14,7 @@ public class Princess extends Decor{
     public boolean canExplose(){
         return false ;
     }
+    public boolean isPrincess(){
+        return true ;
+    }
 }

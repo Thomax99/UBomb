@@ -16,6 +16,13 @@ public class Decor extends Entity {
 
     public void computeDecor(Player player){
     }
+    /**
+     * 
+     * @return if it is possible to go on a decor or not
+     */
+    public boolean canMoveIn(){
+        return true ;
+    }
     public boolean hasToBeRemoved(){
         return hasToBeRemoved ;
     }
@@ -24,6 +31,9 @@ public class Decor extends Entity {
     }
     public boolean canExplose(){
         return true ;
+    }
+    public boolean isPrincess(){
+        return false ;
     }
 
 

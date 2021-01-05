@@ -20,12 +20,6 @@ public abstract class MovableGameObject extends GameObject implements Movable {
         super(game, position) ;
     }
     @Override
-    public boolean canMove(Direction direction){
-        Position nextPos = direction.nextPosition(getPosition());
-        //a GameObject can't go on a position which is not on the World or in which there is already a bomb
-        return game.getWorld().isInside(nextPos) && !game.positionIsBomb(nextPos, getLevel()) ; 
-    }
-    @Override
     public void doMove(Direction direction){
         Position nextPos = direction.nextPosition(getPosition());
         setPosition(nextPos);

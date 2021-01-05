@@ -20,11 +20,6 @@ public abstract class Character extends MovableGameObject implements Updatable {
         super(game, position) ;
         this.direction = Direction.S ;
     }
-    @Override
-    public boolean canMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        return super.canMove(direction) && (game.getWorld().get(nextPos) == null || game.getWorld().get(nextPos).canMoveIn(direction));
-    }
     protected void setDirection(Direction d){
         direction = d ;
     }

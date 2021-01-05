@@ -33,7 +33,7 @@ public class WorldBuilder {
      * @return a randomly generate world
      */
     public static WorldEntity[][] randomBuild(int level, int nb_level_max) {
-        int width = (int) (Math.random()*20 +10), height = (int) (Math.random()*20 +10) ; // the Dimension of a game is at least a square of 10*10 and at more a square of 30*30
+        int width = (int) (Math.random()*18 +12), height = (int) (Math.random()*15 +10) ; // the Dimension of a game is at least a square of 12*10 and at more a rectangle of 30*25
         WorldEntity[][] raw = new WorldEntity[height][width] ; //we generate the array of entities
         boolean isFirstLevel = (level == 1) ; //useful to know if we have to generate a position of the player and a previousDoor
         boolean isLastLevel = (level == nb_level_max) ; //useful to know if we have to generate a princess, a nextDoor and a key

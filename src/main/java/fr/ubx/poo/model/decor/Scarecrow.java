@@ -16,7 +16,7 @@ public class Scarecrow extends Decor {
         return "Scarecrow";
     }
     @Override
-    public boolean canMoveIn(Direction direction){
+    public boolean canMoveIn(){
         return false ; //it is impossible to move on a scarecrow
     }
 }

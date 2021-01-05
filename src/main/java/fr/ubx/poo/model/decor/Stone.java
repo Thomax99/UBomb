@@ -10,7 +10,8 @@ public class Stone extends Decor {
     public String toString() {
         return "Stone";
     }
-    public boolean canMoveIn(Direction dir){ //need to be modified in function of the inherits
+    @Override
+    public boolean canMoveIn(){ 
         return false ;
     }
     public boolean canExplose(){

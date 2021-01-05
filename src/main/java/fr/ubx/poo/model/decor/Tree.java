@@ -10,7 +10,8 @@ public class Tree extends Decor {
     public String toString() {
         return "Tree";
     }
-    public boolean canMoveIn(Direction dir){
+    @Override
+    public boolean canMoveIn(){
         return false ;
     }
     public boolean canExplose(){

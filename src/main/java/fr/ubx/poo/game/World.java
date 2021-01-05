@@ -114,6 +114,16 @@ public class World {
             if (explosions.get(pos).hasToBeRemoved() ) it.remove();
         }
     }
+    /**
+     * This function is used to know that there is a princess at a given position
+     * Useful for example for the monsters which can't go on a princess position
+     * @param position the given position
+     * @return if there is a princess or not
+     */
+    public boolean positionIsPrincess(Position position){
+        Decor decor = get(position) ;
+        return decor == null || !decor.isPrincess() ;
+    }
 
     public boolean isEmpty(Position position) {
         return get(position) == null;
@@ -162,5 +172,8 @@ public class World {
     }
     public Scarecrow getScarecrow(){
         return (Scarecrow) get(scarecrowPosition) ;
+    }
+    public boolean canMoveIn(Position position){
+        return isEmpty(position) || get(position).canMoveIn() ;
     }
 }
