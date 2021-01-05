@@ -96,27 +96,26 @@ public class World {
     public Collection<Decor> values() {
         return grid.values();
     }
-    public void putScarecrow(Position position){
-        scarecrowPosition = position ;
-        set(position, new Scarecrow()) ;
-    }
-
     public boolean isInside(Position position) {
         return position.inside(dimension) ;
     }
+    /**
+     * This function is used to update all the elements which are managed by the world
+     * @param now the actual time
+     */
     public void update(long now){
-        explosions.forEach( (Position, dec) -> dec.update(now) ) ;
+        explosions.forEach( (Position, exp) -> exp.update(now) ) ; // first we update the explosions (ie they are going to remove themselves if they lifetime is > 1s)
         Iterator<Position> it = grid.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
             if (grid.get(pos).hasToBeRemoved() ){
-                it.remove();
+                it.remove(); //we remove all the no needed elements of the world
             }
         }
         it = explosions.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (explosions.get(pos).hasToBeRemoved() ) it.remove();
+            if (explosions.get(pos).hasToBeRemoved() ) it.remove(); // and all the no needed explosions of the world
         }
     }
     /**
@@ -149,18 +148,18 @@ public class World {
      * @param p the position that we would like to explose
      * @return if this position could explose (if there is an object which can't explose or if the position is outside, return false. Otherwise, return true)
      */
-    public boolean canExplose(Position p){
+    public boolean canExplode(Position p){
         Decor decor = get(p) ;
-        return isInside(p) && (decor == null || decor.canExplose()) ;
+        return isInside(p) && (decor == null || decor.canExplode()) ;
     }
     /**
      * 
      * @param p the position that we need to explose.
-     * @return if something has explosed at this position
+     * @return if something has exploded at this position
      */
-    public boolean explose(Position p){
+    public boolean explode(Position p){
         Decor decor = get(p) ;
-        if (decor != null && decor.canExplose()){
+        if (decor != null && decor.canExplode()){
                 clear(p);
                 decor.remove();
                 if (p.equals(scarecrowPosition)) scarecrowPosition = null ;
@@ -173,21 +172,38 @@ public class World {
     }
     /**
      * Function used to know if it is possible to put a scarecrow in the world
-     * (The only constraint of the scarecrow besides bombs is that it can have two scarecrows on the game)
+     * (The only constraint of the scarecrow besides bombs is that it can have two scarecrows on the world)
      * @param p the position in which we would like to put a scarecrow
      * @return if it is possible to put here a scarecrow
      */
     public boolean canScarecrow(Position p){
         return !hasScarecrow() && canBomb(p) ;
     }
+    /**
+     * 
+     * @return if there is already a scarecrow on the world
+     */
     public boolean hasScarecrow(){
         return scarecrowPosition != null ;
     }
+    /**
+     * 
+     * @return the actual position of the scarecrow, or null if there is not any scarecrow
+     */
     public Position getScarecrowPosition(){
         return scarecrowPosition ;
     }
+    /**
+     * 
+     * @return the scarecrow of the world, or null if there is not any scarecrow
+     */
     public Scarecrow getScarecrow(){
+        if (scarecrowPosition == null) return null ;
         return (Scarecrow) get(scarecrowPosition) ;
+    }
+    public void addScarecrow(Position position){
+        scarecrowPosition = position ;
+        set(position, new Scarecrow()) ;
     }
     public boolean canMoveIn(Position position){
         return isEmpty(position) || get(position).canMoveIn() ;

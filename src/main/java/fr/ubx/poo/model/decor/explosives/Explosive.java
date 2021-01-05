@@ -13,19 +13,14 @@ import fr.ubx.poo.model.decor.Decor;
  */
 public abstract class Explosive extends Decor {
     private int range ;
-    private boolean hasExploded = false ;
-
     public Explosive(int range, int level) {
         this.range = range ;
         setLevel(level) ;
     }
-    public void remove() {
-        hasExploded = true ;
-    }
-    public boolean hasToBeRemoved(){
-        return hasExploded ;
-    }
-
+    /**
+     * 
+     * @return the range of the explosive (ie the number of case around it in which the explosive explode)
+     */
     public int getRange(){
         return range ;
     }

@@ -156,14 +156,13 @@ public final class GameEngine {
 
     private void update(long now) {
         game.update(now) ;
-
         if(game.hasNewExplosions()){
             spritesExpl.forEach(Sprite::remove);
             spritesExpl.clear() ;
             game.getExplosions().forEach((pos, exp)  -> spritesExpl.add(SpriteFactory.createDecor(layer, pos, exp))) ;
             game.newExplosionsPut();
         }
-        if(game.hasLevelChange()){
+        if(game.hasElementsLevelChange()){
             spritesExplosive.forEach(Sprite::remove);
             spritesExplosive.clear() ;
             game.getExplosives().forEach((pos, explosive) -> {
@@ -176,13 +175,14 @@ public final class GameEngine {
                 //we have to place the scarecrow
                 sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
             }
+            game.elementsLevelChanged();
         }
         if(game.hasChangedWorld()){
             sprites.forEach(Sprite::remove);
             sprites.clear();
             stage.close();
             initialize(stage, game);
-            game.changeMade();
+            game.worldChangeMade();
         }
         player.update(now);
         if (player.isAlive() == false) {

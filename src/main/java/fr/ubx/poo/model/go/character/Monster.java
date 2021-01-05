@@ -36,6 +36,10 @@ public class Monster extends Character {
             if (d != null){ //sometimes it's impossible to do a move
                 setDirection(d);
                 doMove(d);
+                if (game.getPlayer().getPosition().equals(getPosition())){
+                    //the player and the monster are at the same position : the player is going to be damage
+                    game.getPlayer().damage(now);
+                }
             }
         }
     }

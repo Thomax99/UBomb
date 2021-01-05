@@ -27,7 +27,7 @@ public class Door extends Decor{
         return !isClosed() ;
     }
     @Override
-    public boolean canExplose(){
+    public boolean canExplode(){
         return false ;
     }
     @Override

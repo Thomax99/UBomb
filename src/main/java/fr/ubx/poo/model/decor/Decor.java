@@ -26,7 +26,7 @@ public class Decor extends Entity {
      * 
      * @return if a decor can be explosed by a bomb or not
      */
-    public boolean canExplose(){
+    public boolean canExplode(){
         return true ;
     }
     /**

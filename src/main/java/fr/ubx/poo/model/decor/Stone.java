@@ -14,7 +14,8 @@ public class Stone extends Decor {
     public boolean canMoveIn(){ 
         return false ;
     }
-    public boolean canExplose(){
+    @Override
+    public boolean canExplode(){
         return false ;
     }
 }

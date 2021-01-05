@@ -12,7 +12,7 @@ public class Princess extends Decor{
         player.princessFound();
     }
     @Override
-    public boolean canExplose(){
+    public boolean canExplode(){
         return false ;
     }
     @Override

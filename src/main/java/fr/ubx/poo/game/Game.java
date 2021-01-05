@@ -39,7 +39,7 @@ public class Game {
     private final Map<Position, Explosive> explosives ;
     private final String worldPath;
     private int nb_level, level_max_initialized, nb_total_levels ;
-    private boolean hasChangedWorld = false, hasLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
+    private boolean hasChangedWorld = false, hasElementsLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -71,7 +71,6 @@ public class Game {
             System.err.println("Position not found : " + e.getLocalizedMessage());
             throw new RuntimeException(e);
         }
-
         player = new Player(this, positionPlayer);
         initializeEntities() ;
     }
@@ -121,12 +120,6 @@ public class Game {
         }
         player.setPosition(positionPlayer);
         hasChangedWorld = true ;
-    }
-    public boolean hasChangedWorld(){
-        return hasChangedWorld ;
-    }
-    public void changeMade(){
-        hasChangedWorld = false ;
     }
     public int getInitPlayerLives() {
         return initPlayerLives;
@@ -195,7 +188,7 @@ public class Game {
      */
     public void addBomb(Position pos, int range, long start){
         explosives.put(pos, new Bomb(range, getLevel(), start)) ;
-        hasLevelChange = true ;
+        hasElementsLevelChange = true ;
     }
     /**
      * This function is used to add a landmine on a given position, with a given range
@@ -206,7 +199,7 @@ public class Game {
      */
     public void addLandmine(Position pos, int range){
         explosives.put(pos, new Landmine(range, getLevel())) ;
-        hasLevelChange = true ;
+        hasElementsLevelChange = true ;
     }
     /**
      * This function is used to add a scarecrow on a given position
@@ -215,8 +208,8 @@ public class Game {
      * @param pos the position in which the scarecrow is put
      */
     public void addScarecrow(Position pos){
-        getWorld().putScarecrow(pos);
-        hasLevelChange = true ;
+        getWorld().addScarecrow(pos);
+        hasElementsLevelChange = true ;
     }
     /**
      * 
@@ -247,18 +240,49 @@ public class Game {
         return explosives ;
     }
     /**
-     * Function used to notify the world that the gameEngine has made the change in case of the level has been changed
+     * Function used to notify the game that the gameEngine has made the change in case of the elements of the level has been changed
      */
-    public void levelChanged(){
-        hasLevelChange = false ;
+    public void elementsLevelChanged(){
+        hasElementsLevelChange = false ;
     }
     /**
-     * Function used by the gameEngine to know if the level has been changed or not
+     * Function used by the gameEngine to know if elements on the current level have been changed or not
      * @return if there was a level changed
      */
-    public boolean hasLevelChange(){
-        return hasLevelChange ;
+    public boolean hasElementsLevelChange(){
+        return hasElementsLevelChange ;
     }
+    /**
+     * Function used by the gameEngine to know if the level has been changed
+     * @return if there was a world change
+     */
+    public boolean hasChangedWorld(){
+        return hasChangedWorld ;
+    }
+    /**
+     * Function used to notify the game that the gameEngine has made the change in case of the world has been changed
+     */
+    public void worldChangeMade(){
+        hasChangedWorld = false ;
+    }
+    /**
+     * Function used to notify the game that the gameEngine has made the change in case of new explosions
+     */
+    public void newExplosionsPut(){
+        hasNewExplosions = false ;
+    }
+    /**
+     * Function used by the gameEngine to know if the level has new explosions
+     * @return if there is new explosions
+     */
+    public boolean hasNewExplosions(){
+        return hasNewExplosions ;
+    }
+    /**
+     * function used to know if it is possible to put a bomb at a given position
+     * @param p the position in which we would like to put a bomb
+     * @return if it is possible or not to put a bomb here
+     */
     public boolean canBomb(Position p){
         return getWorld().canBomb(p) ;
     }
@@ -270,9 +294,6 @@ public class Game {
     }
     public boolean canScarecrow(Position p){
         return getWorld().canScarecrow(p) ;
-    }
-    public boolean hasNewExplosions(){
-        return hasNewExplosions ;
     }
     /**
      * 
@@ -291,9 +312,6 @@ public class Game {
         if (getWorld().hasScarecrow()) return getWorld().getScarecrowPosition() ;
         return getPlayer().getPosition() ;
     }
-    public void newExplosionsPut(){
-        hasNewExplosions = true ;
-    }
     /**
      * This function is useful to manage all the explosion recursively for each
      * explosive placed in position position
@@ -303,7 +321,7 @@ public class Game {
     public void explode(Position position, long now){
         getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
         hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
-        hasLevelChange = true ;
+        hasElementsLevelChange = true ;
 
         //getting the explosive engine
         Explosive explosive = explosives.get(position) ;
@@ -330,8 +348,8 @@ public class Game {
             for (int j = 0; j < explosive.getRange() && !somethingExploded; j++){
                 //decor explosion part
                 final Position p = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
-                if(!world.canExplose(p)) break ;
-                somethingExploded = world.explose(p) ;
+                if(!world.canExplode(p)) break ; //there is a decor which block the explosion
+                somethingExploded = world.explode(p) ;
 
                 //Game object explosion part
                 if (getPlayer().getPosition().equals(p)){
