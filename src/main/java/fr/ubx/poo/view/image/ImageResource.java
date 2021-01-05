@@ -33,6 +33,7 @@ public enum ImageResource {
     STONE("stone.png"),
     TREE("tree.png"),
     BOX("box.png"),
+    SCARECROW("scarecrow.png"),
     DOOR_CLOSED("door_closed.png"),
     DOOR_OPENED("door_opened.png"),
     PRINCESS("bomberwoman.png"),
@@ -42,6 +43,7 @@ public enum ImageResource {
     BONUS_BOMB_RANGE_INC("bonus_bomb_range_inc.png"),
     LANDMINE("landmine.png"),
     BONUS_LANDMINE("bonus_landmine.png"),
+    BONUS_SCARECROW("bonus_scarecrow.png"),
 
     ;
 

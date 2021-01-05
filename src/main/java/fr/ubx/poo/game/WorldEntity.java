@@ -24,7 +24,8 @@ public enum WorldEntity {
     BombRangeDec('<'),
     BombNumberInc('+'),
     BombNumberDec('-'),
-    Landminer('L')
+    Landminer('L'),
+    BonusScarecrow('E')
         ;
 
 

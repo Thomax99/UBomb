@@ -6,6 +6,7 @@ package fr.ubx.poo.game;
 
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
+import fr.ubx.poo.model.decor.Scarecrow;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import java.util.function.BiConsumer;
 public class World {
     private final Map<Position, Decor> grid;
     private final Map<Position, Explosion> explosions ;
+    private Position scarecrowPosition ; // the position of the scarecrow. if there is not a scarecrow on the world, the value is null
     private final WorldEntity[][] raw;
     public final Dimension dimension;
 
@@ -25,6 +27,7 @@ public class World {
         this.raw = raw;
         dimension = new Dimension(raw.length, raw[0].length);
         grid = WorldBuilder.build(raw, dimension);
+        scarecrowPosition = null ;
         explosions = new Hashtable<Position, Explosion>() ;
     }
 
@@ -88,6 +91,10 @@ public class World {
     public Collection<Decor> values() {
         return grid.values();
     }
+    public void putScarecrow(Position position){
+        scarecrowPosition = position ;
+        set(position, new Scarecrow()) ;
+    }
 
     public boolean isInside(Position position) {
         return position.inside(dimension) ;
@@ -97,7 +104,9 @@ public class World {
         Iterator<Position> it = grid.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (grid.get(pos).hasToBeRemoved() ) it.remove();
+            if (grid.get(pos).hasToBeRemoved() ){
+                it.remove();
+            }
         }
         it = explosions.keySet().iterator() ;
         while (it.hasNext()){
@@ -128,11 +137,30 @@ public class World {
         if (decor != null && decor.canExplose()){
                 clear(p);
                 decor.remove();
+                if (p.equals(scarecrowPosition)) scarecrowPosition = null ;
                 return true ;
             }
         return false ;
     }
     public boolean canBomb(Position p){
         return get(p) == null && isInside(p) ;
+    }
+    /**
+     * Function used to know if it is possible to put a scarecrow in the world
+     * (The only constraint of the scarecrow besides bombs is that it can have two scarecrows on the game)
+     * @param p the position in which we would like to put a scarecrow
+     * @return if it is possible to put here a scarecrow
+     */
+    public boolean canScarecrow(Position p){
+        return !hasScarecrow() && canBomb(p) ;
+    }
+    public boolean hasScarecrow(){
+        return scarecrowPosition != null ;
+    }
+    public Position getScarecrowPosition(){
+        return scarecrowPosition ;
+    }
+    public Scarecrow getScarecrow(){
+        return (Scarecrow) get(scarecrowPosition) ;
     }
 }

@@ -40,7 +40,7 @@ public class Game {
     private final Map<Position, Explosive> explosives ;
     private final String worldPath;
     private int nb_level, level_max ;
-    private boolean hasChangedWorld = false, hasBombChange = false, hasNewExplosions = false ;
+    private boolean hasChangedWorld = false, hasLevelChange = false, hasNewExplosions = false ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -176,26 +176,59 @@ public class Game {
     }
     public void addBomb(Position pos, int range, long start){
         explosives.put(pos, new Bomb(range, getLevel(), start)) ;
-        hasBombChange = true ;
+        hasLevelChange = true ;
     }
     public void addLandmine(Position pos, int range){
         explosives.put(pos, new Landmine(range, getLevel())) ;
-        hasBombChange = true ;
+        hasLevelChange = true ;
+    }
+    public void addScarecrow(Position pos){
+        getWorld().putScarecrow(pos);
+        hasLevelChange = true ;
+    }
+    public boolean hasScarecrow(){
+        return getWorld().hasScarecrow() ;
+    }
+    public Position getScarecrowPosition(){
+        return getWorld().getScarecrowPosition() ;
+    }
+    public Scarecrow getScarecrow(){
+        return getWorld().getScarecrow() ;
     }
     public Map<Position, Explosive> getExplosives(){
         return explosives ;
     }
-    public void bombChange(){
-        hasBombChange = false ;
+    public void levelChanged(){
+        hasLevelChange = false ;
     }
-    public boolean hasBombChange(){
-        return hasBombChange ;
+    public boolean hasLevelChange(){
+        return hasLevelChange ;
     }
     public boolean canBomb(Position p){
         return getWorld().canBomb(p) ;
     }
+    public boolean canScarecrow(Position p){
+        return getWorld().canScarecrow(p) ;
+    }
     public boolean hasNewExplosions(){
         return hasNewExplosions ;
+    }
+    /**
+     * 
+     * @return the Direction in which the player is theorically going. Useful for the moving policies
+     * And to have an abstraction for implementing the Scarecrow decor
+     */
+    public Direction getPlayerDirection(){
+        return getPlayer().getDirection() ;
+    }
+    /**
+     * 
+     * @return the Position in which the player is. Useful for the moving policies
+     * And to have an abstraction for implementing the Scarecrow decor
+     */
+    public Position getPlayerPosition(){
+        if (getWorld().hasScarecrow()) return getWorld().getScarecrowPosition() ;
+        return getPlayer().getPosition() ;
     }
     public void newExplosionsPut(){
         hasNewExplosions = true ;
@@ -209,7 +242,7 @@ public class Game {
     public void explode(Position position, long now){
         getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
         hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
-        hasBombChange = true ;
+        hasLevelChange = true ;
 
         //getting the explosive engine
         Explosive explosive = explosives.get(position) ;

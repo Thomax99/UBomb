@@ -12,6 +12,8 @@ import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.Explosion;
+import fr.ubx.poo.model.decor.Scarecrow;
+
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.decor.explosives.*;
 
@@ -82,6 +84,10 @@ public final class GameEngine {
 
         game.getMonsters().forEach(monster -> sprites.add(SpriteFactory.createMonster(layer, monster)));
         game.getBoxes().forEach(box -> sprites.add(SpriteFactory.createBox(layer, box)) );
+        if (game.hasScarecrow()){
+            //we have to place the scarecrow
+            sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
+        }
     }
 
     protected final void buildAndSetGameLoop() {
@@ -157,7 +163,7 @@ public final class GameEngine {
             game.getExplosions().forEach((pos, exp)  -> spritesExpl.add(SpriteFactory.createDecor(layer, pos, exp))) ;
             game.newExplosionsPut();
         }
-        if(game.hasBombChange()){
+        if(game.hasLevelChange()){
             spritesExplosive.forEach(Sprite::remove);
             spritesExplosive.clear() ;
             game.getExplosives().forEach((pos, explosive) -> {
@@ -166,6 +172,10 @@ public final class GameEngine {
                                     else
                                         spritesExplosive.add(SpriteFactory.createDecor(layer, pos, (Landmine) explosive)) ;
                                 });
+            if (game.hasScarecrow()){
+                //we have to place the scarecrow
+                sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
+            }
         }
         if(game.hasChangedWorld()){
             sprites.forEach(Sprite::remove);

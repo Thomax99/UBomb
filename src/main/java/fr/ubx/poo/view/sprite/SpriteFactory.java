@@ -24,6 +24,8 @@ public final class SpriteFactory {
             return new SpriteDecor(layer, factory.get(STONE), position);
         if (decor instanceof Tree)
             return new SpriteDecor(layer, factory.get(TREE), position);
+        if (decor instanceof Scarecrow)
+            return new SpriteScarecrow(layer, factory.get(SCARECROW), position, (Scarecrow) decor);
         if (decor instanceof Door)
             return new SpriteDoor(layer, factory.get(DOOR_CLOSED), position, (Door) decor);
         if (decor instanceof Princess)
@@ -42,6 +44,8 @@ public final class SpriteFactory {
             return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
         if (decor instanceof Landminer)
             return new SpriteBonus(layer, factory.get(BONUS_LANDMINE), position, (Bonus) decor);
+        if (decor instanceof BonusScarecrow)
+            return new SpriteBonus(layer, factory.get(BONUS_SCARECROW), position, (Bonus) decor);
         if (decor instanceof Explosion)
             return new SpriteExplosion(layer, factory.get(EXPLOSION), position, (Explosion) decor);
         if (decor instanceof Bomb)

@@ -28,7 +28,7 @@ public class Monster extends Character {
         setLevel(game.getLevel()) ;
 
         speedMoving = Automovable.getSpeed(game.getLevel()-1) ;
-        this.automovingPolicy = Automovable.getRandomPolicy(this, game.getPlayer()) ;
+        this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
         this.explosed = false;
     }
     public void update(long now) {
