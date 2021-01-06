@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Stack;
 
 import javax.lang.model.util.ElementScanner6;
 
@@ -37,9 +38,10 @@ public class Game {
     private final List<List<Monster>> monsters ;
     private final List<List<Box>> boxes ;
     private final List<Map<Position, Explosive>> explosives ;
+    private final List<Map<Position, Decor>> newDecorToPlace ; // this map is used by the gameEngine to know what are the new elements to place on the view
     private final String worldPath;
     private int nb_level, level_max_initialized, nb_total_levels ;
-    private boolean hasChangedWorld = false, hasElementsLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
+    private boolean hasChangedWorld = false, hasElementsLevelChange = false, randomlyGenerate ;
     private String initPrefString ;
     public int initPlayerLives;
     public int initPlayerBombs;
@@ -62,6 +64,7 @@ public class Game {
         monsters = new ArrayList<>() ;
         boxes = new ArrayList<>() ;
         explosives  = new ArrayList<>() ;
+        newDecorToPlace = new ArrayList<>() ;
         initializeWorld() ;
         Position positionPlayer = null;
 
@@ -89,6 +92,7 @@ public class Game {
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
         explosives.add(new Hashtable<>()) ;
+        newDecorToPlace.add(new Hashtable<>()) ;
         getWorld().findMonsters().forEach(p -> getMonsters().add(new Monster(this, p) )) ;
         getWorld().findBoxes().forEach(p -> getBoxes().add(new Box(this, p) )) ;
     }
@@ -188,7 +192,9 @@ public class Game {
      * @param start the time that you put a bomb
      */
     public void addBomb(Position pos, int range, long start){
-        getExplosives().put(pos, new Bomb(range, getLevel(), start)) ;
+        Bomb bomb = new Bomb(range, getLevel(), start) ;
+        getExplosives().put(pos, bomb) ;
+        getNewDecors().put(pos, bomb) ;
         hasElementsLevelChange = true ;
     }
     /**
@@ -199,7 +205,9 @@ public class Game {
      * @param range the range of the landmine
      */
     public void addLandmine(Position pos, int range){
-        getExplosives().put(pos, new Landmine(range, getLevel())) ;
+        Landmine landmine = new Landmine(range, getLevel()) ;
+        getExplosives().put(pos, landmine) ;
+        getNewDecors().put(pos, landmine) ;
         hasElementsLevelChange = true ;
     }
     /**
@@ -210,6 +218,7 @@ public class Game {
      */
     public void addScarecrow(Position pos){
         getWorld().addScarecrow(pos);
+        getNewDecors().put(pos, getWorld().getScarecrow()) ;
         hasElementsLevelChange = true ;
     }
     /**
@@ -275,19 +284,6 @@ public class Game {
         hasChangedWorld = false ;
     }
     /**
-     * Function used to notify the game that the gameEngine has made the change in case of new explosions
-     */
-    public void newExplosionsPut(){
-        hasNewExplosions = false ;
-    }
-    /**
-     * Function used by the gameEngine to know if the level has new explosions
-     * @return if there is new explosions
-     */
-    public boolean hasNewExplosions(){
-        return hasNewExplosions ;
-    }
-    /**
      * function used to know if it is possible to put a bomb at a given position
      * @param p the position in which we would like to put a bomb
      * @return if it is possible or not to put a bomb here
@@ -330,8 +326,7 @@ public class Game {
      * @param level the level in which the explosion occur
      */
     public void explode(Position position, long now, int level){
-        hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
-        hasElementsLevelChange = true ;
+        hasElementsLevelChange = true ; // useful for the gameEngine and the management of the sprites
 
         //getting the explosive engine
         Explosive explosive = getExplosives(level).get(position) ;
@@ -349,10 +344,10 @@ public class Game {
         final Position startPosition = position ; //we make a copy of the position to reinitialize it at each loop turn
 
         //management of the explosion on the position of the explosion (useful for landmines)
-        world.addExplosion(position, now);
+        getNewDecors(explosive.getLevel()).put(position, world.addExplosion(position, now));
         if (getPlayer().getPosition().equals(position))
             player.explosion(now) ;
-            monsters.stream().filter(monster -> monster.getPosition().equals(startPosition)).forEach(monster -> monster.explosion(now));
+        monsters.stream().filter(monster -> monster.getPosition().equals(startPosition)).forEach(monster -> monster.explosion(now));
 
         for(Direction d : directions){
             position = startPosition ; // we reinitialize the variable
@@ -385,7 +380,7 @@ public class Game {
                 if (exploAdj != null && !exploAdj.hasToBeRemoved()){
                     explode(p, now, level) ;
                 }
-                world.addExplosion(p, now);
+                getNewDecors(level).put(p, world.addExplosion(p, now));
                 position = p ; // managing the depth of the range
             }
         }
@@ -432,7 +427,12 @@ public class Game {
     public Map<Position, Explosion> getExplosions(){
         return getWorld().getExplosions() ;
     }
-
+    public Map<Position, Decor> getNewDecors(){
+        return getNewDecors(getLevel()) ;
+    }
+    public Map<Position, Decor> getNewDecors(int level){
+        return newDecorToPlace.get(level - 1) ;
+    }
     private void loadConfig(String path) {
         try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
             Properties prop = new Properties();

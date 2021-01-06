@@ -11,6 +11,7 @@ import fr.ubx.poo.view.sprite.SpriteExplosion;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
+import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
 import fr.ubx.poo.model.decor.Scarecrow;
 
@@ -32,7 +33,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map ;
-
+import java.util.Stack;
 import java.util.Hashtable ;
 
 
@@ -85,6 +86,7 @@ public final class GameEngine {
         game.getMonsters().forEach(monster -> sprites.add(SpriteFactory.createMonster(layer, monster)));
         game.getBoxes().forEach(box -> sprites.add(SpriteFactory.createBox(layer, box)) );
         game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
+        game.getNewDecors().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //it is for put the possibly news explosions
     }
 
     protected final void buildAndSetGameLoop() {
@@ -156,23 +158,17 @@ public final class GameEngine {
         }.start();
     }
 
-
+    /**
+     * This function is used by an AnimationTimer to update the differents states of the game and sprites
+     * @param now the actual time
+     */
     private void update(long now) {
-        game.update(now) ;
-        if(game.hasNewExplosions()){
-            spritesExpl.forEach(Sprite::remove);
-            spritesExpl.clear() ;
-            game.getExplosions().forEach((pos, exp)  -> spritesExpl.add(SpriteFactory.createDecor(layer, pos, exp))) ;
-            game.newExplosionsPut();
-        }
+        game.update(now) ; // here we update all the model part
+
+        //now we're going to update the view with some flags from the model
         if(game.hasElementsLevelChange()){
-            spritesExplosive.forEach(Sprite::remove);
-            spritesExplosive.clear() ;
-            game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
-            if (game.hasScarecrow()){
-                //we have to place the scarecrow
-                sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
-            }
+            //there is some decor changes out of the explosions (explosives, scarecrow, ...)
+            game.getNewDecors().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //and we recreate them
             game.elementsLevelChanged();
         }
         if(game.hasChangedWorld()){

@@ -94,8 +94,16 @@ public class World {
     private void set(Position position, Decor decor) {
         grid.put(position, decor);
     }
-    public void addExplosion(Position position, long now){
-        explosions.put(position, new Explosion(now)) ;
+    /**
+     * This function used to put a new Explosion at a given position
+     * @param position The position given
+     * @param now the actual time
+     * @return the new object explosion
+     */
+    public Explosion addExplosion(Position position, long now){
+        Explosion exp = new Explosion(now) ;
+        explosions.put(position, exp) ;
+        return exp ;
     }
     public void clear(Position position) {
         grid.remove(position);
