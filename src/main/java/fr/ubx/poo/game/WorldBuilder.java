@@ -49,6 +49,12 @@ public class WorldBuilder {
             //we need to compute a player position
             x = (int) (Math.random()*width) ; y = (int) (Math.random()*height) ;
             raw[y][x] = WorldEntity.Player ;
+            //here we're going to make empty the adjacents cases of the player position
+            if (x - 1 >= 0) raw[y][x-1] = WorldEntity.Empty ;
+            if (x + 1 < width) raw[y][x+1] = WorldEntity.Empty ;
+            if (y - 1 >= 0) raw[y-1][x] = WorldEntity.Empty ;
+            if (y +1 < height) raw[y+1][x] = WorldEntity.Empty ;
+
         }
         else {
             //we need to compute a previousDoor
@@ -57,14 +63,14 @@ public class WorldBuilder {
         }
         if (isLastLevel){
             //we need to generate a Princess
-            while (raw[y][x] != null){ // the computation has to be on an empty position
+            while (raw[y][x] != null){ // the computation has to be on an null position
                 x = (int) (Math.random()*width) ; y = (int) (Math.random()*height) ;
             }
             raw[y][x] = WorldEntity.Princess ;
         }
         else {
             //we need to generate a nextDoor and a key
-            while (raw[y][x] != null){ // the computation has to be on an empty position
+            while (raw[y][x] != null){ // the computation has to be on an null position
                 x = (int) (Math.random()*width) ; y = (int) (Math.random()*height) ;
             }
             raw[y][x] = WorldEntity.DoorNextClosed ;
