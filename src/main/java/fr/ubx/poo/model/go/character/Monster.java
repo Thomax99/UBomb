@@ -28,6 +28,11 @@ public class Monster extends Character {
         speedMoving = Automovable.getSpeed(game.getLevel()-1) ;
         this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
     }
+
+    /**
+     * Update the state of a monster depending if it is moving or damaging the player
+     * @param now the time it is at the moment in millisecondes
+     */
     public void update(long now) {
         if((now-lastMoveTime) /1000000000L >= speedMoving){
             lastMoveTime = now ;
@@ -43,6 +48,12 @@ public class Monster extends Character {
             }
         }
     }
+
+    /**
+     * Tell if the entity can move in a certain direction.
+     * @param direction the direction in which the entity is going
+     * @return Yes if the entity can move in this direction, else No
+     */
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());

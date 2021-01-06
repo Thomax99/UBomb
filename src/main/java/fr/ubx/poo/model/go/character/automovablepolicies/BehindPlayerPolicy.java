@@ -19,6 +19,12 @@ public class BehindPlayerPolicy extends Automovable {
         super(monsterToMove) ;
         this.game = game ; // we register the game because it can give the player position later
     }
+
+    /**
+     * Compute a move that that allow the monster to be behind the player.
+     * @param directions the List of directions that we have to sort.
+     * @return A List of Direction that allow the monster to be behind the player
+     */
     @Override
     public List<Direction> sortDirections(List<Direction> directions){
         Position behindPlayerPos = game.getPlayerDirection().oppositeDirection().nextPosition(game.getPlayerPosition()) ;

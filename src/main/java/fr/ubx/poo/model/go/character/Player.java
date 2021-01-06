@@ -85,6 +85,12 @@ public class Player extends Character {
         }
         moveRequested = true;
     }
+
+    /**
+     * Compute a move in a Direction, depending of the surrounding,
+     * the player can move a box or can not be allowed to move
+     * @param direction The direction where the player will move
+     */
     @Override
     public void doMove(Direction direction) {
         super.doMove(direction);
@@ -93,12 +99,21 @@ public class Player extends Character {
         game.getMonsters().stream().filter(monster -> monster.getPosition().equals(getPosition())).forEach(monster -> damage(getCurrentTime())) ;
         game.getBoxes().stream().filter(box -> box.getPosition().equals(getPosition())).forEach(box -> box.doMove(direction));
     }
+
+    /**
+     * Tell if the entity can move in a certain direction.
+     * @param direction the direction in which the entity is going
+     * @return Yes if the entity can move in this direction, else No
+     */
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         return game.positionAllowedToPlayer(nextPos, direction) ;
     }
 
+    /**
+     * Open the door if the player have a key and is close to the door
+     */
     public void requestOpenDoor(){
         Position nextPos = getDirection().nextPosition(getPosition());
         if (game.getWorld().positionIsDoor(nextPos)){
@@ -109,9 +124,19 @@ public class Player extends Character {
             }
         }
     }
+
+    /**
+     * Change the world to the world which is linked with the level
+     * @param lv the level (world) where the player enter
+     */
     public void changeWorld(int lv){
         game.changeWorld(lv);
     }
+
+    /**
+     *
+     * @param now
+     */
     public void update(long now) {
         setCurrentTime(now);
         if ( ((getCurrentTime()-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers

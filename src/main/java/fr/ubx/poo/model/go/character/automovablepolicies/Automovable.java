@@ -21,7 +21,7 @@ public abstract class Automovable {
         return monsterToMove ;
     }
     /**
-     *
+     * @param level the level in which the player is
      * @return a random speed (in seconds) of monster
      */
     public static int getSpeed(int level){
@@ -32,7 +32,7 @@ public abstract class Automovable {
         return 4 ;
     }
     /**
-     * This function is used to get a random movving policy for the monsters
+     * This function is used to get a random moving policy for the monsters
      * @param monsterToMove the monster that we want to move
      * @param game the game in which the monster is playing
      * @return a random policy among the existing implemented policies
@@ -44,14 +44,14 @@ public abstract class Automovable {
         return new OnPlayerPolicy(monsterToMove, game) ;
     }
     /**
-     * This function is used on the function computeMove to know in which order a List of Direction will be considered*
+     * This function is used on the function computeMove to know in which order a List of Direction will be considered
      * to make a move (the first position possible in this sort will be do)
      * @param directions the List of directions that we have to sort.
      */
     public abstract List<Direction> sortDirections(List<Direction> directions) ;
 
     /**
-     * compute a move in function of the policies for a monster. The only thing needed to make a new policy is to
+     * Compute a move according to the policies for a monster. The only thing needed to make a new policy is to
      * overload the function sortDirections.
      * @return the direction in which a monster has to go
      */

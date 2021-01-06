@@ -18,6 +18,12 @@ public class OnPlayerPolicy extends Automovable {
         super(monsterToMove) ;
         this.game = game ;
     }
+
+    /**
+     * Compute a move that that allow the monster to be on the player.
+     * @param directions the List of directions that we have to sort.
+     * @return A List of Direction that allow the monster to be on the player
+     */
     @Override
     public List<Direction> sortDirections(List<Direction> directions){
         Position playerPos = game.getPlayerPosition() ;

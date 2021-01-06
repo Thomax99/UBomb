@@ -15,6 +15,12 @@ public class RandomPolicy extends Automovable {
     public RandomPolicy(Monster monsterToMove){
         super(monsterToMove) ;
     }
+
+    /**
+     * Shuffle the List of Direction
+     * @param directions the List of directions that we have to sort.
+     * @return a shuffled List of Direction
+     */
     @Override
     public List<Direction> sortDirections(List<Direction> directions){
         Collections.shuffle(directions);
