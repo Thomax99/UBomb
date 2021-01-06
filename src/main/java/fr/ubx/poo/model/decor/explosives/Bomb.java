@@ -1,6 +1,8 @@
 package fr.ubx.poo.model.decor.explosives;
 
-public class Bomb extends Explosive {
+import fr.ubx.poo.model.Updatable;
+
+public class Bomb extends Explosive implements Updatable {
     private int state ; //the state of the bomb (a countdown of second)
     private long start; //the time of the start of the bomb
     public Bomb(int range, int level, long start) {
@@ -8,6 +10,7 @@ public class Bomb extends Explosive {
         state = 3; //by default, bombs explode after 4 seconds
         this.start = start ;
     }
+    @Override
     public void update(long now) {
         state = (int)((start-now)/1000000000L) + 3 ;
     }

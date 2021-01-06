@@ -44,7 +44,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>(), spritesExplosive = new ArrayList<>(), spritesExpl = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>() ;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
@@ -58,35 +58,46 @@ public final class GameEngine {
         initialize(stage, game);
         buildAndSetGameLoop();
     }
-
+    /**
+     * Function used to (re)initialize the display of a given game
+     * @param stage the stage in which we gave to display
+     * @param game the given game
+     */
     private void initialize(Stage stage, Game game) {
         this.stage = stage;
         Group root = new Group();
         layer = new Pane();
 
+        //size management
         int height = game.getWorld().dimension.height;
         int width = game.getWorld().dimension.width;
         int sceneWidth = width * Sprite.size;
         int sceneHeight = height * Sprite.size;
         Scene scene = new Scene(root, sceneWidth, sceneHeight + StatusBar.height);
-        scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
+        //style management
+        scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
         stage.setTitle(windowTitle);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
 
+        //reinitalize the input and the statusBar
         input = new Input(scene);
         root.getChildren().add(layer);
         statusBar = new StatusBar(root, sceneWidth, sceneHeight, game);
-        // Create decor sprites
-        game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
-        spritePlayer = SpriteFactory.createPlayer(layer, player);
 
+        // Create decor sprites
+        //this first is just for managing the different elements stored on the World (stone, bonus, ...)
+        game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
+        //In case of recoming on an old level, those lines permit the sprites of explosions and bombs (decor which are stored on the game)
+        game.getNewDecors().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); // news explosions
+        game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //bombs
+
+        //create game object Sprite
+        spritePlayer = SpriteFactory.createPlayer(layer, player);
         game.getMonsters().forEach(monster -> sprites.add(SpriteFactory.createMonster(layer, monster)));
         game.getBoxes().forEach(box -> sprites.add(SpriteFactory.createBox(layer, box)) );
-        game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
-        game.getNewDecors().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //it is for put the possibly news explosions
     }
 
     protected final void buildAndSetGameLoop() {
@@ -191,8 +202,6 @@ public final class GameEngine {
 
     private void render() {
         sprites.forEach(Sprite::render);
-        spritesExplosive.forEach(Sprite::render);
-        spritesExpl.forEach(Sprite::render);
         // last rendering to have player in the foreground
         spritePlayer.render();
     }

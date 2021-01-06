@@ -261,6 +261,11 @@ public class Game {
      * Function used to notify the game that the gameEngine has made the change in case of the elements of the level has been changed
      */
     public void elementsLevelChanged(){
+        //we suppress all the elements which have are not new
+        Iterator<Position> it = getNewDecors().keySet().iterator() ;
+        while (it.hasNext()){
+            it.next() ; it.remove();
+        }
         hasElementsLevelChange = false ;
     }
     /**

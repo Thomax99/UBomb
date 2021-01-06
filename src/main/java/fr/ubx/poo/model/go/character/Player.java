@@ -13,7 +13,7 @@ import fr.ubx.poo.model.decor.* ;
 import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
-public class Player extends Character {
+public class Player extends Character{
 
     private final boolean alive = true;
     private boolean isInvincible = false;
@@ -142,10 +142,7 @@ public class Player extends Character {
         game.changeWorld(lv);
     }
 
-    /**
-     *
-     * @param now
-     */
+    @Override
     public void update(long now) {
         setCurrentTime(now);
         if ( ((getCurrentTime()-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers

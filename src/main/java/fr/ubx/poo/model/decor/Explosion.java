@@ -13,6 +13,7 @@ public class Explosion extends Decor implements Updatable{
         super() ;
         this.start = start ;
     }
+    @Override
     public void update(long now) {
         if ((now-start) / 1000000000L != 0){
             remove() ;

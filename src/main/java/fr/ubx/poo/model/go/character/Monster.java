@@ -29,10 +29,7 @@ public class Monster extends Character {
         this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
     }
 
-    /**
-     * Update the state of a monster depending if it is moving or damaging the player
-     * @param now the time it is at the moment in millisecondes
-     */
+    @Override
     public void update(long now) {
         if((now-lastMoveTime) /1000000000L >= speedMoving){
             lastMoveTime = now ;

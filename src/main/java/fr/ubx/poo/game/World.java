@@ -101,6 +101,9 @@ public class World {
      * @return the new object explosion
      */
     public Explosion addExplosion(Position position, long now){
+        if (explosions.get(position) != null){
+            explosions.get(position).remove(); //if there is already an explosion, we remove it
+        }
         Explosion exp = new Explosion(now) ;
         explosions.put(position, exp) ;
         return exp ;
