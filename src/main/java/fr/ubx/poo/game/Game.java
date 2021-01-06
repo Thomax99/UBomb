@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.function.ToIntFunction;
 
 import javax.lang.model.util.ElementScanner6;
 
@@ -81,7 +80,7 @@ public class Game {
     private void initializeWorld(){
         if (randomlyGenerate)
             //the initialization is not from the files
-            worlds.add(new World(WorldBuilder.randomBuild(nb_level, nb_total_levels))) ;
+            worlds.add(new World(WorldBuilder.randomBuild(worldPath, nb_level, nb_total_levels))) ;
         else
             worlds.add(loadWorld(this.nb_level)) ;
     }
@@ -330,7 +329,6 @@ public class Game {
      * @param level the level in which the explosion occur
      */
     public void explode(Position position, long now, int level){
-        System.out.println("bombe explosée position : "+ position) ;
         getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
         hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
         hasElementsLevelChange = true ;
