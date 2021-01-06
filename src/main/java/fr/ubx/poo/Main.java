@@ -28,6 +28,9 @@ public class Main extends Application {
                 System.err.println("The parameter " + param2+" is not a number");
             }
         }
+        //now we verify the value of nb_levels to don't have no wanted behaviors.
+        if (nb_levels <= 0) nb_levels = 5 ;
+        if (nb_levels > 9) nb_levels = 9 ; 
         ImageFactory.getInstance().load();
         String path = getClass().getResource("/sample").getFile();
         Game game = new Game(path, isRandom, nb_levels);

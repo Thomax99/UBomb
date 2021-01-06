@@ -82,13 +82,19 @@ public final class Input {
         return is(ENTER);
     }
     /**
-     * A landmine is put if we press L
+     * A landmine is put if we press SHIFT
      * @return if the touch is a requirement for a landmine
      */
     public boolean isLandmine() {
-        return is(L) ;
+        return is(SHIFT) ;
     }
-
+    /**
+     * A scarecrow is put if we press CAPS (VERR. MAJ)
+     * @return if the touch is a requirement for a landmine
+     */
+    public boolean isScarecrow() {
+        return is(CAPS) ;
+    }
     public boolean isExit() {
         return is(ESCAPE);
     }

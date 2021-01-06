@@ -24,6 +24,7 @@ public class StatusBar {
     private Text rangeValue = new Text();
     private Text keyValue = new Text();
     private Text landminesValue = new Text() ;
+    private Text hasScarecrow = new Text() ;
     private HBox level = new HBox();
     private int gameLevel = 1;
 
@@ -52,8 +53,9 @@ public class StatusBar {
         HBox range = statusGroup(ImageFactory.getInstance().get(BANNER_RANGE), rangeValue);
         HBox key = statusGroup(ImageFactory.getInstance().get(KEY), keyValue);
         HBox landmines = statusGroup(ImageFactory.getInstance().get(BANNER_LANDMINE), landminesValue);
-        status.setSpacing(40.0);
-        status.getChildren().addAll(live, bombs, range, key, landmines);
+        HBox scarecrow = statusGroup(ImageFactory.getInstance().get(BANNER_SCARECROW), hasScarecrow);
+        status.setSpacing(20.0);
+        status.getChildren().addAll(live, bombs, range, key, landmines, scarecrow);
 
         hBox.getChildren().addAll(level, status);
         hBox.getStyleClass().add("statusBar");
@@ -88,6 +90,9 @@ public class StatusBar {
         bombsValue.setText(String.valueOf(game.getPlayer().getBombs()));
         keyValue.setText(String.valueOf(game.getPlayer().getKey()));
         landminesValue.setText(String.valueOf(game.getPlayer().getLandmines()));
+        //the scarecrow option is a boolean option : we can't store them
+        if (game.getPlayer().getScarecrow()) hasScarecrow.setText("V") ;
+        else hasScarecrow.setText("F") ;
     }
 
 }

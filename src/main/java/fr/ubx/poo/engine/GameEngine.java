@@ -131,6 +131,9 @@ public final class GameEngine {
         if (input.isLandmine()){
             player.requestLandmine() ;
         }
+        if (input.isScarecrow()){
+            player.requestScarecrow() ;
+        }
         input.clear();
     }
 

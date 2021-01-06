@@ -6,6 +6,7 @@ public enum ImageResource {
     BANNER_BOMB ("banner_bomb.png"),
     BANNER_RANGE ("banner_range.png"),
     BANNER_LANDMINE("banner_landmine.png"),
+    BANNER_SCARECROW("banner_scarecrow.png"),
     HEART("heart.png"),
     KEY("key.png"),
     DIGIT_0 ("banner_0.jpg"),
@@ -45,7 +46,6 @@ public enum ImageResource {
     LANDMINE("landmine.png"),
     BONUS_LANDMINE("bonus_landmine.png"),
     BONUS_SCARECROW("bonus_scarecrow.png"),
-
     ;
 
     private final String FileName;
