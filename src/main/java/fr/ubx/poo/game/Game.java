@@ -32,11 +32,12 @@ import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;
 
 public class Game {
-    private final List<World> worlds;
     private final Player player;
+    //the differents entities are managed by lists of Collections. Each collection match to the current set on a given level
+    private final List<World> worlds;
     private final List<List<Monster>> monsters ;
     private final List<List<Box>> boxes ;
-    private final Map<Position, Explosive> explosives ;
+    private final List<Map<Position, Explosive>> explosives ;
     private final String worldPath;
     private int nb_level, level_max_initialized, nb_total_levels ;
     private boolean hasChangedWorld = false, hasElementsLevelChange = false, hasNewExplosions = false, randomlyGenerate ;
@@ -61,7 +62,7 @@ public class Game {
         worlds = new ArrayList<>() ;
         monsters = new ArrayList<>() ;
         boxes = new ArrayList<>() ;
-        explosives = new Hashtable<>() ;
+        explosives  = new ArrayList<>() ;
         initializeWorld() ;
         Position positionPlayer = null;
 
@@ -88,6 +89,7 @@ public class Game {
     private void initializeEntities(){
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
+        explosives.add(new Hashtable<>()) ;
         getWorld().findMonsters().forEach(p -> getMonsters().add(new Monster(this, p) )) ;
         getWorld().findBoxes().forEach(p -> getBoxes().add(new Box(this, p) )) ;
     }
@@ -165,7 +167,7 @@ public class Game {
      * @return if there is a landmine at the position pos on the level level
      */
     public boolean positionIsLandmine(Position pos, int level){
-        Explosive explosive = explosives.get(pos) ;
+        Explosive explosive = getExplosives().get(pos) ;
         return explosive != null && !explosive.isBomb() && explosive.getLevel() == level ;
     }
     /**
@@ -175,7 +177,7 @@ public class Game {
      * @return if there is a bomb at the position pos on the level level
      */
     public boolean positionIsBomb(Position pos, int level){
-        Explosive explosive = explosives.get(pos) ;
+        Explosive explosive = getExplosives().get(pos) ;
         return explosive != null && explosive.isBomb() && explosive.getLevel() == level ;
     }
     /**
@@ -187,7 +189,7 @@ public class Game {
      * @param start the time that you put a bomb
      */
     public void addBomb(Position pos, int range, long start){
-        explosives.put(pos, new Bomb(range, getLevel(), start)) ;
+        getExplosives().put(pos, new Bomb(range, getLevel(), start)) ;
         hasElementsLevelChange = true ;
     }
     /**
@@ -198,7 +200,7 @@ public class Game {
      * @param range the range of the landmine
      */
     public void addLandmine(Position pos, int range){
-        explosives.put(pos, new Landmine(range, getLevel())) ;
+        getExplosives().put(pos, new Landmine(range, getLevel())) ;
         hasElementsLevelChange = true ;
     }
     /**
@@ -233,11 +235,19 @@ public class Game {
         return getWorld().getScarecrow() ;
     }
     /**
-     * This function is used to give all the explosives engines which are actually on the world
+     * This function is used to give all the explosives engines which are currently on the world
      * @return a Map which contains the Explosive objects at the good locations
      */
     public Map<Position, Explosive> getExplosives(){
-        return explosives ;
+        return getExplosives(getLevel()) ;
+    }
+     /**
+     * This function is used to give all the explosives engines which are currently on a given level
+     * @param level the given level
+     * @return a Map which contains the Explosive objects at the good locations
+     */
+    public Map<Position, Explosive> getExplosives(int level){
+        return explosives.get(level - 1) ;
     }
     /**
      * Function used to notify the game that the gameEngine has made the change in case of the elements of the level has been changed
@@ -317,14 +327,16 @@ public class Game {
      * explosive placed in position position
      * @param position The position of the explosive item
      * @param now the moment of the explosion
+     * @param level the level in which the explosion occur
      */
-    public void explode(Position position, long now){
+    public void explode(Position position, long now, int level){
+        System.out.println("bombe explosée position : "+ position) ;
         getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
         hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
         hasElementsLevelChange = true ;
 
         //getting the explosive engine
-        Explosive explosive = explosives.get(position) ;
+        Explosive explosive = getExplosives(level).get(position) ;
         if (explosive == null) throw new RuntimeException("Error : the only positions which can explode has to have an explosive engine on it") ;
         explosive.explosion(now) ; // we notify the explosion
 
@@ -369,9 +381,9 @@ public class Game {
                     }
                 }
 
-                Explosive exploAdj = explosives.get(p) ;
+                Explosive exploAdj = getExplosives(level).get(p) ;
                 if (exploAdj != null && !exploAdj.hasToBeRemoved()){
-                    explode(p, now) ;
+                    explode(p, now, level) ;
                 }
                 world.addExplosion(p, now);
                 position = p ; // managing the depth of the range
@@ -385,33 +397,36 @@ public class Game {
 
         getMonsters().forEach(go -> go.update(now));
         getWorld().update(now) ;
-        explosives.forEach( (pos, explosive) -> {
-            if(explosive.isBomb()){
-                Bomb bomb = (Bomb) explosive ;
-                bomb.update(now) ;
-                if (bomb.isExplosing())
-                    explode(pos, now) ;
-            }  });
+        //we need to make explosions of bombs for each level
+        explosives.forEach(map -> map.forEach((pos, explosive) -> {
+                                        if(explosive.isBomb()){
+                                            Bomb bomb = (Bomb) explosive ;
+                                            bomb.update(now) ;
+                                            if (bomb.isExplosing()){
+                                                explode(pos, now, bomb.getLevel()) ;
+                                            }
+                                        }
+                                    } ) ) ;
 
-        //landmine management
-        Explosive explosive = explosives.get(getPlayer().getPosition()) ;
+        //landmine management : just on the current world
+        Explosive explosive = getExplosives().get(getPlayer().getPosition()) ;
         if (explosive != null && !explosive.isBomb()){
             //there is a landmine
-            explode(getPlayer().getPosition(), now) ;
+            explode(getPlayer().getPosition(), now, this.nb_level) ;
         }
         for (Monster monster : getMonsters()){
-            explosive = explosives.get(monster.getPosition()) ;
+            explosive = getExplosives().get(monster.getPosition()) ;
             if (explosive != null && !explosive.isBomb()){
                 //there is a landmine
-                explode(monster.getPosition(), now) ;
+                explode(monster.getPosition(), now, this.nb_level) ;
             }
         }
 
         //now we remove the explosive which has exploded
-        Iterator<Position> it = explosives.keySet().iterator() ;
+        Iterator<Position> it = getExplosives().keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (explosives.get(pos).hasToBeRemoved() ) it.remove();
+            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove();
         }
     }
     public Map<Position, Explosion> getExplosions(){

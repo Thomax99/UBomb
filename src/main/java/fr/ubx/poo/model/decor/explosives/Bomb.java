@@ -16,7 +16,7 @@ public class Bomb extends Explosive {
      * @return if the bomb is explosing itself
      */
     public boolean isExplosing(){
-        return state == -1  ;
+        return state == -1 && !hasToBeRemoved()  ; //the state has to be -1 and the bomb cannot has already explode
     }
     public int getState() {
         return state;

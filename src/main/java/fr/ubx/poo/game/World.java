@@ -18,6 +18,7 @@ import java.util.function.BiConsumer;
 
 public class World {
     private final Map<Position, Decor> grid;
+    //the explosions are managed on an other map because there is going to have a lot of changes
     private final Map<Position, Explosion> explosions ;
     private Position scarecrowPosition ; // the position of the scarecrow. if there is not a scarecrow on the world, the value is null
     private final WorldEntity[][] raw;

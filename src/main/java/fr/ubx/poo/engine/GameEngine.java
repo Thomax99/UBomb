@@ -84,10 +84,7 @@ public final class GameEngine {
 
         game.getMonsters().forEach(monster -> sprites.add(SpriteFactory.createMonster(layer, monster)));
         game.getBoxes().forEach(box -> sprites.add(SpriteFactory.createBox(layer, box)) );
-        if (game.hasScarecrow()){
-            //we have to place the scarecrow
-            sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
-        }
+        game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
     }
 
     protected final void buildAndSetGameLoop() {
@@ -165,12 +162,7 @@ public final class GameEngine {
         if(game.hasElementsLevelChange()){
             spritesExplosive.forEach(Sprite::remove);
             spritesExplosive.clear() ;
-            game.getExplosives().forEach((pos, explosive) -> {
-                                    if (explosive.isBomb())
-                                        spritesExplosive.add(SpriteFactory.createDecor(layer, pos, (Bomb) explosive)) ;
-                                    else
-                                        spritesExplosive.add(SpriteFactory.createDecor(layer, pos, (Landmine) explosive)) ;
-                                });
+            game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
             if (game.hasScarecrow()){
                 //we have to place the scarecrow
                 sprites.add(SpriteFactory.createDecor(layer, game.getScarecrowPosition(), game.getScarecrow())) ;
