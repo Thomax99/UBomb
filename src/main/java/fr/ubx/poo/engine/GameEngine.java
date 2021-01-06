@@ -90,8 +90,7 @@ public final class GameEngine {
         // Create decor sprites
         //this first is just for managing the different elements stored on the World (stone, bonus, ...)
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
-        //In case of recoming on an old level, those lines permit the sprites of explosions and bombs (decor which are stored on the game)
-        game.getNewDecors().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); // news explosions
+        //In case of recoming on an old level, those lines permit the sprites and bombs (decor which are stored on the game)
         game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //bombs
 
         //create game object Sprite
@@ -183,11 +182,15 @@ public final class GameEngine {
             game.elementsLevelChanged();
         }
         if(game.hasChangedWorld()){
+            // the level has been changed !
+            // we are going to remove and remake all the elements by a new itilalization
             sprites.forEach(Sprite::remove);
             sprites.clear();
             stage.close();
             initialize(stage, game);
+            //we notify the game that the worldChange has been made, and that the new elements of the levels has been put
             game.worldChangeMade();
+            game.elementsLevelChanged();
         }
         player.update(now);
         if (player.isAlive() == false) {

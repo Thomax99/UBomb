@@ -10,7 +10,7 @@ package fr.ubx.poo.model;
 public interface Updatable {
     /**
      * This function permit to update an object according to a given time
-     * @param now the given time
+     * @param now the given
      */
     void update(long now) ;
 }

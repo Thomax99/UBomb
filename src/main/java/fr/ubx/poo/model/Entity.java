@@ -36,8 +36,8 @@ public abstract class Entity {
         return level ;
     }
     /**
-     * function used to notify a gameObject that an explosion on it
-     * @param now the moment that an explosion occur on the gameObject
+     * function used to notify an entity that an explosion on it
+     * @param now the moment that an explosion occur on the entity
      */
     public void explosion(long now){
         remove(); //by default, the gameObject in which an explosion occur are removed

@@ -331,7 +331,8 @@ public class Game {
      * @param level the level in which the explosion occur
      */
     public void explode(Position position, long now, int level){
-        hasElementsLevelChange = true ; // useful for the gameEngine and the management of the sprites
+        if (level == this.nb_level) //an explosion occur on the current level
+            hasElementsLevelChange = true ; // useful for the gameEngine and the management of the sprites
 
         //getting the explosive engine
         Explosive explosive = getExplosives(level).get(position) ;
@@ -356,53 +357,63 @@ public class Game {
 
         for(Direction d : directions){
             position = startPosition ; // we reinitialize the variable
-            boolean somethingExploded = false ; //useful to stop an explosion if something explode
+            boolean somethingExploded = false ; //useful to not propagate an explosion if something explode on the direction
             for (int j = 0; j < explosive.getRange() && !somethingExploded; j++){
                 //decor explosion part
-                final Position p = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
-                if(!world.canExplode(p)) break ; //there is a decor which block the explosion
-                somethingExploded = world.explode(p) ;
+                position = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
+                if(!world.canExplode(position)) break ; //there is a decor which block the explosion
+                somethingExploded = world.explode(position) ;
 
                 //Game object explosion part
-                if (getPlayer().getPosition().equals(p)){
+
+                if (getPlayer().getPosition().equals(position) && this.nb_level == level){
+                    //the player has to be explosed just if the bomb explose on the same level
                     player.explosion(now) ;
                     somethingExploded = true ;
                 }
                 for(Monster monster : monsters){
-                    if (monster.getPosition().equals(p)){
+                    if (monster.getPosition().equals(position)){
                         monster.explosion(now) ;
                         somethingExploded = true ;
                     }
                 }
                 for(Box box : boxes){
-                    if (box.getPosition().equals(p)){
+                    if (box.getPosition().equals(position)){
                         box.explosion(now) ;
                         somethingExploded = true ;
                     }
                 }
 
-                Explosive exploAdj = getExplosives(level).get(p) ;
+                //we're we manage the propagation of the explosions if there is some bombs more
+                Explosive exploAdj = getExplosives(level).get(position) ;
                 if (exploAdj != null && !exploAdj.hasToBeRemoved()){
-                    explode(p, now, level) ;
+                    explode(position, now, level) ;
                 }
-                getNewDecors(level).put(p, world.addExplosion(p, now));
-                position = p ; // managing the depth of the range
+                getNewDecors(level).put(position, world.addExplosion(position, now));
             }
         }
-
     }
+    /**
+     * This function is used by the controller to notify the game that it has to be updated (ie compute interactions between the differents elements)
+     * at a given time
+     * @param now the given time
+     */
     public void update(long now){
+        //first we remove the objects directly stored on the game which are not important
         getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
         getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
 
+        //we update the monsters : with this, they can move if they need to
         getMonsters().forEach(go -> go.update(now));
+        //and we update the current world
         getWorld().update(now) ;
+
         //we need to make explosions of bombs for each level
         explosives.forEach(map -> map.forEach((pos, explosive) -> {
                                         if(explosive.isBomb()){
                                             Bomb bomb = (Bomb) explosive ;
                                             bomb.update(now) ;
-                                            if (bomb.isExplosing()){
+                                            if (bomb.isExplosing()){ //the bomb has to explode
                                                 explode(pos, now, bomb.getLevel()) ;
                                             }
                                         }
@@ -411,31 +422,35 @@ public class Game {
         //landmine management : just on the current world
         Explosive explosive = getExplosives().get(getPlayer().getPosition()) ;
         if (explosive != null && !explosive.isBomb()){
-            //there is a landmine
+            //there is a landmine at the player position
             explode(getPlayer().getPosition(), now, this.nb_level) ;
         }
         for (Monster monster : getMonsters()){
             explosive = getExplosives().get(monster.getPosition()) ;
             if (explosive != null && !explosive.isBomb()){
-                //there is a landmine
+                //there is a landmine at a monster position
                 explode(monster.getPosition(), now, this.nb_level) ;
             }
         }
 
-        //now we remove the explosive which has exploded
+        // now we remove the explosives which has exploded on the current level :
+        // the explosives which are on other levels are going to be removed when the player recome on the world :
+        // In contrast, the explosives explode regardless of the level (see few upper)
         Iterator<Position> it = getExplosives().keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove();
+            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove(); 
         }
     }
-    public Map<Position, Explosion> getExplosions(){
-        return getWorld().getExplosions() ;
-    }
+    /**
+     * this function is used to know what are the theorically new decor (against to the last updating)
+     * This function has to be used with elementsLevelChanged to notify that the elements have been placed
+     * @return A Map corresponding to the new Decor.
+     */
     public Map<Position, Decor> getNewDecors(){
         return getNewDecors(getLevel()) ;
     }
-    public Map<Position, Decor> getNewDecors(int level){
+    private Map<Position, Decor> getNewDecors(int level){
         return newDecorToPlace.get(level - 1) ;
     }
     private void loadConfig(String path) {

@@ -8,6 +8,7 @@ import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
 import fr.ubx.poo.model.decor.Scarecrow;
 import fr.ubx.poo.model.decor.explosives.Explosive;
+import fr.ubx.poo.model.Updatable;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,8 +20,6 @@ import java.util.function.BiConsumer;
 
 public class World {
     private final Map<Position, Decor> grid;
-    //the explosions are managed on an other map because there is going to have a lot of changes
-    private final Map<Position, Explosion> explosions ;
     private Position scarecrowPosition ; // the position of the scarecrow. if there is not a scarecrow on the world, the value is null
     private final WorldEntity[][] raw;
     public final Dimension dimension;
@@ -30,7 +29,6 @@ public class World {
         dimension = new Dimension(raw.length, raw[0].length);
         grid = WorldBuilder.build(raw, dimension);
         scarecrowPosition = null ;
-        explosions = new Hashtable<Position, Explosion>() ;
     }
 
     private Position findOneEntity(WorldEntity entity) throws PositionNotFoundException{
@@ -76,10 +74,6 @@ public class World {
     public List<Position> findBoxes(){
         return findEntities(WorldEntity.Box) ;
     }
-
-    public Map<Position, Explosion> getExplosions(){
-        return explosions ;
-    }
     public Decor get(Position position) {
         return grid.get(position);
     }
@@ -101,11 +95,11 @@ public class World {
      * @return the new object explosion
      */
     public Explosion addExplosion(Position position, long now){
-        if (explosions.get(position) != null){
-            explosions.get(position).remove(); //if there is already an explosion, we remove it
+        if (grid.get(position) != null && grid.get(position).isExplosion()){
+            grid.get(position).remove(); //if there is already an explosion, we remove it
         }
         Explosion exp = new Explosion(now) ;
-        explosions.put(position, exp) ;
+        set(position, exp) ;
         return exp ;
     }
     public void clear(Position position) {
@@ -125,18 +119,14 @@ public class World {
      * @param now the actual time
      */
     public void update(long now){
-        explosions.forEach( (Position, exp) -> exp.update(now) ) ; // first we update the explosions (ie they are going to remove themselves if they lifetime is > 1s)
+        forEach( (Position, dec) -> { if (dec.isExplosion()) ((Updatable) dec).update(now) ; }) ; // first we update the updatables objects (currently there is just the Explosion)
+        //here were going to remove all the no needed elements
         Iterator<Position> it = grid.keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
             if (grid.get(pos).hasToBeRemoved() ){
                 it.remove(); //we remove all the no needed elements of the world
             }
-        }
-        it = explosions.keySet().iterator() ;
-        while (it.hasNext()){
-            Position pos = it.next() ;
-            if (explosions.get(pos).hasToBeRemoved() ) it.remove(); // and all the no needed explosions of the world
         }
     }
     /**
