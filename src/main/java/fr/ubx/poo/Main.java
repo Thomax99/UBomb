@@ -19,7 +19,7 @@ public class Main extends Application {
         List<String> list = params.getRaw();
         boolean isRandom = (list.size() > 0 && list.get(0).equals("random")) ; // if the games has to be randmoly generate
         int nb_levels = 5; // by default, we initialize this variable at 5. If isRandom = false, this variable is not used
-        if(list.size() > 1){
+        if(list.size() > 1){ //there is maybe a number of levels which is precised
             String param2 = list.get(1) ;
             try{
                 nb_levels = Integer.parseInt(param2) ;

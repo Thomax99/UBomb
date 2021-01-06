@@ -75,9 +75,6 @@ public class WorldBuilder {
             raw[y][x] = WorldEntity.Key ;
         }
 
-        //PROBABILITIES
-        //they are managed recursively, ie an has 0.2 probability to be a decor which has 0.3 probability to be a bonus, ...
-        // recuperation from a file
         double probas[] = {0.7, 0.07, 0.05, 0.07, 0.02, 0.012, 0.012, 0.015, 0.02, 0.01, 0.02, 0.006} ;
         String probaNames[] = {"emptyProba", "boxProba", "monsterProba", "stoneProba", "treeProba", "numberIncProba",
                                 "numberDecProba", "rangeIncProba", "rangeDecProba", "heartProba", "landminerProba", "scarecrowProba"} ;

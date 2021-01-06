@@ -73,8 +73,8 @@ fr/ubx/poo/model/go/Box.java
  fr.ubx.poo.model.go.Box
 fr/ubx/poo/model/go/GameObject.java
  fr.ubx.poo.model.go.GameObject
-fr/ubx/poo/Main.java
- fr.ubx.poo.Main
+fr/ubx/poo/model/decor/explosives/Landmine.java
+ fr.ubx.poo.model.decor.explosives.Landmine
 fr/ubx/poo/model/decor/Scarecrow.java
  fr.ubx.poo.model.decor.Scarecrow
 fr/ubx/poo/view/sprite/SpriteExplosion.java
@@ -117,11 +117,11 @@ fr/ubx/poo/model/decor/bonus/Key.java
  fr.ubx.poo.model.decor.bonus.Key
 fr/ubx/poo/view/sprite/SpriteFactory.java
  fr.ubx.poo.view.sprite.SpriteFactory
-fr/ubx/poo/model/decor/explosives/Landmine.java
- fr.ubx.poo.model.decor.explosives.Landmine
 fr/ubx/poo/game/WorldBuilder.java
  fr.ubx.poo.game.WorldBuilder
  fr.ubx.poo.game.WorldBuilder$1
+fr/ubx/poo/Main.java
+ fr.ubx.poo.Main
 fr/ubx/poo/game/Game.java
  fr.ubx.poo.game.Game
 fr/ubx/poo/game/World.java
