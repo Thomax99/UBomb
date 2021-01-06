@@ -89,11 +89,11 @@ public final class Input {
         return is(SHIFT) ;
     }
     /**
-     * A scarecrow is put if we press CAPS (VERR. MAJ)
-     * @return if the touch is a requirement for a landmine
+     * A scarecrow is put if we press CAPS (VERR. MAJ) or S
+     * @return if the touch is a requirement for a scarecrow
      */
     public boolean isScarecrow() {
-        return is(CAPS) ;
+        return is(CAPS) || is(S) ;
     }
     public boolean isExit() {
         return is(ESCAPE);
