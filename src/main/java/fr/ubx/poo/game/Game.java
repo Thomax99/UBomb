@@ -335,7 +335,6 @@ public class Game {
         //getting the explosive engine
         Explosive explosive = getExplosives(level).get(position) ;
         if (explosive == null) throw new RuntimeException("Error : the only positions which can explode has to have an explosive engine on it") ;
-        
         if (explosive.isBomb()) getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
 
         explosive.explosion(now) ; // we notify the explosion

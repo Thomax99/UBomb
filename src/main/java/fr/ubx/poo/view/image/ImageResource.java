@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public enum ImageResource {
     BANNER_BOMB ("banner_bomb.png"),
     BANNER_RANGE ("banner_range.png"),
-    BANNER_LANDMINE ("banner_landmine.png"),
+    BANNER_LANDMINE("banner_landmine.png"),
     HEART("heart.png"),
     KEY("key.png"),
     DIGIT_0 ("banner_0.jpg"),
