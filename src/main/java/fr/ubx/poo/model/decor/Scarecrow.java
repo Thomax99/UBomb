@@ -19,4 +19,8 @@ public class Scarecrow extends Decor {
     public boolean canMoveIn(){
         return false ; //it is impossible to move on a scarecrow
     }
+    @Override
+    public boolean isScarecrow(){
+        return true ;
+    }
 }

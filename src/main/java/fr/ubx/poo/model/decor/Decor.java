@@ -43,5 +43,13 @@ public class Decor extends Entity {
     public boolean isDoor(){
         return false ;
     }
-
+    public boolean isExplosion(){
+        return false ;
+    }
+    public boolean isExplosive(){
+        return false ;
+    }
+    public boolean isScarecrow(){
+        return false ;
+    }
 }

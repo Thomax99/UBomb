@@ -7,6 +7,7 @@ package fr.ubx.poo.game;
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
 import fr.ubx.poo.model.decor.Scarecrow;
+import fr.ubx.poo.model.decor.explosives.Explosive;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ public class World {
         return findOneEntity(WorldEntity.DoorNextClosed) ;
     }
     /**
-     * Used to find the positions of an given entity
+     * Used to find the positions of a given entity
      * @param entity the entity that we would like to have all the positions
      * @return the list of the positions of all the entities
      */
@@ -82,7 +83,15 @@ public class World {
     public Decor get(Position position) {
         return grid.get(position);
     }
-    public void set(Position position, Decor decor) {
+    /**
+     * this function is used to set a decor at a given position
+     * This function is private for protect the world of unallowed set
+     * If you would like to set something in the world, the best way is to make the correct function
+     * which is going to call set (eg addScarecrow)
+     * @param position the position in which we would like to set a decor
+     * @param decor the given decor
+     */
+    private void set(Position position, Decor decor) {
         grid.put(position, decor);
     }
     public void addExplosion(Position position, long now){
@@ -206,7 +215,12 @@ public class World {
         scarecrowPosition = position ;
         set(position, new Scarecrow()) ;
     }
-    public boolean canMoveIn(Position position){
-        return isEmpty(position) || get(position).canMoveIn() ;
+    /**
+     * This function is used to know if it is possible to go on a given position
+     * @param position the given position
+     * @return if it is possible to go here or not
+     */
+    public boolean canGoIn(Position position){
+        return isInside(position) && (isEmpty(position) || get(position).canMoveIn()) ;
     }
 }

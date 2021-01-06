@@ -493,7 +493,7 @@ public class Game {
      * @return if it is possible for a character to go at this position
      */
     public boolean positionAllowedToCharacters(Position position){
-        return positionAllowedToMovableGameObjects(position) && (getWorld().canMoveIn(position)) ;
+        return positionAllowedToMovableGameObjects(position) && getWorld().canGoIn(position) ;
         //a character can't go on an unauthorized decor
     }
     /**

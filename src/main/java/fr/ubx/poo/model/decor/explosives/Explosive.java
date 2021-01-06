@@ -30,4 +30,9 @@ public abstract class Explosive extends Decor {
     public boolean isBomb(){
         return false ;
     }
+    @Override
+    public boolean isExplosive(){
+        return true ;
+    }
+
 }

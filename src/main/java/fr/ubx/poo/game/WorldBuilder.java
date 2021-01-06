@@ -85,7 +85,7 @@ public class WorldBuilder {
         String probaNames[] = {"emptyProba", "boxProba", "monsterProba", "stoneProba", "treeProba", "numberIncProba",
                                 "numberDecProba", "rangeIncProba", "rangeDecProba", "heartProba", "landminerProba", "scarecrowProba"} ;
         WorldEntity entitiesMatches[] = {WorldEntity.Empty, WorldEntity.Box, WorldEntity.Monster, WorldEntity.Stone, WorldEntity.Tree,
-                                        WorldEntity.BombNumberInc, WorldEntity.BombNumberDec, WorldEntity.BombRangeInc, WorldEntity.BombNumberDec,
+                                        WorldEntity.BombNumberInc, WorldEntity.BombNumberDec, WorldEntity.BombRangeInc, WorldEntity.BombRangeDec,
                                         WorldEntity.Heart, WorldEntity.Landminer, WorldEntity.BonusScarecrow} ;
         try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
             Properties prop = new Properties();
@@ -100,6 +100,7 @@ public class WorldBuilder {
             System.err.println("Error loading configuration");
         }
 
+        //this part manage the randomisation of the world
         for(y = 0; y < height; y++){
             for (x = 0; x < width; x++){
                 if (raw[y][x] == null) {

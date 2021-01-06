@@ -18,4 +18,8 @@ public class Explosion extends Decor implements Updatable{
             remove() ;
         }
     }
+    @Override
+    public boolean isExplosion(){
+        return true ;
+    }
 }
