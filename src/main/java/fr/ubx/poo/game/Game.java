@@ -293,7 +293,8 @@ public class Game {
      * @return if it is possible or not to put a bomb here
      */
     public boolean canBomb(Position p){
-        return getWorld().canBomb(p) ;
+        //we cannot obmb if there is already a bomb or if the World say no
+        return getExplosives().get(p)== null &&  getWorld().canBomb(p) ;
     }
     public boolean canLandmine(Position p){
         for(Box box : getBoxes()){

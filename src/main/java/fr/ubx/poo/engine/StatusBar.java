@@ -27,7 +27,6 @@ public class StatusBar {
     private Text hasScarecrow = new Text() ;
     private HBox level = new HBox();
     private int gameLevel = 1;
-
     private final Game game;
     private final DropShadow ds = new DropShadow();
 
@@ -46,16 +45,18 @@ public class StatusBar {
         ds.setColor(Color.color(0.5f, 0.5f, 0.5f));
 
 
+
         HBox status = new HBox();
         status.getStyleClass().add("status");
-        HBox live = statusGroup(ImageFactory.getInstance().get(HEART), this.liveValue);
+        HBox live = statusGroup(ImageFactory.getInstance().get(HEART), liveValue);
         HBox bombs = statusGroup(ImageFactory.getInstance().get(BANNER_BOMB), bombsValue);
         HBox range = statusGroup(ImageFactory.getInstance().get(BANNER_RANGE), rangeValue);
         HBox key = statusGroup(ImageFactory.getInstance().get(KEY), keyValue);
         HBox landmines = statusGroup(ImageFactory.getInstance().get(BANNER_LANDMINE), landminesValue);
         HBox scarecrow = statusGroup(ImageFactory.getInstance().get(BANNER_SCARECROW), hasScarecrow);
-        status.setSpacing(20.0);
+        status.setSpacing(2.0);
         status.getChildren().addAll(live, bombs, range, key, landmines, scarecrow);
+
 
         hBox.getChildren().addAll(level, status);
         hBox.getStyleClass().add("statusBar");
