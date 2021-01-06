@@ -23,6 +23,7 @@ public class StatusBar {
     private Text bombsValue = new Text();
     private Text rangeValue = new Text();
     private Text keyValue = new Text();
+    private Text landminesValue = new Text() ;
     private HBox level = new HBox();
     private int gameLevel = 1;
 
@@ -50,8 +51,9 @@ public class StatusBar {
         HBox bombs = statusGroup(ImageFactory.getInstance().get(BANNER_BOMB), bombsValue);
         HBox range = statusGroup(ImageFactory.getInstance().get(BANNER_RANGE), rangeValue);
         HBox key = statusGroup(ImageFactory.getInstance().get(KEY), keyValue);
+        HBox landmines = statusGroup(ImageFactory.getInstance().get(BANNER_LANDMINE), landminesValue);
         status.setSpacing(40.0);
-        status.getChildren().addAll(live, bombs, range, key);
+        status.getChildren().addAll(live, bombs, range, key, landmines);
 
         hBox.getChildren().addAll(level, status);
         hBox.getStyleClass().add("statusBar");
@@ -85,6 +87,7 @@ public class StatusBar {
         rangeValue.setText(String.valueOf(game.getPlayer().getRange()));
         bombsValue.setText(String.valueOf(game.getPlayer().getBombs()));
         keyValue.setText(String.valueOf(game.getPlayer().getKey()));
+        landminesValue.setText(String.valueOf(game.getPlayer().getLandmines()));
     }
 
 }

@@ -1,4 +1,3 @@
-
 package fr.ubx.poo.model.go.character.automovablepolicies;
 
 import fr.ubx.poo.game.Direction;
@@ -56,7 +55,7 @@ public abstract class Automovable {
      * @return the direction in which a monster has to go
      */
     public Direction computeMove(){
-        List<Direction> directions = new ArrayList(Arrays.asList(Direction.values())) ;
+        List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.values())) ;
         directions = sortDirections(directions) ;
         for(Direction d : directions){
             if(monsterToMove.canMove(d)){

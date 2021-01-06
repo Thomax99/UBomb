@@ -61,7 +61,7 @@ public enum Direction {
     }
     /**
      * 
-     * @return the opposite diretion of this direction
+     * @return the opposite direction of this direction
      */
     public abstract Direction oppositeDirection() ;
 

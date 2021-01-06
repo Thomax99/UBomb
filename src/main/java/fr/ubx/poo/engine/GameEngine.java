@@ -128,6 +128,9 @@ public final class GameEngine {
         if (input.isBomb()) {
             player.requestBomb() ;
         }
+        if (input.isLandmine()){
+            player.requestLandmine() ;
+        }
         input.clear();
     }
 

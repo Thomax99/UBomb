@@ -81,6 +81,13 @@ public final class Input {
     public boolean isKey() {
         return is(ENTER);
     }
+    /**
+     * A landmine is put if we press L
+     * @return if the touch is a requirement for a landmine
+     */
+    public boolean isLandmine() {
+        return is(L) ;
+    }
 
     public boolean isExit() {
         return is(ESCAPE);

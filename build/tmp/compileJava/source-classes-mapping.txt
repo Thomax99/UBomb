@@ -1,10 +1,9 @@
 fr/ubx/poo/engine/Input.java
  fr.ubx.poo.engine.Input
+fr/ubx/poo/model/Updatable.java
+ fr.ubx.poo.model.Updatable
 fr/ubx/poo/game/Position.java
  fr.ubx.poo.game.Position
-fr/ubx/poo/view/image/ImageFactory.java
- fr.ubx.poo.view.image.ImageFactory
- fr.ubx.poo.view.image.ImageFactory$Holder
 fr/ubx/poo/model/Entity.java
  fr.ubx.poo.model.Entity
 fr/ubx/poo/game/WorldEntity.java
@@ -13,18 +12,22 @@ fr/ubx/poo/game/Dimension.java
  fr.ubx.poo.game.Dimension
 fr/ubx/poo/game/PositionNotFoundException.java
  fr.ubx.poo.game.PositionNotFoundException
+fr/ubx/poo/game/WorldBuilder.java
+ fr.ubx.poo.game.WorldBuilder
+ fr.ubx.poo.game.WorldBuilder$1
 fr/ubx/poo/view/sprite/Sprite.java
  fr.ubx.poo.view.sprite.Sprite
+fr/ubx/poo/view/image/ImageResource.java
+ fr.ubx.poo.view.image.ImageResource
 fr/ubx/poo/game/Direction.java
  fr.ubx.poo.game.Direction
  fr.ubx.poo.game.Direction$1
  fr.ubx.poo.game.Direction$2
  fr.ubx.poo.game.Direction$3
  fr.ubx.poo.game.Direction$4
-fr/ubx/poo/model/Updatable.java
- fr.ubx.poo.model.Updatable
-fr/ubx/poo/view/image/ImageResource.java
- fr.ubx.poo.view.image.ImageResource
+fr/ubx/poo/view/image/ImageFactory.java
+ fr.ubx.poo.view.image.ImageFactory
+ fr.ubx.poo.view.image.ImageFactory$Holder
 fr/ubx/poo/model/Movable.java
  fr.ubx.poo.model.Movable
 fr/ubx/poo/view/sprite/SpriteDecor.java
@@ -33,10 +36,6 @@ fr/ubx/poo/model/go/MovableGameObject.java
  fr.ubx.poo.model.go.MovableGameObject
 fr/ubx/poo/view/sprite/SpriteGameObject.java
  fr.ubx.poo.view.sprite.SpriteGameObject
-fr/ubx/poo/engine/GameEngine.java
- fr.ubx.poo.engine.GameEngine
- fr.ubx.poo.engine.GameEngine$1
- fr.ubx.poo.engine.GameEngine$2
 fr/ubx/poo/model/go/character/Character.java
  fr.ubx.poo.model.go.character.Character
 fr/ubx/poo/view/sprite/SpriteLandmine.java
@@ -73,16 +72,16 @@ fr/ubx/poo/model/go/Box.java
  fr.ubx.poo.model.go.Box
 fr/ubx/poo/model/go/GameObject.java
  fr.ubx.poo.model.go.GameObject
-fr/ubx/poo/model/decor/explosives/Landmine.java
- fr.ubx.poo.model.decor.explosives.Landmine
+fr/ubx/poo/Main.java
+ fr.ubx.poo.Main
 fr/ubx/poo/model/decor/Scarecrow.java
  fr.ubx.poo.model.decor.Scarecrow
 fr/ubx/poo/view/sprite/SpriteExplosion.java
  fr.ubx.poo.view.sprite.SpriteExplosion
 fr/ubx/poo/model/decor/Tree.java
  fr.ubx.poo.model.decor.Tree
-fr/ubx/poo/engine/StatusBar.java
- fr.ubx.poo.engine.StatusBar
+fr/ubx/poo/game/Game.java
+ fr.ubx.poo.game.Game
 fr/ubx/poo/model/decor/Explosion.java
  fr.ubx.poo.model.decor.Explosion
 fr/ubx/poo/view/sprite/SpriteMonster.java
@@ -97,8 +96,8 @@ fr/ubx/poo/model/decor/Decor.java
  fr.ubx.poo.model.decor.Decor
 fr/ubx/poo/model/go/character/Monster.java
  fr.ubx.poo.model.go.character.Monster
-fr/ubx/poo/model/go/character/automovablepolicies/RandomPolicy.java
- fr.ubx.poo.model.go.character.automovablepolicies.RandomPolicy
+fr/ubx/poo/game/World.java
+ fr.ubx.poo.game.World
 fr/ubx/poo/model/decor/bonus/BombRangeInc.java
  fr.ubx.poo.model.decor.bonus.BombRangeInc
 fr/ubx/poo/game/WorldStatic.java
@@ -117,12 +116,13 @@ fr/ubx/poo/model/decor/bonus/Key.java
  fr.ubx.poo.model.decor.bonus.Key
 fr/ubx/poo/view/sprite/SpriteFactory.java
  fr.ubx.poo.view.sprite.SpriteFactory
-fr/ubx/poo/Main.java
- fr.ubx.poo.Main
-fr/ubx/poo/game/WorldBuilder.java
- fr.ubx.poo.game.WorldBuilder
- fr.ubx.poo.game.WorldBuilder$1
-fr/ubx/poo/game/Game.java
- fr.ubx.poo.game.Game
-fr/ubx/poo/game/World.java
- fr.ubx.poo.game.World
+fr/ubx/poo/model/decor/explosives/Landmine.java
+ fr.ubx.poo.model.decor.explosives.Landmine
+fr/ubx/poo/model/go/character/automovablepolicies/RandomPolicy.java
+ fr.ubx.poo.model.go.character.automovablepolicies.RandomPolicy
+fr/ubx/poo/engine/StatusBar.java
+ fr.ubx.poo.engine.StatusBar
+fr/ubx/poo/engine/GameEngine.java
+ fr.ubx.poo.engine.GameEngine
+ fr.ubx.poo.engine.GameEngine$1
+ fr.ubx.poo.engine.GameEngine$2

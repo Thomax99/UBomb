@@ -329,13 +329,15 @@ public class Game {
      * @param level the level in which the explosion occur
      */
     public void explode(Position position, long now, int level){
-        getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
         hasNewExplosions = true ; // useful for the gameEngine and the management of the sprites
         hasElementsLevelChange = true ;
 
         //getting the explosive engine
         Explosive explosive = getExplosives(level).get(position) ;
         if (explosive == null) throw new RuntimeException("Error : the only positions which can explode has to have an explosive engine on it") ;
+        
+        if (explosive.isBomb()) getPlayer().bombHasExplosed(); // notify the player that he has a bomb which explode
+
         explosive.explosion(now) ; // we notify the explosion
 
         //gathering of all the needed variables
