@@ -26,5 +26,9 @@ public class RandomPolicy extends Automovable {
         Collections.shuffle(directions);
         return directions ;
     }
+    @Override
+    public AutomovableType getType(){
+        return AutomovableType.RandomPolicy ;
+    }
 }
 

@@ -56,4 +56,12 @@ public class Monster extends Character {
         Position nextPos = direction.nextPosition(getPosition());
         return game.positionAllowedToMonsters(nextPos) ;
     }
+    /**
+     * This function is used by the view to know the type of the monster
+     * This type is in fact given by the automovable policy implemented
+     * @return the type of the monster
+     */
+    public int getMonsterType(){
+        return automovingPolicy.getType().ordinal() ;
+    }
 }

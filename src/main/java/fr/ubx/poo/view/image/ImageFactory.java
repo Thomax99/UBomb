@@ -16,11 +16,18 @@ public final class ImageFactory {
             // Direction { N, E, S, W }
             PLAYER_UP, PLAYER_RIGHT, PLAYER_DOWN, PLAYER_LEFT,
     };
-    private final ImageResource[] directions_monsters = new ImageResource[]{
+    private final ImageResource[] directions_monsters_classicals = new ImageResource[]{
         // Direction { N, E, S, W }
         MONSTER_UP, MONSTER_RIGHT, MONSTER_DOWN, MONSTER_LEFT,
     };
+    private final ImageResource[][] directions_monsters = new ImageResource[][]{
+        // Direction { N, E, S, W }
+        {MONSTER_0_UP, MONSTER_0_RIGHT, MONSTER_0_DOWN, MONSTER_0_LEFT},
+        {MONSTER_1_UP, MONSTER_1_RIGHT, MONSTER_1_DOWN, MONSTER_1_LEFT},
+        {MONSTER_2_UP, MONSTER_2_RIGHT, MONSTER_2_DOWN, MONSTER_2_LEFT},
+        {MONSTER_3_UP, MONSTER_3_RIGHT, MONSTER_3_DOWN, MONSTER_3_LEFT},
 
+    };
     private final ImageResource[] stateBomb = new ImageResource[]{
         // State {0, 1, 2, 3}
          BOMB_3, BOMB_2, BOMB_1, BOMB_0,
@@ -65,8 +72,15 @@ public final class ImageFactory {
     public Image getPlayer(Direction direction) {
         return get(directions[direction.ordinal()]);
     }
-    public Image getMonster(Direction direction) {
-        return get(directions_monsters[direction.ordinal()]);
+    /**
+     * 
+     * @param monster_type the type of the monster
+     * @param direction the direction in which the monster is going
+     * @return an image according to the type of the monster and the direction
+     */
+    public Image getMonster(int monster_type, Direction direction) {
+        if (monster_type >= directions_monsters.length) return get(directions_monsters_classicals[direction.ordinal()]); //we return the default image of monsters
+        return get(directions_monsters[monster_type][direction.ordinal()]);
     }
     public Image getBox() {
         return get(BOX);

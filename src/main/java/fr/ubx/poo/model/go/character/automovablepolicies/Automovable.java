@@ -39,7 +39,8 @@ public abstract class Automovable {
     public static Automovable getRandomPolicy(Monster monsterToMove, Game game){
         double value = Math.random() ;
         if (value < 0.1) return new RandomPolicy(monsterToMove) ;
-        else if (value < 0.6) return new BehindPlayerPolicy(monsterToMove, game) ;
+        else if (value < 0.4) return new BehindPlayerPolicy(monsterToMove, game) ;
+        else if (value < 0.7) return new InFrontOfPlayerPolicy(monsterToMove, game) ;
         return new OnPlayerPolicy(monsterToMove, game) ;
     }
     /**
@@ -48,7 +49,6 @@ public abstract class Automovable {
      * @param directions the List of directions that we have to sort.
      */
     public abstract List<Direction> sortDirections(List<Direction> directions) ;
-
     /**
      * Compute a move according to the policies for a monster. The only thing needed to make a new policy is to
      * overload the function sortDirections.
@@ -64,5 +64,11 @@ public abstract class Automovable {
         }
         return null ;
     }
+    /**
+     * This function is used to know the type of policy which is implemented
+     * by using the enum type AutomovableType, for instance to make some differents treatments by the view
+     * @return the type corresponding to the policy
+     */
+    public abstract AutomovableType getType() ;
 }
 

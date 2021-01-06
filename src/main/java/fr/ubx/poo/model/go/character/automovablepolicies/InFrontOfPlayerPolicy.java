@@ -6,20 +6,17 @@ import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.go.character.Monster;
 import fr.ubx.poo.model.go.character.Player;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 /**
- * This policy lead the monster to go behind the the player, for blocking him with others monsters
+ * This policy lead the monster to go in front of the player, for blocking him with others monsters
  */
-public class BehindPlayerPolicy extends Automovable {
+public class InFrontOfPlayerPolicy extends Automovable {
     private Game game ;
-    public BehindPlayerPolicy(Monster monsterToMove, Game game){
+    public InFrontOfPlayerPolicy(Monster monsterToMove, Game game){
         super(monsterToMove) ;
         this.game = game ; // we register the game because it can give the player position later
     }
-
     /**
      * Compute a move that that allow the monster to be behind the player.
      * @param directions the List of directions that we have to sort.
@@ -27,13 +24,13 @@ public class BehindPlayerPolicy extends Automovable {
      */
     @Override
     public List<Direction> sortDirections(List<Direction> directions){
-        Position behindPlayerPos = game.getPlayerDirection().oppositeDirection().nextPosition(game.getPlayerPosition()) ;
-        directions.sort((Direction d1, Direction d2) -> d1.nextPosition(getMonsterToMove().getPosition()).distance(behindPlayerPos) - d2.nextPosition(getMonsterToMove().getPosition()).distance(behindPlayerPos)) ;
+        Position frontPlayerPos = game.getPlayerDirection().nextPosition(game.getPlayerPosition()) ; //we compute the position in front of the player
+        directions.sort((Direction d1, Direction d2) -> d1.nextPosition(getMonsterToMove().getPosition()).distance(frontPlayerPos) - d2.nextPosition(getMonsterToMove().getPosition()).distance(frontPlayerPos)) ;
         return directions ;
     }
     @Override
     public AutomovableType getType(){
-        return AutomovableType.BehindPlayerPolicy ;
+        return AutomovableType.InFrontOfPlayerPolicy ;
     }
 }
 

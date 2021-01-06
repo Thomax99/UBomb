@@ -30,5 +30,9 @@ public class OnPlayerPolicy extends Automovable {
         directions.sort((Direction d1, Direction d2) -> d1.nextPosition(getMonsterToMove().getPosition()).distance(playerPos) - d2.nextPosition(getMonsterToMove().getPosition()).distance(playerPos)) ;
         return directions ;
     }
+    @Override
+    public AutomovableType getType(){
+        return AutomovableType.OnPlayerPolicy ;
+    }
 }
 
