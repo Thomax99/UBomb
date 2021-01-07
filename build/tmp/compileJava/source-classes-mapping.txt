@@ -85,6 +85,8 @@ fr/ubx/poo/view/sprite/SpriteBox.java
  fr.ubx.poo.view.sprite.SpriteBox
 fr/ubx/poo/model/go/character/automovablepolicies/BehindPlayerPolicy.java
  fr.ubx.poo.model.go.character.automovablepolicies.BehindPlayerPolicy
+fr/ubx/poo/engine/Score.java
+ fr.ubx.poo.engine.Score
 fr/ubx/poo/model/go/character/Player.java
  fr.ubx.poo.model.go.character.Player
 fr/ubx/poo/engine/Input.java
@@ -93,8 +95,8 @@ fr/ubx/poo/view/sprite/SpriteDecor.java
  fr.ubx.poo.view.sprite.SpriteDecor
 fr/ubx/poo/model/Movable.java
  fr.ubx.poo.model.Movable
-fr/ubx/poo/model/decor/explosives/Explosive.java
- fr.ubx.poo.model.decor.explosives.Explosive
+fr/ubx/poo/Main.java
+ fr.ubx.poo.Main
 fr/ubx/poo/game/WorldNotValidException.java
  fr.ubx.poo.game.WorldNotValidException
 fr/ubx/poo/model/decor/Scarecrow.java
@@ -122,8 +124,8 @@ fr/ubx/poo/view/sprite/SpritePlayer.java
  fr.ubx.poo.view.sprite.SpritePlayer
 fr/ubx/poo/model/decor/Stone.java
  fr.ubx.poo.model.decor.Stone
-fr/ubx/poo/Main.java
- fr.ubx.poo.Main
+fr/ubx/poo/model/decor/explosives/Explosive.java
+ fr.ubx.poo.model.decor.explosives.Explosive
 fr/ubx/poo/engine/GameEngine.java
  fr.ubx.poo.engine.GameEngine
  fr.ubx.poo.engine.GameEngine$1
