@@ -7,7 +7,6 @@ package fr.ubx.poo.game;
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.decor.Explosion;
 import fr.ubx.poo.model.decor.Scarecrow;
-import fr.ubx.poo.model.decor.explosives.Explosive;
 import fr.ubx.poo.model.Updatable;
 
 import java.util.Collection;
@@ -15,7 +14,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Hashtable ;
 import java.util.function.BiConsumer;
 
 public class World {

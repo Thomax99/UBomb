@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.Hashtable;
-import java.util.Map;
 import fr.ubx.poo.Constants;
 
 /**
