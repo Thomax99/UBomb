@@ -19,7 +19,8 @@ public class Player extends Character{
     private boolean hasScarecrow, winner = false, isInvincible = false ;
     // managing the differents values of the elements that a player has
     private int lives, bombs, landmines, key, range ;
-
+    // storing differents values to compute a score
+    private int nbDecorComputed = 0, nbTimesDamaged = 0, nbBombsPut = 0, nbLandminesPut = 0, nbScarecrowPut = 0 ;
     public Player(Game game, Position position) {
         super(game, position);
         //recuperation of the initials values of loaded configurations
@@ -96,11 +97,33 @@ public class Player extends Character{
         range = (range <= 1 ? 1 : range-1); //the smaller range is 1
     }
 
+    //this function are used by the game engine to compute the score
+    public int getNbDecorComputed(){
+        return nbDecorComputed ;
+    }
+    public int getNbTimesDamaged(){
+        return nbTimesDamaged ;
+    }
+    public int getNbBombsPut(){
+        return nbBombsPut ;
+    }
+    public int getNbLandminesPut(){
+        return nbLandminesPut ;
+    }
+    public int getNbScarecrowPut(){
+        return nbScarecrowPut ;
+    }
+    public int getNbLandmines(){
+        return landmines ;
+    }
     @Override
     public void doMove(Direction direction) {
         super.doMove(direction);
-        if(!game.getWorld().isEmpty(getPosition())) //there is a decor at the position on which the player is going
+        if(!game.getWorld().isEmpty(getPosition())){
+            //there is a decor at the position on which the player is going
             game.getWorld().get(getPosition()).computeDecor(this); //notify the decor that there is the player on it
+            nbDecorComputed++ ;
+        }
         //here we manage the interactions between other gameObject (ie damage the player if he is going on a monster position or moving the box)
         game.getMonsters().stream().filter(monster -> monster.getPosition().equals(getPosition())).forEach(monster -> damage(getCurrentTime())) ;
         game.getBoxes().stream().filter(box -> box.getPosition().equals(getPosition())).forEach(box -> box.doMove(direction));
@@ -146,6 +169,7 @@ public class Player extends Character{
             if (canLandmine(nextPosition)){ //searching if it possible to put a landmine
                 game.addLandmine(nextPosition, range) ;
                 landmines-- ;
+                nbLandminesPut++ ;
             }
             landmineRequested = false ;
         }
@@ -153,6 +177,7 @@ public class Player extends Character{
             if(canScarecrow(getPosition())){
                 game.addScarecrow(getPosition());
                 hasScarecrow = false ;
+                nbScarecrowPut++ ;
             }
             scarecrowRequested = false ;
         }
@@ -160,6 +185,7 @@ public class Player extends Character{
             if (canBomb(getPosition())){
                 game.addBomb(getPosition(), range, now) ;
                 bombs-- ;
+                nbBombsPut++ ;
             }
             bombRequested = false ;
         }
@@ -217,6 +243,7 @@ public class Player extends Character{
             lives-- ;
             isInvincible = true ; // a damage lead to one second of invincibility 
             timeInvincible = now ;
+            nbTimesDamaged++ ;
         }
     }
     @Override

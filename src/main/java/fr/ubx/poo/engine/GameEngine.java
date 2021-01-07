@@ -138,11 +138,27 @@ public final class GameEngine {
         }
         input.clear();
     }
+    /**
+     * This function is used to compute a score when the game is over.
+     * @return the score computed
+     */
+    private int computeScore(){
+        int valueDecorComputed = 10, valueDamaged = -15, valueBombPut = 5, valueLandminePut = 10,
+            valueScarecrowPut = 40, valueBoxDestructed = 10, valueMonsterKilled = 20, valueLivesStaying = 20,
+            valueLandminesStaying = 5, valueDecorDestructed = 5 ;
+        int nbDecorComputed = player.getNbDecorComputed(), nbTimesDamaged = player.getNbTimesDamaged(), nbBombsPut = player.getNbBombsPut(),
+            nbLandminesPut = player.getNbLandminesPut(), nbScarecrowPut = player.getNbScarecrowPut(), nbBoxDestructed = game.getNbBoxDestructed(),
+            nbMonsterKilled = game.getNbMonstersKilled(), nbLivesStaying = player.getLives(), nbLandminesStaying = player.getNbLandmines(),
+            nbDecorDestructed = game.getNbDecorDestructed() ;
+        return valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
+                + valueScarecrowPut*nbScarecrowPut + valueBoxDestructed*nbBoxDestructed + valueMonsterKilled*nbMonsterKilled + valueLivesStaying*nbLivesStaying
+                + valueLandminesStaying*nbLandminesStaying + valueDecorDestructed* nbDecorDestructed ;
+    }
 
     private void showMessage(String msg, Color color) {
         Text waitingForKey = new Text(msg);
         waitingForKey.setTextAlignment(TextAlignment.CENTER);
-        waitingForKey.setFont(new Font(60));
+        waitingForKey.setFont(new Font(20));
         waitingForKey.setFill(color);
         StackPane root = new StackPane();
         root.getChildren().add(waitingForKey);
@@ -186,12 +202,12 @@ public final class GameEngine {
         if (!player.isAlive()) {
             //the game is lost
             gameLoop.stop();
-            showMessage("Perdu!", Color.RED);
+            showMessage("Perdu !\n Votre score est de "+ computeScore()+" :/", Color.RED);
         }
         if (player.isWinner()) {
             //the game is won
             gameLoop.stop();
-            showMessage("Gagné", Color.BLUE);
+            showMessage("Gagné !!\n Votre score est de "+ computeScore()+" :)", Color.BLUE);
         }
     }
 
