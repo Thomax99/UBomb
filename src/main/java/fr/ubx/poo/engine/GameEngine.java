@@ -191,11 +191,13 @@ public final class GameEngine {
             game.elementsLevelChanged();
         }
         player.update(now);
-        if (player.isAlive() == false) {
+        if (!player.isAlive()) {
+            //the game is lost
             gameLoop.stop();
             showMessage("Perdu!", Color.RED);
         }
         if (player.isWinner()) {
+            //the game is won
             gameLoop.stop();
             showMessage("Gagné", Color.BLUE);
         }

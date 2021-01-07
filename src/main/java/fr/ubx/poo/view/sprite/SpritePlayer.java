@@ -22,7 +22,7 @@ public class SpritePlayer extends SpriteGameObject {
         Player player = (Player) go;
         setImage(ImageFactory.getInstance().getPlayer(player.getDirection()));
 
-        if(player.isInvincible()) effect.setBrightness(0.5) ;
+        if(player.isInvincible()) effect.setBrightness(0.5) ; //managing the transparency effect when the player is invincible
         else effect.setBrightness(0.1) ;
         imageView.setEffect(effect) ;
     }

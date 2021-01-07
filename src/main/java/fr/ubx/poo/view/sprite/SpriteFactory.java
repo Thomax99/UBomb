@@ -52,7 +52,6 @@ public final class SpriteFactory {
             return new SpriteBomb(layer, position, (Bomb) decor);
         if (decor instanceof Landmine)
             return new SpriteDecor(layer,factory.get(LANDMINE), position, decor);
-
         return null;
     }
     public static Sprite createMonster(Pane layer, Monster monster){

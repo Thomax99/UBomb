@@ -20,7 +20,8 @@ public class SpriteBomb extends SpriteDecor{
         if (bomb.isExplosing())
             setImage(null) ; //we remove the image
         else
-            setImage(ImageFactory.getInstance().getBomb(bomb.getState() >= 0 ? bomb.getState() : 0));
+            setImage(ImageFactory.getInstance().getBomb(bomb.getState() >= 0 ? bomb.getState() : 0)); //we do carefully the getState (if it is too small, we're going to have an
+            // index problem)
         super.updateImage();
     }
 }

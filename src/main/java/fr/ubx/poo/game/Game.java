@@ -4,24 +4,21 @@
 
 package fr.ubx.poo.game;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.Stack;
-
-import javax.lang.model.util.ElementScanner6;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Hashtable;
 import java.util.Iterator;
+
+
 
 import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
@@ -334,7 +331,6 @@ public class Game {
         return getWorld().canScarecrow(p) ;
     }
     /**
-     * 
      * @return the Direction in which the player is theorically going. Useful for the moving policies
      * And to have an abstraction for implementing the Scarecrow decor
      */

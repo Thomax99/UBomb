@@ -31,7 +31,14 @@ public class World {
         scarecrowPosition = null ;
     }
 
-    private Position findOneEntity(WorldEntity entity) throws PositionNotFoundException{
+    /**
+     * Useful for finding a given entity on this world
+     * @param entity the given entity
+     * @param entityName the name of the entity in case of error
+     * @return the position
+     * @throws PositionNotFoundException in case this entity doesn't exist on the world
+     */
+    private Position findOneEntity(WorldEntity entity, String entityName) throws PositionNotFoundException{
         for (int x = 0; x < dimension.width; x++) {
             for (int y = 0; y < dimension.height; y++) {
                 if (raw[y][x] == entity) {
@@ -39,20 +46,20 @@ public class World {
                 }
             }
         }
-        throw new PositionNotFoundException("Entity");
+        throw new PositionNotFoundException(entityName);
     }
 
     public Position findPlayer() throws PositionNotFoundException {
-        return findOneEntity(WorldEntity.Player) ;
+        return findOneEntity(WorldEntity.Player, "Player") ;
     }
     public Position findPreviousDoorOpened() throws PositionNotFoundException {
-        return findOneEntity(WorldEntity.DoorPrevOpened);
+        return findOneEntity(WorldEntity.DoorPrevOpened, "DoorPrevOpened");
     }
     public Position findNextDoor() throws PositionNotFoundException {
-        return findOneEntity(WorldEntity.DoorNextClosed) ;
+        return findOneEntity(WorldEntity.DoorNextClosed, "DoorNextClosed") ;
     }
     /**
-     * Used to find the positions of a given entity
+     * Used to find all the positions of a given entity
      * @param entity the entity that we would like to have all the positions
      * @return the list of the positions of all the entities
      */
@@ -70,7 +77,6 @@ public class World {
     public List<Position> findMonsters(){
         return findEntities(WorldEntity.Monster) ;
     }
-
     public List<Position> findBoxes(){
         return findEntities(WorldEntity.Box) ;
     }
@@ -102,9 +108,13 @@ public class World {
         set(position, exp) ;
         return exp ;
     }
-    public void clear(Position position) {
+    private void clear(Position position) {
         grid.remove(position);
     }
+    /**
+     * Apply a consumer to all the elements of the world
+     * @param fn the consumer
+     */
     public void forEach(BiConsumer<Position, Decor> fn) {
         grid.forEach(fn);
     }

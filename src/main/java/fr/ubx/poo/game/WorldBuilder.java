@@ -98,6 +98,11 @@ public class WorldBuilder {
         return mapEntities ;
     }
 
+    /**
+     * This function is used to create a decor from a given entity
+     * @param entity the given entity
+     * @return the corresponding decor
+     */
     private static Decor processEntity(WorldEntity entity) {
         switch (entity) {
             case Stone:
@@ -105,7 +110,7 @@ public class WorldBuilder {
             case Tree:
                 return new Tree();
             case DoorNextClosed:
-                return new Door(true, true);
+                return new Door(true, true); 
             case DoorPrevOpened:
                 return new Door(false, false);
             case DoorNextOpened :

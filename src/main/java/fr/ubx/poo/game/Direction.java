@@ -53,14 +53,12 @@ public enum Direction {
     private static final Random randomGenerator = new Random();
 
     /***
-     *
      * @return a pseudorandom direction
      */
     public static Direction random() {
         return values()[randomGenerator.nextInt(values().length)];
     }
     /**
-     * 
      * @return the opposite direction of this direction
      */
     public abstract Direction oppositeDirection() ;

@@ -2,6 +2,9 @@ package fr.ubx.poo.game;
 
 import static fr.ubx.poo.game.WorldEntity.*;
 
+/**
+ * This function is a static world. This is useful for instance when there is a problem to load a world from file
+ */
 public class WorldStatic extends World {
     private static final WorldEntity[][] mapEntities =
             {
