@@ -41,6 +41,8 @@ public class Game {
     //intial values of differents things
     private int initPlayerLives, initPlayerBombs, initPlayerKey, initPlayerRange, initPlayerLandmines ;
     private boolean initPlayerScarecrow ;
+    // storing differents values for the score
+    private int nbBoxDestructed = 0, nbMonstersKilled = 0, nbDecorsDestructed = 0 ;
     /**
      * 
      * @param worldPath the path to find the levels in case that the Game is not random and the configuration EVERYTIME
@@ -363,6 +365,7 @@ public class Game {
                 position = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
                 if(!world.canExplode(position)) break ; //there is a decor which block the explosion
                 somethingExploded = world.explode(position) ;
+                if (somethingExploded) nbDecorsDestructed++ ; //at this point just decors could be exploded
 
                 //Game object explosion part
 
@@ -375,12 +378,14 @@ public class Game {
                     if (monster.getPosition().equals(position)){
                         monster.explosion(now) ;
                         somethingExploded = true ;
+                        nbMonstersKilled++ ;
                     }
                 }
                 for(Box box : boxes){
                     if (box.getPosition().equals(position)){
                         box.explosion(now) ;
                         somethingExploded = true ;
+                        nbBoxDestructed++ ;
                     }
                 }
 
@@ -527,5 +532,16 @@ public class Game {
             if (box.getPosition().equals(position)) return false ; // or on another box
         }
         return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position) ; //a box can't go on a decor
+    }
+
+    //functions used by the game engine to compute the score
+    public int getNbBoxDestructed(){
+        return nbBoxDestructed ;
+    }
+    public int getNbMonstersKilled(){
+        return nbMonstersKilled ;
+    }
+    public int getNbDecorDestructed(){
+        return nbDecorsDestructed ;
     }
 }
