@@ -33,7 +33,7 @@ public class Main extends Application {
         ImageFactory.getInstance().load();
         String path = getClass().getResource("/sample").getFile();
         Game game = new Game(path, isRandom, nb_levels);
-        GameEngine engine = new GameEngine("UBomb", game, stage);
+        GameEngine engine = new GameEngine("UBomb", path, game, stage);
         engine.start();
     }
 

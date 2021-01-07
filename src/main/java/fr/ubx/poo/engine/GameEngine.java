@@ -10,6 +10,8 @@ import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
 
+
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -30,7 +32,7 @@ import java.util.List;
 public final class GameEngine {
 
     private static AnimationTimer gameLoop;
-    private final String windowTitle;
+    private final String windowTitle, scorePath;
     private final Game game;
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>() ;
@@ -40,8 +42,9 @@ public final class GameEngine {
     private Stage stage;
     private Sprite spritePlayer;
 
-    public GameEngine(final String windowTitle, Game game, final Stage stage) {
+    public GameEngine(final String windowTitle, final String scorePath, Game game, final Stage stage) {
         this.windowTitle = windowTitle;
+        this.scorePath = scorePath ;
         this.game = game;
         this.player = game.getPlayer();
         initialize(stage, game);
@@ -104,7 +107,6 @@ public final class GameEngine {
             }
         };
     }
-
     private void processInput(long now) {
 
         if (input.isExit()) {
@@ -142,18 +144,21 @@ public final class GameEngine {
      * This function is used to compute a score when the game is over.
      * @return the score computed
      */
-    private int computeScore(){
+    private Score computeScore(){
+        //here the values of each thing : to be modified
         int valueDecorComputed = 10, valueDamaged = -15, valueBombPut = 5, valueLandminePut = 10,
             valueScarecrowPut = 40, valueBoxDestructed = 10, valueMonsterKilled = 20, valueLivesStaying = 20,
             valueLandminesStaying = 5, valueDecorDestructed = 5 ;
+        //here the recuperation of the scores
         int nbDecorComputed = player.getNbDecorComputed(), nbTimesDamaged = player.getNbTimesDamaged(), nbBombsPut = player.getNbBombsPut(),
             nbLandminesPut = player.getNbLandminesPut(), nbScarecrowPut = player.getNbScarecrowPut(), nbBoxDestructed = game.getNbBoxDestructed(),
             nbMonsterKilled = game.getNbMonstersKilled(), nbLivesStaying = player.getLives(), nbLandminesStaying = player.getNbLandmines(),
             nbDecorDestructed = game.getNbDecorDestructed() ;
-        return valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
+        return new Score("Random", valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
                 + valueScarecrowPut*nbScarecrowPut + valueBoxDestructed*nbBoxDestructed + valueMonsterKilled*nbMonsterKilled + valueLivesStaying*nbLivesStaying
-                + valueLandminesStaying*nbLandminesStaying + valueDecorDestructed* nbDecorDestructed ;
+                + valueLandminesStaying*nbLandminesStaying + valueDecorDestructed* nbDecorDestructed) ;
     }
+
 
     private void showMessage(String msg, Color color) {
         Text waitingForKey = new Text(msg);
@@ -162,7 +167,7 @@ public final class GameEngine {
         waitingForKey.setFill(color);
         StackPane root = new StackPane();
         root.getChildren().add(waitingForKey);
-        Scene scene = new Scene(root, 400, 200, Color.WHITE);
+        Scene scene = new Scene(root, 400, 500, Color.WHITE);
         stage.setTitle(windowTitle);
         stage.setScene(scene);
         input = new Input(scene);
@@ -202,12 +207,18 @@ public final class GameEngine {
         if (!player.isAlive()) {
             //the game is lost
             gameLoop.stop();
-            showMessage("Perdu !\n Votre score est de "+ computeScore()+" :/", Color.RED);
+            Score score = computeScore() ;
+            List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
+            scores.add(score) ;
+            showMessage("Perdu !\n Votre score est de "+ computeScore()+" :/\n" + Score.getStringScoreFromListScore(scores), Color.RED);
         }
         if (player.isWinner()) {
             //the game is won
             gameLoop.stop();
-            showMessage("Gagné !!\n Votre score est de "+ computeScore()+" :)", Color.BLUE);
+            Score score = computeScore() ;
+            List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
+            scores.add(score) ;
+            showMessage("Gagné !!\n Votre score est de "+ computeScore()+" :)\n" + Score.getStringScoreFromListScore(scores), Color.RED);
         }
     }
 
