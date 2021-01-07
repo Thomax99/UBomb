@@ -17,27 +17,27 @@ import fr.ubx.poo.game.Game;
 
 public class Player extends Character{
 
-    private final boolean alive = true;
-    private boolean isInvincible = false;
+    //booleans for managing the request from user
+    private boolean moveRequested = false, bombRequested = false, scarecrowRequested = false, landmineRequested = false ;
     private long timeInvincible, currentTime ;
-    private boolean moveRequested = false, bombRequested = false, hasScarecrow = false, scarecrowRequested = false, landmineRequested = false ;
-    private int lives = 1;
-    private int bombs = 1, landmines = 0;
-    private int key = 0;
-    private int range = 1;
-    private boolean winner;
+    private boolean hasScarecrow, winner = false, isInvincible = false ;
+    // managing the differents values of the elements that a player has
+    private int lives, bombs, landmines, key, range ;
 
     public Player(Game game, Position position) {
         super(game, position);
+        //recuperation of the initials values of loaded configurations
         this.lives = game.getInitPlayerLives();
         this.bombs = game.getInitPlayerBombs();
         this.key = game.getInitPlayerKey();
-        this.range = game.getInitPlayerPortee();
+        this.range = game.getInitPlayerRange();
+        this.hasScarecrow = game.getInitPlayerScarecrow() ;
+        this.landmines = game.getInitPlayerLandmines() ;
     }
     //the nexts methods are getters. Most of time they are used by the game Engine to know the state of the differents values on the player
     @Override
     public int getLevel(){
-        return game.getLevel() ;
+        return game.getLevel() ; // the player is on the same level than the game
     }
     public int getBombs() {
         return bombs;
@@ -61,7 +61,7 @@ public class Player extends Character{
         return winner;
     }
     public boolean isAlive() {
-        return lives != 0 && alive;
+        return lives != 0;
     }
     /**
      * Used to know if the player is on an invincible state or not

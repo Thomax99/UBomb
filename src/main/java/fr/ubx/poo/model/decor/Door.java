@@ -55,8 +55,6 @@ public class Door extends Decor{
     public boolean canExplode(){
         return false ;
     }
-
-
     @Override
     public boolean isDoor(){
         return true ;

@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.Bonus;
 
@@ -43,10 +44,9 @@ public class Game {
     private int nb_level, level_max_initialized, nb_total_levels ;
     private boolean hasChangedWorld = false, hasElementsLevelChange = false, randomlyGenerate ;
     private String initPrefString ;
-    public int initPlayerLives;
-    public int initPlayerBombs;
-    public int initPlayerKey;
-    public int initPlayerPortee;
+    //intial values of differents things
+    private int initPlayerLives, initPlayerBombs, initPlayerKey, initPlayerRange, initPlayerLandmines ;
+    private boolean initPlayerScarecrow ;
     /**
      * 
      * @param worldPath the path to find the levels in case that the Game is not random and the configuration EVERYTIME
@@ -135,8 +135,14 @@ public class Game {
     public int getInitPlayerKey() {
         return initPlayerKey;
     }
-    public int getInitPlayerPortee() {
-        return initPlayerPortee;
+    public int getInitPlayerRange() {
+        return initPlayerRange;
+    }
+    public int getInitPlayerLandmines() {
+        return initPlayerLandmines;
+    }
+    public boolean getInitPlayerScarecrow() {
+        return initPlayerScarecrow;
     }
     public int getLevel() {
         return nb_level ;
@@ -439,7 +445,7 @@ public class Game {
         Iterator<Position> it = getExplosives().keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove(); 
+            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove();
         }
     }
     /**
@@ -454,22 +460,24 @@ public class Game {
         return newDecorToPlace.get(level - 1) ;
     }
     private void loadConfig(String path) {
-        try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
+        try (InputStream input = new FileInputStream(new File(path, Constants.propertiesFileName))) {
             Properties prop = new Properties();
             // load the configuration file
             prop.load(input);
-            initPlayerLives = Integer.parseInt(prop.getProperty("lives", "3"));
-            initPlayerBombs = Integer.parseInt(prop.getProperty("bombs", "3"));
-            initPlayerKey = Integer.parseInt(prop.getProperty("key", "3"));
-            initPlayerPortee = Integer.parseInt(prop.getProperty("portee", "3"));
-            initPrefString = prop.getProperty("prefix", "level") ;
+            initPlayerLives = Integer.parseInt(prop.getProperty(Constants.fieldLivesName, Constants.defaultInitPlayerLives+""));
+            initPlayerBombs = Integer.parseInt(prop.getProperty(Constants.fieldBombsName, Constants.defaultInitPlayerBombs+""));
+            initPlayerKey = Integer.parseInt(prop.getProperty(Constants.fieldKeyName, Constants.defaultInitPlayerKey+""));
+            initPlayerRange = Integer.parseInt(prop.getProperty(Constants.fieldRangeName, Constants.defaultInitPlayerRange+""));
+            initPlayerLandmines = Integer.parseInt(prop.getProperty(Constants.fieldLandminesName, Constants.defaultInitPlayerLandmines+""));
+            initPlayerScarecrow = Boolean.parseBoolean(prop.getProperty(Constants.fieldScarecrowName, Constants.defaultInitScarecrow+""));
+            initPrefString = prop.getProperty(Constants.fieldPrefixName, Constants.defaultPrefixLoading+"") ;
         } catch (IOException ex) {
             System.err.println("Error loading configuration");
         }
     }
     private World loadWorld(int n){
         int width = 0, height = 0 ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
             int c;
             while( (c = input.read()) != -1){
                 if ((char) c == '\n') break ;
@@ -483,7 +491,7 @@ public class Game {
             System.err.println("Error loading game");
         }
         WorldEntity[][] mapEntities = new WorldEntity[height][width] ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
             int c, nb_read = 0;
             while((c = input.read()) != -1){
                 if ((char) c != '\n'){
