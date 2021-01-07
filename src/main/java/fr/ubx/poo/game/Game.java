@@ -17,20 +17,12 @@ import java.util.Map;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-<<<<<<< HEAD
-import fr.ubx.poo.Constants;
-import fr.ubx.poo.model.decor.Scarecrow;
-import fr.ubx.poo.model.decor.Decor;
-import fr.ubx.poo.model.go.Box;
-import fr.ubx.poo.game.Position;
-=======
 
 
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.decor.*;
 
->>>>>>> 2ce2be3d41a75ebec6f499d3da750b141eddfe0b
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;
 
