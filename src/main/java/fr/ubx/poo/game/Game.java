@@ -176,8 +176,8 @@ public class Game {
      * @return if there is a landmine at the position pos on the level level
      */
     public boolean positionIsLandmine(Position pos, int level){
-        Explosive explosive = getExplosives().get(pos) ;
-        return explosive != null && !explosive.isBomb() && explosive.getLevel() == level ;
+        Explosive explosive = getExplosives(level).get(pos) ;
+        return explosive != null && !explosive.isBomb() ;
     }
     /**
      * This function is used to know if there is a bomb at a given position and level
