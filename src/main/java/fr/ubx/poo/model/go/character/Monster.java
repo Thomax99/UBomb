@@ -6,6 +6,7 @@ package fr.ubx.poo.model.go.character;
 
 import java.util.ArrayList;
 
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
@@ -31,7 +32,7 @@ public class Monster extends Character {
 
     @Override
     public void update(long now) {
-        if((now-lastMoveTime) /1000000000L >= speedMoving){
+        if((now-lastMoveTime) /Constants.secondInnanoSec >= speedMoving){
             lastMoveTime = now ;
             //time to move
             Direction d = automovingPolicy.computeMove() ;

@@ -4,6 +4,7 @@
 
 package fr.ubx.poo.model.decor;
 
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.Updatable;
 import fr.ubx.poo.model.decor.Decor;
 
@@ -15,7 +16,7 @@ public class Explosion extends Decor implements Updatable{
     }
     @Override
     public void update(long now) {
-        if ((now-start) / 1000000000L != 0){
+        if ((now-start) / Constants.secondInnanoSec != 0){
             remove() ;
         }
     }

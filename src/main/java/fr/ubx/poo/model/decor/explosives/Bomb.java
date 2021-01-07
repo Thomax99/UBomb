@@ -1,5 +1,6 @@
 package fr.ubx.poo.model.decor.explosives;
 
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.Updatable;
 
 public class Bomb extends Explosive implements Updatable {
@@ -12,7 +13,7 @@ public class Bomb extends Explosive implements Updatable {
     }
     @Override
     public void update(long now) {
-        state = (int)((start-now)/1000000000L) + 3 ;
+        state = (int)((start-now)/Constants.secondInnanoSec) + 3 ;
     }
     /**
      * This function is used to know if a Bomb is explosing itself (ie if the timer of the bomb is passed)
