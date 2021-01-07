@@ -405,10 +405,6 @@ public class Game {
      * @param now the given time
      */
     public void update(long now){
-        //first we remove the objects directly stored on the game which are not important
-        getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
-        getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
-
         //we update the monsters : with this, they can move if they need to
         getMonsters().forEach(go -> go.update(now));
         //and we update the current world
@@ -440,13 +436,19 @@ public class Game {
         }
 
         // now we remove the explosives which has exploded on the current level :
-        // the explosives which are on other levels are going to be removed when the player recome on the world :
-        // In contrast, the explosives explode regardless of the level (see few upper)
         Iterator<Position> it = getExplosives().keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
             if (getExplosives().get(pos).hasToBeRemoved() ) it.remove();
         }
+
+        // here we remove the no needed elements on the current level :
+        // the no needed elements of others levels are going to be suppress when the player recame on the level
+        // bu the first call of game.update when the player has changed the world
+
+        getMonsters().removeIf(monster ->  monster.hasToBeRemoved()) ;
+        getBoxes().removeIf(box ->  box.hasToBeRemoved()) ;
+
     }
     /**
      * this function is used to know what are the theorically new decor (against to the last updating)
