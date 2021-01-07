@@ -4,7 +4,6 @@
 
 package fr.ubx.poo.model.decor;
 
-import fr.ubx.poo.game.Direction;
 /**
  * A Scarecrow is an entity which is attracting the monsters if their moving policies are guided by a position
  * The way to put it is to take a scarecrow bonus and the bomb is now a scarecrow

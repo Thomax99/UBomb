@@ -3,10 +3,8 @@ package fr.ubx.poo.view.sprite;
 import fr.ubx.poo.model.decor.explosives.Bomb;
 import fr.ubx.poo.view.image.ImageFactory;
 import fr.ubx.poo.game.Position;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.layout.Pane;
+
 
 
 public class SpriteBomb extends SpriteDecor{

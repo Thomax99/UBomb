@@ -5,9 +5,7 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.go.character.Monster;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * This policy lead the monster to go at the position of the player

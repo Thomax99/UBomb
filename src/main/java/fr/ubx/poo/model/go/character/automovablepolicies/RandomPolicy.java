@@ -2,9 +2,7 @@
 package fr.ubx.poo.model.go.character.automovablepolicies;
 
 import fr.ubx.poo.game.Direction;
-import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.go.character.Monster;
-import fr.ubx.poo.model.go.character.Player;
 import java.util.Collections;
 import java.util.List;
 

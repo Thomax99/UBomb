@@ -13,16 +13,24 @@ import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+<<<<<<< HEAD
 import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.decor.Scarecrow;
 import fr.ubx.poo.model.decor.Decor;
 import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.game.Position;
+=======
+
+
+import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.Constants;
+import fr.ubx.poo.model.decor.*;
+
+>>>>>>> 2ce2be3d41a75ebec6f499d3da750b141eddfe0b
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;
 
@@ -190,7 +198,7 @@ public class Game {
      * @param level the given level
      * @return if there is a landmine at the position pos on the level level
      */
-    public boolean positionIsLandmine(Position pos, int level){
+    private boolean positionIsLandmine(Position pos, int level){
         Explosive explosive = getExplosives(level).get(pos) ;
         return explosive != null && !explosive.isBomb() ;
     }
@@ -200,7 +208,7 @@ public class Game {
      * @param level the given level
      * @return if there is a bomb at the position pos on the level level
      */
-    public boolean positionIsBomb(Position pos, int level){
+    private boolean positionIsBomb(Position pos, int level){
         Explosive explosive = getExplosives(level).get(pos) ;
         return explosive != null && explosive.isBomb() ;
     }
@@ -242,27 +250,7 @@ public class Game {
         getNewDecors().put(pos, getWorld().getScarecrow()) ;
         hasElementsLevelChange = true ;
     }
-    /**
-     * 
-     * @return if there is a scarecrow on the current world
-     */
-    public boolean hasScarecrow(){
-        return getWorld().hasScarecrow() ;
-    }
-    /**
-     * 
-     * @return if there is a scarecrow on the current world, return this position. Otherwise, return null
-     */
-    public Position getScarecrowPosition(){
-        return getWorld().getScarecrowPosition() ;
-    }
-    /**
-     * 
-     * @return the scarecrow. Useful for the management of the sprites
-     */
-    public Scarecrow getScarecrow(){
-        return getWorld().getScarecrow() ;
-    }
+
     /**
      * This function is used to give all the explosives engines which are currently on the world
      * @return a Map which contains the Explosive objects at the good locations
@@ -315,7 +303,7 @@ public class Game {
      * @return if it is possible or not to put a bomb here
      */
     public boolean canBomb(Position p){
-        //we cannot obmb if there is already a bomb or if the World say no
+        //we cannot bomb if there is already a bomb or if the World say no
         return getExplosives().get(p)== null &&  getWorld().canBomb(p) ;
     }
     public boolean canLandmine(Position p){
@@ -350,7 +338,7 @@ public class Game {
      * @param now the moment of the explosion
      * @param level the level in which the explosion occur
      */
-    public void explode(Position position, long now, int level){
+    private void explode(Position position, long now, int level){
         if (level == this.nb_level) //an explosion occur on the current level
             hasElementsLevelChange = true ; // useful for the gameEngine and the management of the sprites
 
@@ -499,7 +487,7 @@ public class Game {
      * @param position the given position
      * @return if it is possible for a gameObject to go at this position
      */
-    public boolean positionAllowedToMovableGameObjects(Position position){
+    private boolean positionAllowedToMovableGameObjects(Position position){
         return getWorld().isInside(position) && !positionIsBomb(position, getLevel()) ; // a gameobject can't go outside of the world or on a bomb
     }
     /**
@@ -507,7 +495,7 @@ public class Game {
      * @param position the given position
      * @return if it is possible for a character to go at this position
      */
-    public boolean positionAllowedToCharacters(Position position){
+    private boolean positionAllowedToCharacters(Position position){
         return positionAllowedToMovableGameObjects(position) && getWorld().canGoIn(position) ;
         //a character can't go on an unauthorized decor
     }

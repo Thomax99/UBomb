@@ -3,12 +3,6 @@ package fr.ubx.poo.model.go;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
-import fr.ubx.poo.model.Movable;
-import fr.ubx.poo.model.decor.Decor;
-import fr.ubx.poo.model.decor.Stone;
-import fr.ubx.poo.model.decor.Tree;
-import fr.ubx.poo.model.decor.bonus.Bonus;
-import fr.ubx.poo.model.go.character.*;
 
 /**
  * This class represents the Box object. A box is a gameObject which can move.

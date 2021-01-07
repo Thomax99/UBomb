@@ -1,6 +1,5 @@
 package fr.ubx.poo.view.image;
 
-import javafx.scene.image.Image;
 
 public enum ImageResource {
     BANNER_BOMB ("banner_bomb.png"),

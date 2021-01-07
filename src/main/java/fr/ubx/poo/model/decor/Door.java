@@ -1,6 +1,5 @@
 package fr.ubx.poo.model.decor;
 import fr.ubx.poo.model.go.character.Player;
-import fr.ubx.poo.game.Direction;
 public class Door extends Decor{
     private boolean isClosed ;
     private final boolean isNext ;

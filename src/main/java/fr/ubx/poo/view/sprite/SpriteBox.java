@@ -2,7 +2,6 @@ package fr.ubx.poo.view.sprite;
 
 import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.image.ImageFactory;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
 import static fr.ubx.poo.view.image.ImageResource.*;
 
