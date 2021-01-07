@@ -117,6 +117,7 @@ public final class GameEngine {
     }
 
     private void processInput(long now) {
+
         if (input.isExit()) {
             gameLoop.stop();
             Platform.exit();

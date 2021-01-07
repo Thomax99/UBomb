@@ -24,6 +24,11 @@ public class Box extends MovableGameObject {
         return "Box";
     }
 
+    /**
+     * check if the bax can be moved in a certain direction
+     * @param direction the direction in which the entity is going
+     * @return if the box can be moved
+     */
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());

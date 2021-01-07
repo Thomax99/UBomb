@@ -30,6 +30,10 @@ public class Monster extends Character {
         this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
     }
 
+    /**
+     * Update the movement display of the monster
+     * @param now the given time
+     */
     @Override
     public void update(long now) {
         if((now-lastMoveTime) /Constants.secondInnanoSec >= speedMoving){

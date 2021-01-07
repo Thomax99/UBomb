@@ -16,6 +16,10 @@ public class BonusScarecrow extends Bonus {
         return "Scrarecrow Bonus" ;
     }
 
+    /**
+     * Consume the bonus and place a scarecrow
+     * @param player the player who consume the bonus
+     */
     @Override
     public void consumePlayer(Player player) {
         player.hasScarecrow() ;

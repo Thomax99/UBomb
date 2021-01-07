@@ -11,6 +11,11 @@ public class BombRangeDec extends Bonus {
     public String toString(){
         return "BombRangeDec" ;
     }
+
+    /**
+     * Consume the bonus and decrease the bomb range of the player
+     * @param player the player who consume the bonus
+     */
     @Override
     public void consumePlayer(Player player) {
         player.lessPortee() ;

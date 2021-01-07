@@ -43,10 +43,12 @@ public abstract class Automovable {
         else if (value < 0.7) return new InFrontOfPlayerPolicy(monsterToMove, game) ;
         return new OnPlayerPolicy(monsterToMove, game) ;
     }
+
     /**
      * This function is used on the function computeMove to know in which order a List of Direction will be considered
      * to make a move (the first position possible in this sort will be do)
      * @param directions the List of directions that we have to sort.
+     * @return a list of direction which will be sorted
      */
     public abstract List<Direction> sortDirections(List<Direction> directions) ;
     /**

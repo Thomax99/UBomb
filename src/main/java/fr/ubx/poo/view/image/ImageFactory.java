@@ -43,7 +43,8 @@ public final class ImageFactory {
     }
 
     /**
-     * Point d'accès pour l'instance unique du singleton
+     * Access point for the unique singleton instance
+     * @return a singleton instance
      */
     public static ImageFactory getInstance() {
         return Holder.instance;

@@ -10,6 +10,11 @@ public class Landminer extends Bonus {
     public String toString(){
         return "Landminer" ;
     }
+
+    /**
+     * Consume the bonus to create a landmine in front of the player
+     * @param player the player who consume the bonus
+     */
     @Override
     public void consumePlayer(Player player) {
         player.hasLandmine() ;

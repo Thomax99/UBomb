@@ -12,6 +12,10 @@ public class BombRangeInc extends Bonus {
         return "BombRangeInc" ;
     }
 
+    /**
+     * Consume the bonus and increase the bomb range of the player
+     * @param player the player who consume the bonus
+     */
     @Override
     public void consumePlayer(Player player) {
         player.addPortee() ;
