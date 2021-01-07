@@ -18,9 +18,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 
+
+import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.Constants;
-import fr.ubx.poo.model.decor.Decor;
-import fr.ubx.poo.model.go.Box;
+import fr.ubx.poo.model.decor.*;
 
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;
