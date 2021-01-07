@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.Bonus;
 
@@ -43,10 +44,9 @@ public class Game {
     private int nb_level, level_max_initialized, nb_total_levels ;
     private boolean hasChangedWorld = false, hasElementsLevelChange = false, randomlyGenerate ;
     private String initPrefString ;
-    public int initPlayerLives;
-    public int initPlayerBombs;
-    public int initPlayerKey;
-    public int initPlayerPortee;
+    //intial values of differents things
+    private int initPlayerLives, initPlayerBombs, initPlayerKey, initPlayerRange, initPlayerLandmines ;
+    private boolean initPlayerScarecrow ;
     /**
      * 
      * @param worldPath the path to find the levels in case that the Game is not random and the configuration EVERYTIME
@@ -141,8 +141,14 @@ public class Game {
     public int getInitPlayerKey() {
         return initPlayerKey;
     }
-    public int getInitPlayerPortee() {
-        return initPlayerPortee;
+    public int getInitPlayerRange() {
+        return initPlayerRange;
+    }
+    public int getInitPlayerLandmines() {
+        return initPlayerLandmines;
+    }
+    public boolean getInitPlayerScarecrow() {
+        return initPlayerScarecrow;
     }
     public int getLevel() {
         return nb_level ;
@@ -405,10 +411,6 @@ public class Game {
      * @param now the given time
      */
     public void update(long now){
-        //first we remove the objects directly stored on the game which are not important
-        getMonsters().removeIf(go ->  go.hasToBeRemoved()) ;
-        getBoxes().removeIf(go ->  go.hasToBeRemoved()) ;
-
         //we update the monsters : with this, they can move if they need to
         getMonsters().forEach(go -> go.update(now));
         //and we update the current world
@@ -439,13 +441,19 @@ public class Game {
         }
 
         // now we remove the explosives which has exploded on the current level :
-        // the explosives which are on other levels are going to be removed when the player recome on the world :
-        // In contrast, the explosives explode regardless of the level (see few upper)
         Iterator<Position> it = getExplosives().keySet().iterator() ;
         while (it.hasNext()){
             Position pos = it.next() ;
-            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove(); 
+            if (getExplosives().get(pos).hasToBeRemoved() ) it.remove();
         }
+
+        // here we remove the no needed elements on the current level :
+        // the no needed elements of others levels are going to be suppress when the player recame on the level
+        // bu the first call of game.update when the player has changed the world
+
+        getMonsters().removeIf(monster ->  monster.hasToBeRemoved()) ;
+        getBoxes().removeIf(box ->  box.hasToBeRemoved()) ;
+
     }
     /**
      * this function is used to know what are the theorically new decor (against to the last updating)
@@ -459,22 +467,24 @@ public class Game {
         return newDecorToPlace.get(level - 1) ;
     }
     private void loadConfig(String path) {
-        try (InputStream input = new FileInputStream(new File(path, "config.properties"))) {
+        try (InputStream input = new FileInputStream(new File(path, Constants.propertiesFileName))) {
             Properties prop = new Properties();
             // load the configuration file
             prop.load(input);
-            initPlayerLives = Integer.parseInt(prop.getProperty("lives", "3"));
-            initPlayerBombs = Integer.parseInt(prop.getProperty("bombs", "3"));
-            initPlayerKey = Integer.parseInt(prop.getProperty("key", "3"));
-            initPlayerPortee = Integer.parseInt(prop.getProperty("portee", "3"));
-            initPrefString = prop.getProperty("prefix", "level") ;
+            initPlayerLives = Integer.parseInt(prop.getProperty(Constants.fieldLivesName, Constants.defaultInitPlayerLives+""));
+            initPlayerBombs = Integer.parseInt(prop.getProperty(Constants.fieldBombsName, Constants.defaultInitPlayerBombs+""));
+            initPlayerKey = Integer.parseInt(prop.getProperty(Constants.fieldKeyName, Constants.defaultInitPlayerKey+""));
+            initPlayerRange = Integer.parseInt(prop.getProperty(Constants.fieldRangeName, Constants.defaultInitPlayerRange+""));
+            initPlayerLandmines = Integer.parseInt(prop.getProperty(Constants.fieldLandminesName, Constants.defaultInitPlayerLandmines+""));
+            initPlayerScarecrow = Boolean.parseBoolean(prop.getProperty(Constants.fieldScarecrowName, Constants.defaultInitScarecrow+""));
+            initPrefString = prop.getProperty(Constants.fieldPrefixName, Constants.defaultPrefixLoading+"") ;
         } catch (IOException ex) {
             System.err.println("Error loading configuration");
         }
     }
     private World loadWorld(int n){
         int width = 0, height = 0 ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
             int c;
             while( (c = input.read()) != -1){
                 if ((char) c == '\n') break ;
@@ -488,7 +498,7 @@ public class Game {
             System.err.println("Error loading game");
         }
         WorldEntity[][] mapEntities = new WorldEntity[height][width] ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+".txt"))){
+        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
             int c, nb_read = 0;
             while((c = input.read()) != -1){
                 if ((char) c != '\n'){

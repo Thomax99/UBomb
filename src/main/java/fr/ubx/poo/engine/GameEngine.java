@@ -27,7 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map ;
 import java.util.Stack;
@@ -41,7 +41,7 @@ public final class GameEngine {
     private final String windowTitle;
     private final Game game;
     private final Player player;
-    private final List<Sprite> sprites = new ArrayList<>() ;
+    private final List<Sprite> sprites = new LinkedList<>() ;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;

@@ -28,8 +28,9 @@ public class RandomWorldBuilder {
         double probas[] = {Constants.defaultEmptyProba, Constants.defaultBoxProba, Constants.defaultMonsterProba, Constants.defaultStoneProba,
                         Constants.defaultTreeProba, Constants.defaultNumberIncProba, Constants.defaultNumberDecProba, Constants.defaultRangeIncProba,
                         Constants.defaultRangeDecProba, Constants.defaultHeartProba, Constants.defaultLandminerProba, Constants.defaultScarecrowProba} ;
-        String probaNames[] = {"emptyProba", "boxProba", "monsterProba", "stoneProba", "treeProba", "numberIncProba",
-                                "numberDecProba", "rangeIncProba", "rangeDecProba", "heartProba", "landminerProba", "scarecrowProba"} ;
+        String probaNames[] = {Constants.emptyProbaName, Constants.boxProbaName, Constants.monsterProbaName, Constants.stoneProbaName,
+                            Constants.treeProbaName, Constants.numberIncProbaName, Constants.numberDecProbaName, Constants.rangeIncProbaName,
+                            Constants.rangeDecProbaName, Constants.heartProbaName, Constants.landminerProbaname, Constants.scarecrowProbaName} ;
         WorldEntity entitiesMatches[] = { WorldEntity.Empty, WorldEntity.Box, WorldEntity.Monster, WorldEntity.Stone, WorldEntity.Tree,
                                         WorldEntity.BombNumberInc, WorldEntity.BombNumberDec, WorldEntity.BombRangeInc, WorldEntity.BombRangeDec,
                                         WorldEntity.Heart, WorldEntity.Landminer, WorldEntity.BonusScarecrow} ;
@@ -40,15 +41,14 @@ public class RandomWorldBuilder {
             Properties prop = new Properties();
             // load the configuration file
             prop.load(input);
-
             //loading the size value
-            int tmpSize = Integer.parseInt(prop.getProperty("minWidthValue", minWidth+"")) ;
+            int tmpSize = Integer.parseInt(prop.getProperty(Constants.fieldMinWidthValue, minWidth+"")) ;
             minWidth = tmpSize ;
-            tmpSize = Integer.parseInt(prop.getProperty("maxWidthValue", maxWidth+"")) ;
+            tmpSize = Integer.parseInt(prop.getProperty(Constants.fieldMaxWidthValue, maxWidth+"")) ;
             maxWidth = tmpSize ;
-            tmpSize = Integer.parseInt(prop.getProperty("minHeightValue", minHeight+"")) ;
+            tmpSize = Integer.parseInt(prop.getProperty(Constants.fieldMinHeightValue, minHeight+"")) ;
             minHeight = tmpSize ;
-            tmpSize = Integer.parseInt(prop.getProperty("maxHeightValue", maxHeight+"")) ;
+            tmpSize = Integer.parseInt(prop.getProperty(Constants.fieldMaxHeightValue, maxHeight+"")) ;
             maxHeight = tmpSize ;
 
             //loading the probabilities
