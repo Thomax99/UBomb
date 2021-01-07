@@ -4,10 +4,11 @@ import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.image.ImageFactory;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
+import static fr.ubx.poo.view.image.ImageResource.*;
 
 public class SpriteBox extends SpriteGameObject{
     public SpriteBox(Pane layer, Box box) {
-        super(layer, null, box);
+        super(layer, ImageFactory.getInstance().get(BOX), box);
         updateImage();
     }
 
@@ -15,6 +16,5 @@ public class SpriteBox extends SpriteGameObject{
     public void updateImage() {
         Box box = (Box) go;
         if (box.hasToBeRemoved()) setImage(null) ;
-        else setImage(ImageFactory.getInstance().getBox());
     }
 }

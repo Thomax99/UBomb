@@ -11,17 +11,16 @@ import fr.ubx.poo.view.image.ImageFactory;
 
 
 public class SpriteDoor extends SpriteDecor {
-    private Door door ;
 
     public SpriteDoor(Pane layer, Image image, Position position, Door door) {
-        super(layer, image, position);
-        this.door = door ;
+        super(layer, image, position, door);
         updateImage();
     }
 
     @Override
     public void updateImage() {
+        Door door = (Door) getDecor() ;
         if(!door.isClosed()) setImage(ImageFactory.getInstance().get(DOOR_OPENED)) ;
-        else setImage(ImageFactory.getInstance().get(DOOR_CLOSED)) ;
+        else super.updateImage();
     }
 }

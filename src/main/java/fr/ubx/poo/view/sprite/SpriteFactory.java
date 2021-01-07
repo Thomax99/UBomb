@@ -21,37 +21,37 @@ public final class SpriteFactory {
     public static Sprite createDecor(Pane layer, Position position, Decor decor) {
         ImageFactory factory = ImageFactory.getInstance();
         if (decor instanceof Stone)
-            return new SpriteDecor(layer, factory.get(STONE), position);
+            return new SpriteDecor(layer, factory.get(STONE), position, decor);
         if (decor instanceof Tree)
-            return new SpriteDecor(layer, factory.get(TREE), position);
+            return new SpriteDecor(layer, factory.get(TREE), position, decor);
         if (decor instanceof Scarecrow)
-            return new SpriteScarecrow(layer, factory.get(SCARECROW), position, (Scarecrow) decor);
+            return new SpriteDecor(layer, factory.get(SCARECROW), position, decor);
         if (decor instanceof Door)
             return new SpriteDoor(layer, factory.get(DOOR_CLOSED), position, (Door) decor);
         if (decor instanceof Princess)
-            return new SpriteDecor(layer, factory.get(PRINCESS), position);
+            return new SpriteDecor(layer, factory.get(PRINCESS), position, decor);
         if (decor instanceof Key)
-            return new SpriteBonus(layer, factory.get(KEY), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(KEY), position, decor);
         if (decor instanceof Heart)
-            return new SpriteBonus(layer, factory.get(HEART), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(HEART), position, decor);
         if (decor instanceof BombNumberInc)
-            return new SpriteBonus(layer, factory.get(BONUS_BOMB_INC), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_BOMB_INC), position, decor);
         if (decor instanceof BombNumberDec)
-            return new SpriteBonus(layer, factory.get(BONUS_BOMB_DEC), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_BOMB_DEC), position, decor);
         if (decor instanceof BombRangeDec)
-            return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_BOMB_RANGE_DEC), position, decor);
         if (decor instanceof BombRangeInc)
-            return new SpriteBonus(layer, factory.get(BONUS_BOMB_RANGE_INC), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_BOMB_RANGE_INC), position, decor);
         if (decor instanceof Landminer)
-            return new SpriteBonus(layer, factory.get(BONUS_LANDMINE), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_LANDMINE), position, decor);
         if (decor instanceof BonusScarecrow)
-            return new SpriteBonus(layer, factory.get(BONUS_SCARECROW), position, (Bonus) decor);
+            return new SpriteDecor(layer, factory.get(BONUS_SCARECROW), position, decor);
         if (decor instanceof Explosion)
-            return new SpriteExplosion(layer, factory.get(EXPLOSION), position, (Explosion) decor);
+            return new SpriteDecor(layer, factory.get(EXPLOSION), position,  decor);
         if (decor instanceof Bomb)
             return new SpriteBomb(layer, position, (Bomb) decor);
         if (decor instanceof Landmine)
-            return new SpriteLandmine(layer, position, (Landmine) decor);
+            return new SpriteDecor(layer,factory.get(LANDMINE), position, decor);
 
         return null;
     }

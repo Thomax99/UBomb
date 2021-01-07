@@ -7,13 +7,10 @@ package fr.ubx.poo.engine;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.sprite.Sprite;
-import fr.ubx.poo.view.sprite.SpriteExplosion;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.Decor;
-import fr.ubx.poo.model.decor.Explosion;
-import fr.ubx.poo.model.decor.Scarecrow;
 
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.model.decor.explosives.*;

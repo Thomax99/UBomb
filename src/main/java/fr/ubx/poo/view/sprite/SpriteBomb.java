@@ -10,17 +10,17 @@ import javafx.scene.layout.Pane;
 
 
 public class SpriteBomb extends SpriteDecor{
-    private Bomb bomb ;
     public SpriteBomb(Pane layer, Position pos, Bomb bomb) {
-        super(layer, ImageFactory.getInstance().getBomb(bomb.getState() >= 0 ? bomb.getState() : 0), pos) ;
-        this.bomb = bomb ;
+        super(layer, ImageFactory.getInstance().getBomb(bomb.getState() >= 0 ? bomb.getState() : 0), pos, bomb) ; //we verify that the state of the bomb is not smaller than 0
     }
 
     @Override
     public void updateImage() {
-        if (bomb.isExplosing() || bomb.hasToBeRemoved())
-            setImage(null) ;
+        Bomb bomb = (Bomb) getDecor() ;
+        if (bomb.isExplosing())
+            setImage(null) ; //we remove the image
         else
             setImage(ImageFactory.getInstance().getBomb(bomb.getState() >= 0 ? bomb.getState() : 0));
+        super.updateImage();
     }
 }

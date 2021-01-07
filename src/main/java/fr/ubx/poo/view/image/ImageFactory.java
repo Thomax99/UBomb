@@ -83,13 +83,6 @@ public final class ImageFactory {
         if (monster_type >= directions_monsters.length) return get(directions_monsters_classicals[direction.ordinal()]); //we return the default image of monsters
         return get(directions_monsters[monster_type][direction.ordinal()]);
     }
-    public Image getBox() {
-        return get(BOX);
-    }
-    public Image getExplosion(){
-        return get(EXPLOSION) ;
-    }
-
     public Image getBomb(int state) {
         return get(stateBomb[state]);
     }

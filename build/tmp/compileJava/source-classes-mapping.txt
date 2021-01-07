@@ -2,14 +2,12 @@ fr/ubx/poo/model/go/MovableGameObject.java
  fr.ubx.poo.model.go.MovableGameObject
 fr/ubx/poo/model/go/character/Character.java
  fr.ubx.poo.model.go.character.Character
-fr/ubx/poo/view/sprite/SpriteLandmine.java
- fr.ubx.poo.view.sprite.SpriteLandmine
 fr/ubx/poo/model/Entity.java
  fr.ubx.poo.model.Entity
-fr/ubx/poo/model/decor/bonus/Bonus.java
- fr.ubx.poo.model.decor.bonus.Bonus
 fr/ubx/poo/model/go/character/automovablepolicies/InFrontOfPlayerPolicy.java
  fr.ubx.poo.model.go.character.automovablepolicies.InFrontOfPlayerPolicy
+fr/ubx/poo/model/decor/bonus/Bonus.java
+ fr.ubx.poo.model.decor.bonus.Bonus
 fr/ubx/poo/game/Dimension.java
  fr.ubx.poo.game.Dimension
 fr/ubx/poo/model/go/character/automovablepolicies/AutomovableType.java
@@ -20,8 +18,6 @@ fr/ubx/poo/model/decor/Princess.java
  fr.ubx.poo.model.decor.Princess
 fr/ubx/poo/model/decor/bonus/BombNumberInc.java
  fr.ubx.poo.model.decor.bonus.BombNumberInc
-fr/ubx/poo/view/sprite/SpriteScarecrow.java
- fr.ubx.poo.view.sprite.SpriteScarecrow
 fr/ubx/poo/view/sprite/SpriteDoor.java
  fr.ubx.poo.view.sprite.SpriteDoor
 fr/ubx/poo/model/go/character/automovablepolicies/Automovable.java
@@ -60,10 +56,10 @@ fr/ubx/poo/model/decor/bonus/Key.java
  fr.ubx.poo.model.decor.bonus.Key
 fr/ubx/poo/view/sprite/SpriteFactory.java
  fr.ubx.poo.view.sprite.SpriteFactory
-fr/ubx/poo/model/decor/explosives/Landmine.java
- fr.ubx.poo.model.decor.explosives.Landmine
 fr/ubx/poo/model/go/character/automovablepolicies/RandomPolicy.java
  fr.ubx.poo.model.go.character.automovablepolicies.RandomPolicy
+fr/ubx/poo/model/decor/explosives/Landmine.java
+ fr.ubx.poo.model.decor.explosives.Landmine
 fr/ubx/poo/engine/StatusBar.java
  fr.ubx.poo.engine.StatusBar
 fr/ubx/poo/model/Updatable.java
@@ -101,8 +97,6 @@ fr/ubx/poo/Main.java
  fr.ubx.poo.Main
 fr/ubx/poo/model/decor/Scarecrow.java
  fr.ubx.poo.model.decor.Scarecrow
-fr/ubx/poo/view/sprite/SpriteExplosion.java
- fr.ubx.poo.view.sprite.SpriteExplosion
 fr/ubx/poo/view/sprite/Sprite.java
  fr.ubx.poo.view.sprite.Sprite
 fr/ubx/poo/game/Game.java
@@ -119,8 +113,6 @@ fr/ubx/poo/game/WorldStatic.java
  fr.ubx.poo.game.WorldStatic
 fr/ubx/poo/model/decor/Door.java
  fr.ubx.poo.model.decor.Door
-fr/ubx/poo/view/sprite/SpriteBonus.java
- fr.ubx.poo.view.sprite.SpriteBonus
 fr/ubx/poo/view/image/ImageFactory.java
  fr.ubx.poo.view.image.ImageFactory
  fr.ubx.poo.view.image.ImageFactory$Holder
