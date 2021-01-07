@@ -48,11 +48,11 @@ public class Door extends Decor{
     }
 
     /**
-     * A door can't explode
      * @return false
      */
     @Override
     public boolean canExplode(){
+        //Door can't explode
         return false ;
     }
 

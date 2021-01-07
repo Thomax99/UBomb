@@ -72,6 +72,7 @@ public class StatusBar {
         }
     }
 
+
     private HBox statusGroup(Image kind, Text number) {
         HBox group = new HBox();
         ImageView img = new ImageView(kind);

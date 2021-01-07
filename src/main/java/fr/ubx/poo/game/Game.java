@@ -88,6 +88,10 @@ public class Game {
             worlds.add(loadWorld(this.nb_level)) ;
     }
 
+    /**
+     * Create and fill all the list of entities and decor
+     * by reading the level file
+     */
     private void initializeEntities(){
         monsters.add(new LinkedList<>()) ;
         boxes.add(new LinkedList<>()) ;
@@ -102,7 +106,9 @@ public class Game {
      * @param new_level The addition of this parameter and the game current level gives the level in which the player is
      */
     public void changeWorld(int new_level){
+        //update the number of level accessed
         this.nb_level+=new_level ;
+        //create a new world and increase the number of level initialized by 1
         if (this.nb_level > level_max_initialized){
             initializeWorld();
             initializeEntities() ;
@@ -170,8 +176,8 @@ public class Game {
      * @return if there is a landmine at the position pos on the level level
      */
     public boolean positionIsLandmine(Position pos, int level){
-        Explosive explosive = getExplosives().get(pos) ;
-        return explosive != null && !explosive.isBomb() && explosive.getLevel() == level ;
+        Explosive explosive = getExplosives(level).get(pos) ;
+        return explosive != null && !explosive.isBomb() ;
     }
     /**
      * This function is used to know if there is a bomb at a given position and level
@@ -180,8 +186,8 @@ public class Game {
      * @return if there is a bomb at the position pos on the level level
      */
     public boolean positionIsBomb(Position pos, int level){
-        Explosive explosive = getExplosives().get(pos) ;
-        return explosive != null && explosive.isBomb() && explosive.getLevel() == level ;
+        Explosive explosive = getExplosives(level).get(pos) ;
+        return explosive != null && explosive.isBomb() ;
     }
     /**
      * This function is used to add a bomb on a given position, with a given range, at a given time
@@ -420,17 +426,16 @@ public class Game {
                                     } ) ) ;
 
         //landmine management : just on the current world
-        Explosive explosive = getExplosives().get(getPlayer().getPosition()) ;
-        if (explosive != null && !explosive.isBomb()){
-            //there is a landmine at the player position
+        if(positionIsLandmine(getPlayer().getPosition(), this.nb_level)){
             explode(getPlayer().getPosition(), now, this.nb_level) ;
+
         }
+
         for (Monster monster : getMonsters()){
-            explosive = getExplosives().get(monster.getPosition()) ;
-            if (explosive != null && !explosive.isBomb()){
-                //there is a landmine at a monster position
+            if(positionIsLandmine(monster.getPosition(), this.nb_level)){
                 explode(monster.getPosition(), now, this.nb_level) ;
             }
+
         }
 
         // now we remove the explosives which has exploded on the current level :

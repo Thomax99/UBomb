@@ -79,7 +79,7 @@ public final class GameEngine {
         stage.setResizable(false);
         stage.show();
 
-        //reinitalize the input and the statusBar
+        //reinitialize the input and the statusBar
         input = new Input(scene);
         root.getChildren().add(layer);
         statusBar = new StatusBar(root, sceneWidth, sceneHeight, game);
@@ -87,7 +87,7 @@ public final class GameEngine {
         // Create decor sprites
         //this first is just for managing the different elements stored on the World (stone, bonus, ...)
         game.getWorld().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d)));
-        //In case of recoming on an old level, those lines permit the sprites and bombs (decor which are stored on the game)
+        //In case of coming back on an old level, those lines permit to display the sprites of bombs (decor which are stored on the game)
         game.getExplosives().forEach( (pos,d) -> sprites.add(SpriteFactory.createDecor(layer, pos, d))); //bombs
 
         //create game object Sprite

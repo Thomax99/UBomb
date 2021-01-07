@@ -38,6 +38,10 @@ public final class Input {
     };
     private final Scene scene;
 
+    /**
+     * Listen when the key is pressed and when the key is released
+     * @param scene where the player press a key
+     */
     public Input(Scene scene) {
         this.scene = scene;
         scene.addEventFilter(KeyEvent.KEY_PRESSED, keyPressedEventHandler);

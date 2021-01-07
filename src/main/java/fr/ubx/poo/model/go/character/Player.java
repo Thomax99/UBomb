@@ -134,7 +134,7 @@ public class Player extends Character{
     public void update(long now) {
         setCurrentTime(now); // updating the time
         if ( ((getCurrentTime()-timeInvincible)/ Constants.secondInnanoSec) >= 1 ){
-            // supess the invicibility of the player after one second
+            // supress the invicibility of the player after one second
             isInvincible = false ;
         }
         if (moveRequested) {
