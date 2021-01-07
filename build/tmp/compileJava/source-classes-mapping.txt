@@ -1,41 +1,43 @@
-fr/ubx/poo/view/image/ImageResource.java
- fr.ubx.poo.view.image.ImageResource
+fr/ubx/poo/game/WorldEntity.java
+ fr.ubx.poo.game.WorldEntity
+fr/ubx/poo/game/WorldBuilder.java
+ fr.ubx.poo.game.WorldBuilder
+ fr.ubx.poo.game.WorldBuilder$1
+fr/ubx/poo/model/Entity.java
+ fr.ubx.poo.model.Entity
+fr/ubx/poo/view/image/ImageFactory.java
+ fr.ubx.poo.view.image.ImageFactory
+ fr.ubx.poo.view.image.ImageFactory$Holder
 fr/ubx/poo/game/Direction.java
  fr.ubx.poo.game.Direction
  fr.ubx.poo.game.Direction$1
  fr.ubx.poo.game.Direction$2
  fr.ubx.poo.game.Direction$3
  fr.ubx.poo.game.Direction$4
-fr/ubx/poo/model/Entity.java
- fr.ubx.poo.model.Entity
-fr/ubx/poo/model/Updatable.java
- fr.ubx.poo.model.Updatable
-fr/ubx/poo/game/Position.java
- fr.ubx.poo.game.Position
 fr/ubx/poo/game/Dimension.java
  fr.ubx.poo.game.Dimension
 fr/ubx/poo/model/go/character/automovablepolicies/AutomovableType.java
  fr.ubx.poo.model.go.character.automovablepolicies.AutomovableType
 fr/ubx/poo/game/PositionNotFoundException.java
  fr.ubx.poo.game.PositionNotFoundException
-fr/ubx/poo/game/WorldEntity.java
- fr.ubx.poo.game.WorldEntity
-fr/ubx/poo/model/Movable.java
- fr.ubx.poo.model.Movable
-fr/ubx/poo/view/image/ImageFactory.java
- fr.ubx.poo.view.image.ImageFactory
- fr.ubx.poo.view.image.ImageFactory$Holder
-fr/ubx/poo/engine/Input.java
- fr.ubx.poo.engine.Input
 fr/ubx/poo/view/sprite/Sprite.java
  fr.ubx.poo.view.sprite.Sprite
+fr/ubx/poo/game/WorldNotValidException.java
+ fr.ubx.poo.game.WorldNotValidException
+fr/ubx/poo/view/image/ImageResource.java
+ fr.ubx.poo.view.image.ImageResource
 fr/ubx/poo/Constants.java
  fr.ubx.poo.Constants
+fr/ubx/poo/model/Movable.java
+ fr.ubx.poo.model.Movable
+fr/ubx/poo/engine/Input.java
+ fr.ubx.poo.engine.Input
+fr/ubx/poo/game/Position.java
+ fr.ubx.poo.game.Position
 fr/ubx/poo/game/RandomWorldBuilder.java
  fr.ubx.poo.game.RandomWorldBuilder
-fr/ubx/poo/game/WorldBuilder.java
- fr.ubx.poo.game.WorldBuilder
- fr.ubx.poo.game.WorldBuilder$1
+fr/ubx/poo/model/Updatable.java
+ fr.ubx.poo.model.Updatable
 fr/ubx/poo/model/go/MovableGameObject.java
  fr.ubx.poo.model.go.MovableGameObject
 fr/ubx/poo/view/sprite/SpriteGameObject.java

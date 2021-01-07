@@ -43,7 +43,7 @@ public class Game {
     private final String worldPath;
     private int nb_level, level_max_initialized, nb_total_levels ;
     private boolean hasChangedWorld = false, hasElementsLevelChange = false, randomlyGenerate ;
-    private String initPrefString ;
+    private String initPrefString, initSuffixString ;
     //intial values of differents things
     private int initPlayerLives, initPlayerBombs, initPlayerKey, initPlayerRange, initPlayerLandmines ;
     private boolean initPlayerScarecrow ;
@@ -81,11 +81,19 @@ public class Game {
      * This function is used to initialize a new world in function of the private variables nb_level, randomlyGenerate and nb_total_levels if randomlyGenerate
      */
     private void initializeWorld(){
+        World newWorld ;
         if (randomlyGenerate)
             //the initialization is not from the files
-            worlds.add(new World(WorldBuilder.randomBuild(worldPath, nb_level, nb_total_levels))) ;
-        else
-            worlds.add(loadWorld(this.nb_level)) ;
+            newWorld = new World(WorldBuilder.randomBuild(worldPath, nb_level, nb_total_levels)) ;
+        else{
+            try{
+                newWorld = loadWorld(this.nb_level) ;
+            } catch(WorldNotValidException e){
+                System.out.println("Problème dans la validité du fichier de jeu : "+ e.getMessage()+ ". Pensez à vérifier si il n'y a pas des sauts de lignes en trop, ou autres. Un monde statique va être chargé.") ;
+                newWorld = new WorldStatic() ;
+            }
+        }
+        worlds.add(newWorld) ;
     }
 
     /**
@@ -126,8 +134,15 @@ public class Game {
 
             }
         } catch (PositionNotFoundException e) {
-                System.err.println("Position not found : " + e.getLocalizedMessage());
-                throw new RuntimeException(e);
+                System.err.println("Position not found : " + e.getMessage()+". We're trying something else.");
+                try{
+                    //this part is in case that we've load a static world (see loadWorld for more details)
+                    positionPlayer = getWorld().findPlayer() ;
+                }
+                catch (PositionNotFoundException e2){
+                    System.err.println("Position not found : " + e2.getLocalizedMessage()+". Too much. We crash.");
+                    throw new RuntimeException(e2);
+                }
         }
         player.setPosition(positionPlayer);
         hasChangedWorld = true ;
@@ -478,42 +493,13 @@ public class Game {
             initPlayerLandmines = Integer.parseInt(prop.getProperty(Constants.fieldLandminesName, Constants.defaultInitPlayerLandmines+""));
             initPlayerScarecrow = Boolean.parseBoolean(prop.getProperty(Constants.fieldScarecrowName, Constants.defaultInitScarecrow+""));
             initPrefString = prop.getProperty(Constants.fieldPrefixName, Constants.defaultPrefixLoading+"") ;
+            initSuffixString = prop.getProperty(Constants.fieldSuffixName, Constants.defaultSuffixLoading+"") ;
         } catch (IOException ex) {
             System.err.println("Error loading configuration");
         }
     }
-    private World loadWorld(int n){
-        int width = 0, height = 0 ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
-            int c;
-            while( (c = input.read()) != -1){
-                if ((char) c == '\n') break ;
-                width++ ;
-            }
-            if (width != 0) height ++ ;
-            while((c = input.read()) != -1){
-                if ((char) c == '\n') height++ ;
-            }
-        } catch (IOException ex) {
-            System.err.println("Error loading game");
-        }
-        WorldEntity[][] mapEntities = new WorldEntity[height][width] ;
-        try (InputStream input = new FileInputStream(new File(worldPath, initPrefString+n+Constants.suffix))){
-            int c, nb_read = 0;
-            while((c = input.read()) != -1){
-                if ((char) c != '\n'){
-                    Optional<WorldEntity> entity = WorldEntity.fromCode((char) c) ;
-                    if (entity.isPresent())
-                        mapEntities[nb_read/width][nb_read%width] = entity.get() ;
-                    else
-                        mapEntities[nb_read/width][nb_read%width] = WorldEntity.Empty ;
-                    nb_read++ ;
-                }
-            }
-        } catch (IOException ex) {
-            System.err.println("Error loading game");
-        }
-        return new World(mapEntities) ;
+    private World loadWorld(int n) throws WorldNotValidException{
+        return new World(WorldBuilder.loadWorldFromFile(n, this.worldPath, this.initPrefString, this.initSuffixString)) ;
     }
     /**
      * This function compute if it is possible for a gameObject which can move to go at a given position

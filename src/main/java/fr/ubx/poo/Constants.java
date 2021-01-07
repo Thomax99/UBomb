@@ -13,9 +13,10 @@ public final class Constants {
     // values of fields in the config properties file
 
     //general properties
-    public static String suffix = ".txt", propertiesFileName = "config.properties", fieldLivesName = "lives",
+    public static String propertiesFileName = "config.properties", fieldLivesName = "lives",
                                  fieldBombsName = "bombs", fieldKeyName = "key", fieldRangeName = "range",
-                                 fieldLandminesName = "landmines", fieldScarecrowName ="scarecrow", fieldPrefixName = "prefix" ;
+                                 fieldLandminesName = "landmines", fieldScarecrowName ="scarecrow", fieldPrefixName = "prefix",
+                                 fieldSuffixName ="suffix" ;
 
     //random properties
     public static String emptyProbaName = "emptyProba", boxProbaName = "boxProba", monsterProbaName = "monsterProba", stoneProbaName ="stoneProba",
@@ -32,7 +33,7 @@ public final class Constants {
 
     //default values for loading game from files
     public static int defaultInitPlayerLives = 3, defaultInitPlayerBombs = 3, defaultInitPlayerKey = 0, defaultInitPlayerRange = 1, defaultInitPlayerLandmines = 0 ;
-    public static String defaultPrefixLoading = "level" ;
+    public static String defaultPrefixLoading = "level", defaultSuffixLoading = ".txt" ;
     public static boolean defaultInitScarecrow = false ;
 
 }
