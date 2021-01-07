@@ -13,18 +13,15 @@ import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Hashtable;
 import java.util.Iterator;
 
 
 
-import fr.ubx.poo.model.decor.bonus.Key;
 import fr.ubx.poo.model.go.*;
 import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.decor.*;
-import fr.ubx.poo.model.decor.bonus.Bonus;
 
 import fr.ubx.poo.model.go.character.*;
 import fr.ubx.poo.model.decor.explosives.*;

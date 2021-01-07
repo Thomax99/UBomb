@@ -6,7 +6,6 @@ package fr.ubx.poo.model.decor;
 
 import fr.ubx.poo.Constants;
 import fr.ubx.poo.model.Updatable;
-import fr.ubx.poo.model.decor.Decor;
 
 public class Explosion extends Decor implements Updatable{
     private long start ;

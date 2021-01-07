@@ -2,12 +2,10 @@ package fr.ubx.poo.game;
 
 import fr.ubx.poo.model.decor.*;
 import fr.ubx.poo.model.decor.bonus.*;
-import fr.ubx.poo.model.go.Box;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import java.util.Hashtable;
 import java.util.Map;

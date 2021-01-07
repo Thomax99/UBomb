@@ -8,11 +8,7 @@ import fr.ubx.poo.Constants ;
 
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
-import fr.ubx.poo.model.Movable;
-import fr.ubx.poo.model.go.*;
-import fr.ubx.poo.model.go.GameObject;
 import fr.ubx.poo.model.decor.* ;
-import fr.ubx.poo.model.decor.bonus.* ;
 import fr.ubx.poo.game.Game;
 
 public class Player extends Character{

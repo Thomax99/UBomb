@@ -5,15 +5,10 @@
 package fr.ubx.poo.engine;
 
 import fr.ubx.poo.game.Direction;
-import fr.ubx.poo.model.go.Box;
 import fr.ubx.poo.view.sprite.Sprite;
 import fr.ubx.poo.view.sprite.SpriteFactory;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.model.go.character.*;
-import fr.ubx.poo.model.decor.Decor;
-
-import fr.ubx.poo.model.go.*;
-import fr.ubx.poo.model.decor.explosives.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -29,9 +24,6 @@ import javafx.stage.Stage;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map ;
-import java.util.Stack;
-import java.util.Hashtable ;
 
 
 

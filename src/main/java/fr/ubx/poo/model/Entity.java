@@ -1,6 +1,5 @@
 package fr.ubx.poo.model;
 
-import fr.ubx.poo.game.Direction;
 
 /**
  * An entity is the basic brick of all the things on the game.

@@ -3,7 +3,6 @@
  */
 
 package fr.ubx.poo.model.decor;
-import fr.ubx.poo.game.Direction;
 
 public class Tree extends Decor {
     @Override

@@ -5,7 +5,6 @@ import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Game;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.go.character.Monster;
-import fr.ubx.poo.model.go.character.Player;
 import java.util.List;
 
 /**
