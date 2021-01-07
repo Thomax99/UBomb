@@ -9,7 +9,8 @@ public class Key extends Bonus{
     public void consumePlayer(Player player) {
         player.addKey() ;
     }
-    public boolean canExplose(){
+    @Override
+    public boolean canExplode(){
         return false ;
     }
 }

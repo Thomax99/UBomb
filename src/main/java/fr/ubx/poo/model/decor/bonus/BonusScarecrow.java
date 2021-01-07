@@ -11,8 +11,9 @@ import fr.ubx.poo.model.go.character.Player;
  * Just one scarecrow could be put on each world
  */
 public class BonusScarecrow extends Bonus {
+    @Override
     public String toString(){
-        return "Scracrow Bonus" ;
+        return "Scrarecrow Bonus" ;
     }
 
     @Override

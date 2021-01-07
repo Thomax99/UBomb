@@ -7,6 +7,7 @@ import fr.ubx.poo.model.go.character.Player;
 
 
 public class BombRangeDec extends Bonus {
+    @Override
     public String toString(){
         return "BombRangeDec" ;
     }

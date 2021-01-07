@@ -4,6 +4,8 @@
 
 package fr.ubx.poo.model.go.character;
 
+import fr.ubx.poo.Constants ;
+
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.Movable;
@@ -32,40 +34,58 @@ public class Player extends Character{
         this.key = game.getInitPlayerKey();
         this.range = game.getInitPlayerPortee();
     }
+    //the nexts methods are getters. Most of time they are used by the game Engine to know the state of the differents values on the player
     @Override
     public int getLevel(){
         return game.getLevel() ;
     }
-
-    public void addLive(){
-        lives++ ;
-    }
-    public Boolean isInvincible(){
-        return isInvincible;
-    }
-    public int getLives() {
-        return lives;
-    }
-    public void addBomb(){
-        bombs++ ;
-    }
-    public void lessBomb(){
-        bombs = (bombs <= 1 ? 1 : bombs-1) ;
-    }
     public int getBombs() {
         return bombs;
     }
-    private void useKey(){
-        key -- ;
-    }
-    public void addKey(){
-        key++ ;
+    public int getLives() {
+        return lives;
     }
     public int getKey() {
         return key;
     }
     public int getLandmines() {
         return landmines ;
+    }
+    public boolean getScarecrow(){
+        return hasScarecrow ;
+    }
+    public int getRange() {
+        return range;
+    }
+    public boolean isWinner() {
+        return winner;
+    }
+    public boolean isAlive() {
+        return lives != 0 && alive;
+    }
+    /**
+     * Used to know if the player is on an invincible state or not
+     * @return if the current is invincible
+     */
+    public Boolean isInvincible(){
+        return isInvincible;
+    }
+
+    //here the next methods are used by bonus to make a good treatment when they are going on them
+    public void addBomb(){
+        bombs++ ;
+    }
+    public void lessBomb(){
+        bombs = (bombs <= 1 ? 1 : bombs-1) ; //the smaller number of bombs is 1
+    }
+    public void addLive(){
+        lives++ ;
+    }
+    public void addKey(){
+        key++ ;
+    }
+    public void princessFound(){
+        winner = true ;
     }
     public void addPortee(){
         range++;
@@ -76,88 +96,58 @@ public class Player extends Character{
     public void hasScarecrow(){
         hasScarecrow = true ;
     }
-    public boolean getScarecrow(){
-        return hasScarecrow ;
-    }
     public void lessPortee(){
-        range = (range <= 1 ? 1 : range-1);
-    }
-    public int getRange() {
-        return range;
-    }
-    public void requestMove(Direction direction) {
-        if (direction != getDirection()) {
-            setDirection(direction);
-        }
-        moveRequested = true;
-    }
-    public void requestScarecrow() {
-        scarecrowRequested = true;
+        range = (range <= 1 ? 1 : range-1); //the smaller range is 1
     }
 
-    /**
-     * Compute a move in a Direction, depending of the surrounding,
-     * the player can move a box or can not be allowed to move
-     * @param direction The direction where the player will move
-     */
     @Override
     public void doMove(Direction direction) {
         super.doMove(direction);
-        if(game.getWorld().get(getPosition()) != null) //there is a good decor at this position
-            game.getWorld().get(getPosition()).computeDecor(this);
+        if(!game.getWorld().isEmpty(getPosition())) //there is a decor at the position on which the player is going
+            game.getWorld().get(getPosition()).computeDecor(this); //notify the decor that there is the player on it
+        //here we manage the interactions between other gameObject (ie damage the player if he is going on a monster position or moving the box)
         game.getMonsters().stream().filter(monster -> monster.getPosition().equals(getPosition())).forEach(monster -> damage(getCurrentTime())) ;
         game.getBoxes().stream().filter(box -> box.getPosition().equals(getPosition())).forEach(box -> box.doMove(direction));
     }
-
-    /**
-     * Tell if the entity can move in a certain direction.
-     * @param direction the direction in which the entity is going
-     * @return Yes if the entity can move in this direction, else No
-     */
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
         return game.positionAllowedToPlayer(nextPos, direction) ;
     }
-
-    /**
-     * Open the door if the player have a key and is close to the door
-     */
-    public void requestOpenDoor(){
-        Position nextPos = getDirection().nextPosition(getPosition());
-        if (game.getWorld().positionIsDoor(nextPos)){
-            Door door = (Door) game.getWorld().get(nextPos) ;
-            if(door.isClosed() && getKey() > 0){
-                door.open();
-                useKey() ;
-            }
-        }
+    public boolean canBomb(Position position){
+        return bombs > 0 && game.canBomb(position) ;
     }
-
+    public boolean canLandmine(Position position){
+        return landmines > 0 && game.canLandmine(position) ;
+    }
+    public boolean canScarecrow(Position position){
+        return hasScarecrow && game.canScarecrow(position) ;
+    }
     /**
      * Change the world to the world which is linked with the level
-     * @param lv the level (world) where the player enter
+     * @param lv the level (world) in which the player enter
      */
     public void changeWorld(int lv){
         game.changeWorld(lv);
     }
-
     @Override
     public void update(long now) {
-        setCurrentTime(now);
-        if ( ((getCurrentTime()-timeInvincible)/ 1000000000L) >= 1 ){ //we have to suppress magic numbers
+        setCurrentTime(now); // updating the time
+        if ( ((getCurrentTime()-timeInvincible)/ Constants.secondInnanoSec) >= 1 ){
+            // supess the invicibility of the player after one second
             isInvincible = false ;
         }
         if (moveRequested) {
+            //doing a move
             if (canMove(getDirection())) {
                 doMove(getDirection());
             }
+            moveRequested = false;
         }
-        moveRequested = false;
         if (landmineRequested){
             //the landmine is a bomb which will be placed in front of the player
             Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
-            if (canLandmine(nextPosition)){
+            if (canLandmine(nextPosition)){ //searching if it possible to put a landmine
                 game.addLandmine(nextPosition, range) ;
                 landmines-- ;
             }
@@ -175,50 +165,63 @@ public class Player extends Character{
                 game.addBomb(getPosition(), range, now) ;
                 bombs-- ;
             }
+            bombRequested = false ;
         }
-        bombRequested = false ;
     }
-
+    /**
+     * Used to notify the player object that we have requested a door opening
+     */
+    public void requestOpenDoor(){
+        Position nextPos = getDirection().nextPosition(getPosition());
+        if (game.getWorld().positionIsDoor(nextPos)){
+            Door door = (Door) game.getWorld().get(nextPos) ;
+            if(door.isClosed() && getKey() > 0){
+                door.open();
+                useKey() ;
+            }
+        }
+    }
+    /**
+     * Used to notify the object player that we would like to move
+     * @param direction the direction on which we move
+     */
+    public void requestMove(Direction direction) {
+        if (direction != getDirection()) {
+            setDirection(direction);
+        }
+        moveRequested = true;
+    }
+    /**
+     * Used to notify the object player that we would like to put a scarecrow
+     */
+    public void requestScarecrow() {
+        scarecrowRequested = true;
+    }
+    /**
+     * Used to notify the object player that we would like to put a bomb
+     */
     public void requestBomb(){
         bombRequested = true ;
     }
+    /**
+     * Used to notify the object player that we would like to put a landmine
+     */
     public void requestLandmine(){
         landmineRequested = true ;
-    }
-    public boolean canBomb(Position position){
-        return bombs > 0 && game.canBomb(position) ;
-    }
-    public boolean canLandmine(Position position){
-        return landmines > 0 && game.canLandmine(position) ;
-    }
-    public boolean canScarecrow(Position position){
-        return hasScarecrow && game.canScarecrow(position) ;
     }
     public void bombHasExplosed(){
         bombs++;
     }
+    /**
+     * Used to notify the player that something which is hostile has touched him
+     * @param now the time that the touching occurs
+     */
     public void damage(long now){
-        if(!isInvincible){
+        if(!isInvincible){ // if the player is invincible, he cannot be damage
             lives-- ;
-            isInvincible = true ;
+            isInvincible = true ; // a damage lead to one second of invincibility 
             timeInvincible = now ;
         }
-    }
-
-    public boolean isAlive() {
-        return lives != 0 && alive;
-    }
-    public void princessFound(){
-        winner = true ;
-    }
-    public boolean isWinner() {
-        return winner;
-    }
-    private void setCurrentTime(long time){
-        currentTime = time ;
-    }
-    private long getCurrentTime(){
-        return currentTime ;
     }
     @Override
     public void explosion(long now){
@@ -228,5 +231,18 @@ public class Player extends Character{
     public boolean hasToBeRemoved(){
         return false ; // a player is never removed of a game
     }
-
+    /**
+     * Used to notify the player that the actual time has been changed.
+     * Useful for managing the invincibility time
+     * @param time
+     */
+    private void setCurrentTime(long time){
+        currentTime = time ;
+    }
+    private long getCurrentTime(){
+        return currentTime ;
+    }
+    private void useKey(){
+        key -- ;
+    }
 }
