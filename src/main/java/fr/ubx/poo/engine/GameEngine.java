@@ -32,7 +32,7 @@ import java.util.List;
 public final class GameEngine {
 
     private static AnimationTimer gameLoop;
-    private final String windowTitle, scorePath;
+    private final String windowTitle, scorePath, playerName;
     private final Game game;
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>() ;
@@ -42,10 +42,11 @@ public final class GameEngine {
     private Stage stage;
     private Sprite spritePlayer;
 
-    public GameEngine(final String windowTitle, final String scorePath, Game game, final Stage stage) {
+    public GameEngine(final String windowTitle, final String scorePath, Game game, final Stage stage, String playerName) {
         this.windowTitle = windowTitle;
         this.scorePath = scorePath ;
         this.game = game;
+        this.playerName = playerName ;
         this.player = game.getPlayer();
         initialize(stage, game);
         buildAndSetGameLoop();
@@ -154,7 +155,7 @@ public final class GameEngine {
             nbLandminesPut = player.getNbLandminesPut(), nbScarecrowPut = player.getNbScarecrowPut(), nbBoxDestructed = game.getNbBoxDestructed(),
             nbMonsterKilled = game.getNbMonstersKilled(), nbLivesStaying = player.getLives(), nbLandminesStaying = player.getNbLandmines(),
             nbDecorDestructed = game.getNbDecorDestructed() ;
-        return new Score("Random", valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
+        return new Score(playerName, valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
                 + valueScarecrowPut*nbScarecrowPut + valueBoxDestructed*nbBoxDestructed + valueMonsterKilled*nbMonsterKilled + valueLivesStaying*nbLivesStaying
                 + valueLandminesStaying*nbLandminesStaying + valueDecorDestructed* nbDecorDestructed) ;
     }

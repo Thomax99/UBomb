@@ -27,13 +27,17 @@ public class Main extends Application {
                 System.err.println("The parameter " + param2+" is not a number");
             }
         }
+        String name = "toi" ;
+        if (list.size() > 2){ //the third argument is the name
+            name = list.get(2) ;
+        }
         //now we verify the value of nb_levels to don't have no wanted behaviors.
         if (nb_levels <= 0) nb_levels = 5 ;
-        if (nb_levels > 9) nb_levels = 9 ; 
+        if (nb_levels > 9) nb_levels = 9 ;
         ImageFactory.getInstance().load();
         String path = getClass().getResource("/sample").getFile();
         Game game = new Game(path, isRandom, nb_levels);
-        GameEngine engine = new GameEngine("UBomb", path, game, stage);
+        GameEngine engine = new GameEngine("UBomb", path, game, stage, name);
         engine.start();
     }
 
