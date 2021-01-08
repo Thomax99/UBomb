@@ -4,11 +4,14 @@
 package fr.ubx.poo.engine;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -28,6 +31,12 @@ public final class Score implements Comparable<Score> {
     @Override
     public int compareTo(Score score) {
         return score.score - this.score;
+    }
+    public int getScore(){
+        return score ;
+    }
+    public String getName(){
+        return name ;
     }
     /**
      * Generate the list of scores which are stored at a given path on a given file
@@ -83,5 +92,29 @@ public final class Score implements Comparable<Score> {
             back+=(score+"\n") ;
         }
         return back ;
+    }
+    /**
+     * (Re)initialize a file of score from the 10's best scores of a given list of scores
+     * @param scores the given scores list
+     * @param scorePath the path of the file
+     * @param scoreFileName the file
+     */
+    public static void setFileScoreFromListScore(List<Score> scores, String scorePath, String scoreFileName){
+        Collections.sort(scores) ; // sorting the list to put just the 10's bests
+        try(OutputStream output = new FileOutputStream(new File(scorePath, scoreFileName))){
+            int nbScoresToWrite = scores.size() > 10 ? 10 : scores.size(), nbWrite = 0 ; //we would like to write at the most the 10 best scores
+            Iterator<Score> it = scores.iterator() ;
+            while (it.hasNext() && nbWrite < nbScoresToWrite){
+                Score score = it.next() ;
+                //we would like to write the score the format is name:score
+                output.write(score.getName().getBytes()) ;
+                output.write(":".getBytes()) ;
+                output.write((score.getScore()+"\n").getBytes()) ;
+                nbWrite++ ;
+            }
+        } catch (IOException e){
+            System.err.println("Error writing scores");
+            throw new RuntimeException("Le fichier ne peut être écrit") ;
+        }
     }
 }

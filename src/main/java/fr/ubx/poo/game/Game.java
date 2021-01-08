@@ -531,7 +531,7 @@ public class Game {
         for (Box box : getBoxes()){
             if (box.getPosition().equals(position)) return false ; // or on another box
         }
-        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position) ; //a box can't go on a decor
+        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position) && !positionIsLandmine(position, this.nb_level) ; //a box can't go on a decor
     }
 
     //functions used by the game engine to compute the score
