@@ -131,7 +131,7 @@ public class Player extends Character{
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        return game.positionAllowedToPlayer(nextPos, direction) ;
+        return game.positionAllowedToPlayer(nextPos, direction, game.getLevel()) ;
     }
     public boolean canBomb(Position position){
         return bombs > 0 && game.canBomb(position) ;

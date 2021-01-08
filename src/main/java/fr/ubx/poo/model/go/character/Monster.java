@@ -52,7 +52,7 @@ public class Monster extends Character {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        return game.positionAllowedToMonsters(nextPos) ;
+        return game.positionAllowedToMonsters(nextPos, game.getLevel()) ;
     }
     /**
      * This function is used by the view to know the type of the monster

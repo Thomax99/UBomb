@@ -26,6 +26,6 @@ public class Box extends MovableGameObject {
     @Override
     public boolean canMove(Direction direction) {
         Position nextPos = direction.nextPosition(getPosition());
-        return game.positionAllowedToBoxes(nextPos) ;
+        return game.positionAllowedToBoxes(nextPos, game.getLevel()) ;
     }
 }

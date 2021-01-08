@@ -119,6 +119,7 @@ public class Game {
             level_max_initialized++ ;
         }
         Position positionPlayer = null ;
+        //place the player on a door
         try{
             if(new_level == 1)
                 positionPlayer = getWorld().findPreviousDoorOpened();
@@ -484,16 +485,16 @@ public class Game {
      * @param position the given position
      * @return if it is possible for a gameObject to go at this position
      */
-    private boolean positionAllowedToMovableGameObjects(Position position){
-        return getWorld().isInside(position) && !positionIsBomb(position, getLevel()) ; // a gameobject can't go outside of the world or on a bomb
+    private boolean positionAllowedToMovableGameObjects(Position position, int level){
+        return getWorld().isInside(position) && !positionIsBomb(position, level) ; // a gameobject can't go outside of the world or on a bomb
     }
     /**
      * This function compute if it is possible for a Character to go at a given position
      * @param position the given position
      * @return if it is possible for a character to go at this position
      */
-    private boolean positionAllowedToCharacters(Position position){
-        return positionAllowedToMovableGameObjects(position) && getWorld().canGoIn(position) ;
+    private boolean positionAllowedToCharacters(Position position, int level){
+        return positionAllowedToMovableGameObjects(position, level) && getWorld().canGoIn(position) ;
         //a character can't go on an unauthorized decor
     }
     /**
@@ -501,11 +502,11 @@ public class Game {
      * @param position the given position
      * @return if it is possible for a monster to go at this position
      */
-    public boolean positionAllowedToMonsters(Position position){
+    public boolean positionAllowedToMonsters(Position position, int level){
         for(Box box : getBoxes()){
             if (box.getPosition().equals(position)) return false ; //a monster can't go on a box everytime
         }
-        return !getWorld().positionIsDoor(position) && !getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position); //another not allowed position for a monster is a princess position ;
+        return !getWorld().positionIsDoor(position) && !getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position, level); //another not allowed position for a monster is a princess position ;
     }
     /**
      * This function compute if it is possible for a player to go at a given position, if he came from a given direction
@@ -513,25 +514,25 @@ public class Game {
      * @param dir the given direction
      * @return if it is possible for a player to go at this position
      */
-    public boolean positionAllowedToPlayer(Position position, Direction dir){
+    public boolean positionAllowedToPlayer(Position position, Direction dir, int level){
         for(Box box : getBoxes()){
             if (box.getPosition().equals(position) && !box.canMove(dir)) return false ; //a monster can't go on a box if it can move in this direction
         }
-        return positionAllowedToCharacters(position);
+        return positionAllowedToCharacters(position, level);
     }
     /**
      * This function compute if it is possible for a box to go at a given position
      * @param position the given position
      * @return if it is possible for a box to go at this position
      */
-    public boolean positionAllowedToBoxes(Position position){
+    public boolean positionAllowedToBoxes(Position position, int level){
         for(Monster monster : getMonsters()){
             if (monster.getPosition().equals(position)) return false ; // a box can't go on a monster
         }
         for (Box box : getBoxes()){
             if (box.getPosition().equals(position)) return false ; // or on another box
         }
-        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position) && !positionIsLandmine(position, this.nb_level) ; //a box can't go on a decor
+        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position, level) && !positionIsLandmine(position, level) ; //a box can't go on a decor
     }
 
     //functions used by the game engine to compute the score
