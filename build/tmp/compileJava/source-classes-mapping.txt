@@ -28,12 +28,12 @@ fr/ubx/poo/model/go/Box.java
  fr.ubx.poo.model.go.Box
 fr/ubx/poo/model/go/GameObject.java
  fr.ubx.poo.model.go.GameObject
-fr/ubx/poo/game/RandomWorldBuilder.java
- fr.ubx.poo.game.RandomWorldBuilder
+fr/ubx/poo/view/sprite/SpritePlayer.java
+ fr.ubx.poo.view.sprite.SpritePlayer
 fr/ubx/poo/model/decor/Tree.java
  fr.ubx.poo.model.decor.Tree
-fr/ubx/poo/model/decor/Explosion.java
- fr.ubx.poo.model.decor.Explosion
+fr/ubx/poo/model/decor/Door.java
+ fr.ubx.poo.model.decor.Door
 fr/ubx/poo/model/go/character/automovablepolicies/OnPlayerPolicy.java
  fr.ubx.poo.model.go.character.automovablepolicies.OnPlayerPolicy
 fr/ubx/poo/model/decor/bonus/Heart.java
@@ -73,10 +73,10 @@ fr/ubx/poo/view/image/ImageResource.java
  fr.ubx.poo.view.image.ImageResource
 fr/ubx/poo/model/decor/bonus/BombNumberDec.java
  fr.ubx.poo.model.decor.bonus.BombNumberDec
-fr/ubx/poo/Constants.java
- fr.ubx.poo.Constants
-fr/ubx/poo/model/decor/explosives/Bomb.java
- fr.ubx.poo.model.decor.explosives.Bomb
+fr/ubx/poo/game/WorldStatic.java
+ fr.ubx.poo.game.WorldStatic
+fr/ubx/poo/model/decor/bonus/BombRangeInc.java
+ fr.ubx.poo.model.decor.bonus.BombRangeInc
 fr/ubx/poo/view/sprite/SpriteBomb.java
  fr.ubx.poo.view.sprite.SpriteBomb
 fr/ubx/poo/model/decor/bonus/BombRangeDec.java
@@ -85,47 +85,47 @@ fr/ubx/poo/view/sprite/SpriteBox.java
  fr.ubx.poo.view.sprite.SpriteBox
 fr/ubx/poo/model/go/character/automovablepolicies/BehindPlayerPolicy.java
  fr.ubx.poo.model.go.character.automovablepolicies.BehindPlayerPolicy
-fr/ubx/poo/engine/Score.java
- fr.ubx.poo.engine.Score
-fr/ubx/poo/model/go/character/Player.java
- fr.ubx.poo.model.go.character.Player
+fr/ubx/poo/model/decor/bonus/Landminer.java
+ fr.ubx.poo.model.decor.bonus.Landminer
+fr/ubx/poo/model/decor/explosives/Explosive.java
+ fr.ubx.poo.model.decor.explosives.Explosive
 fr/ubx/poo/engine/Input.java
  fr.ubx.poo.engine.Input
 fr/ubx/poo/view/sprite/SpriteDecor.java
  fr.ubx.poo.view.sprite.SpriteDecor
 fr/ubx/poo/model/Movable.java
  fr.ubx.poo.model.Movable
-fr/ubx/poo/Main.java
- fr.ubx.poo.Main
+fr/ubx/poo/model/decor/Stone.java
+ fr.ubx.poo.model.decor.Stone
 fr/ubx/poo/game/WorldNotValidException.java
  fr.ubx.poo.game.WorldNotValidException
 fr/ubx/poo/model/decor/Scarecrow.java
  fr.ubx.poo.model.decor.Scarecrow
 fr/ubx/poo/view/sprite/Sprite.java
  fr.ubx.poo.view.sprite.Sprite
-fr/ubx/poo/game/Game.java
- fr.ubx.poo.game.Game
-fr/ubx/poo/view/sprite/SpriteMonster.java
- fr.ubx.poo.view.sprite.SpriteMonster
-fr/ubx/poo/model/decor/bonus/Landminer.java
- fr.ubx.poo.model.decor.bonus.Landminer
-fr/ubx/poo/model/go/character/Monster.java
- fr.ubx.poo.model.go.character.Monster
-fr/ubx/poo/model/decor/bonus/BombRangeInc.java
- fr.ubx.poo.model.decor.bonus.BombRangeInc
-fr/ubx/poo/game/WorldStatic.java
- fr.ubx.poo.game.WorldStatic
-fr/ubx/poo/model/decor/Door.java
- fr.ubx.poo.model.decor.Door
 fr/ubx/poo/view/image/ImageFactory.java
  fr.ubx.poo.view.image.ImageFactory
  fr.ubx.poo.view.image.ImageFactory$Holder
-fr/ubx/poo/view/sprite/SpritePlayer.java
- fr.ubx.poo.view.sprite.SpritePlayer
-fr/ubx/poo/model/decor/Stone.java
- fr.ubx.poo.model.decor.Stone
-fr/ubx/poo/model/decor/explosives/Explosive.java
- fr.ubx.poo.model.decor.explosives.Explosive
+fr/ubx/poo/view/sprite/SpriteMonster.java
+ fr.ubx.poo.view.sprite.SpriteMonster
+fr/ubx/poo/engine/Score.java
+ fr.ubx.poo.engine.Score
+fr/ubx/poo/model/go/character/Player.java
+ fr.ubx.poo.model.go.character.Player
+fr/ubx/poo/Main.java
+ fr.ubx.poo.Main
+fr/ubx/poo/game/RandomWorldBuilder.java
+ fr.ubx.poo.game.RandomWorldBuilder
+fr/ubx/poo/game/Game.java
+ fr.ubx.poo.game.Game
+fr/ubx/poo/model/decor/Explosion.java
+ fr.ubx.poo.model.decor.Explosion
+fr/ubx/poo/Constants.java
+ fr.ubx.poo.Constants
+fr/ubx/poo/model/go/character/Monster.java
+ fr.ubx.poo.model.go.character.Monster
+fr/ubx/poo/model/decor/explosives/Bomb.java
+ fr.ubx.poo.model.decor.explosives.Bomb
 fr/ubx/poo/engine/GameEngine.java
  fr.ubx.poo.engine.GameEngine
  fr.ubx.poo.engine.GameEngine$1

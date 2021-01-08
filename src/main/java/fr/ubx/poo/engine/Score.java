@@ -10,6 +10,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.List;
+
+import fr.ubx.poo.model.go.character.Player;
+import fr.ubx.poo.Constants;
+import fr.ubx.poo.game.Game;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -116,5 +121,23 @@ public final class Score implements Comparable<Score> {
             System.err.println("Error writing scores");
             throw new RuntimeException("Le fichier ne peut être écrit") ;
         }
+    }
+        /**
+     * This function is used to compute a score when the game is over.
+     * @param playerName the name of the player
+     * @param player the player which was playing
+     * @param game the game in which the player was playing
+     * @return the score computed
+     */
+
+    public static Score computeScore(String playerName, final Player player, final Game game){
+        //here the values of each thing : to be modified
+        //here the recuperation of the scores
+        int score = Constants.valueDecorComputed*player.getNbDecorComputed() + Constants.valueDamaged*player.getNbTimesDamaged() +
+         Constants.valueBombPut*player.getNbBombsPut() + Constants.valueLandminePut*player.getNbLandminesPut() + Constants.valueScarecrowPut*player.getNbScarecrowPut() +
+         Constants.valueBoxDestructed*game.getNbBoxDestructed() + Constants.valueMonsterKilled*game.getNbMonstersKilled() +
+         Constants.valueLivesStaying*player.getLives() + Constants.valueLandminesStaying*player.getNbLandmines() + Constants.valueDecorDestructed*game.getNbDecorDestructed() +
+         (player.isAlive() ? 1 : 0)*Constants.valueGameWon ;
+        return new Score(playerName, score) ;
     }
 }

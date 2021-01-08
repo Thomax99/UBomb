@@ -141,24 +141,6 @@ public final class GameEngine {
         }
         input.clear();
     }
-    /**
-     * This function is used to compute a score when the game is over.
-     * @return the score computed
-     */
-    private Score computeScore(){
-        //here the values of each thing : to be modified
-        int valueDecorComputed = 10, valueDamaged = -15, valueBombPut = 5, valueLandminePut = 10,
-            valueScarecrowPut = 40, valueBoxDestructed = 10, valueMonsterKilled = 20, valueLivesStaying = 20,
-            valueLandminesStaying = 5, valueDecorDestructed = 5 ;
-        //here the recuperation of the scores
-        int nbDecorComputed = player.getNbDecorComputed(), nbTimesDamaged = player.getNbTimesDamaged(), nbBombsPut = player.getNbBombsPut(),
-            nbLandminesPut = player.getNbLandminesPut(), nbScarecrowPut = player.getNbScarecrowPut(), nbBoxDestructed = game.getNbBoxDestructed(),
-            nbMonsterKilled = game.getNbMonstersKilled(), nbLivesStaying = player.getLives(), nbLandminesStaying = player.getNbLandmines(),
-            nbDecorDestructed = game.getNbDecorDestructed() ;
-        return new Score(playerName, valueDecorComputed*nbDecorComputed + valueDamaged*nbTimesDamaged + valueBombPut*nbBombsPut + valueLandminePut*nbLandminesPut
-                + valueScarecrowPut*nbScarecrowPut + valueBoxDestructed*nbBoxDestructed + valueMonsterKilled*nbMonsterKilled + valueLivesStaying*nbLivesStaying
-                + valueLandminesStaying*nbLandminesStaying + valueDecorDestructed* nbDecorDestructed) ;
-    }
 
 
     private void showMessage(String msg, Color color) {
@@ -208,7 +190,7 @@ public final class GameEngine {
         if (!player.isAlive()) {
             //the game is lost
             gameLoop.stop();
-            Score score = computeScore() ;
+            Score score = Score.computeScore(playerName, player, game) ;
             List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
             scores.add(score) ;
             showMessage("Perdu !\n Votre score est de "+ score.getScore()+" :/\n" + Score.getStringScoreFromListScore(scores), Color.RED);
@@ -216,7 +198,7 @@ public final class GameEngine {
         if (player.isWinner()) {
             //the game is won
             gameLoop.stop();
-            Score score = computeScore() ;
+            Score score = Score.computeScore(playerName, player, game) ;
             List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
             scores.add(score) ;
             showMessage("Gagné !!\n Votre score est de "+ score.getScore()+" :)\n" + Score.getStringScoreFromListScore(scores), Color.GREEN);
