@@ -210,7 +210,7 @@ public final class GameEngine {
             Score score = computeScore() ;
             List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
             scores.add(score) ;
-            showMessage("Perdu !\n Votre score est de "+ computeScore()+" :/\n" + Score.getStringScoreFromListScore(scores), Color.RED);
+            showMessage("Perdu !\n Votre score est de "+ score.getScore()+" :/\n" + Score.getStringScoreFromListScore(scores), Color.RED);
         }
         if (player.isWinner()) {
             //the game is won
@@ -218,7 +218,8 @@ public final class GameEngine {
             Score score = computeScore() ;
             List<Score> scores = Score.getScoreFromFile(scorePath, "scores") ;
             scores.add(score) ;
-            showMessage("Gagné !!\n Votre score est de "+ computeScore()+" :)\n" + Score.getStringScoreFromListScore(scores), Color.RED);
+            showMessage("Gagné !!\n Votre score est de "+ score.getScore()+" :)\n" + Score.getStringScoreFromListScore(scores), Color.GREEN);
+            Score.setFileScoreFromListScore(scores, scorePath, "scores"); // we write the file just if the game is won
         }
     }
 
