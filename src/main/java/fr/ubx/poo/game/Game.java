@@ -486,7 +486,7 @@ public class Game {
      * @return if it is possible for a gameObject to go at this position
      */
     private boolean positionAllowedToMovableGameObjects(Position position, int level){
-        return getWorld().isInside(position) && !positionIsBomb(position, level) ; // a gameobject can't go outside of the world or on a bomb
+        return getWorld(level).isInside(position) && !positionIsBomb(position, level) ; // a gameobject can't go outside of the world or on a bomb
     }
     /**
      * This function compute if it is possible for a Character to go at a given position
@@ -494,7 +494,7 @@ public class Game {
      * @return if it is possible for a character to go at this position
      */
     private boolean positionAllowedToCharacters(Position position, int level){
-        return positionAllowedToMovableGameObjects(position, level) && getWorld().canGoIn(position) ;
+        return positionAllowedToMovableGameObjects(position, level) && getWorld(level).canGoIn(position) ;
         //a character can't go on an unauthorized decor
     }
     /**
@@ -503,10 +503,10 @@ public class Game {
      * @return if it is possible for a monster to go at this position
      */
     public boolean positionAllowedToMonsters(Position position, int level){
-        for(Box box : getBoxes()){
+        for(Box box : getBoxes(level)){
             if (box.getPosition().equals(position)) return false ; //a monster can't go on a box everytime
         }
-        return !getWorld().positionIsDoor(position) && !getWorld().positionIsPrincess(position) && positionAllowedToCharacters(position, level); //another not allowed position for a monster is a princess position ;
+        return !getWorld().positionIsDoor(position) && !getWorld(level).positionIsPrincess(position) && positionAllowedToCharacters(position, level); //another not allowed position for a monster is a princess position ;
     }
     /**
      * This function compute if it is possible for a player to go at a given position, if he came from a given direction
@@ -515,7 +515,7 @@ public class Game {
      * @return if it is possible for a player to go at this position
      */
     public boolean positionAllowedToPlayer(Position position, Direction dir, int level){
-        for(Box box : getBoxes()){
+        for(Box box : getBoxes(level)){
             if (box.getPosition().equals(position) && !box.canMove(dir)) return false ; //a monster can't go on a box if it can move in this direction
         }
         return positionAllowedToCharacters(position, level);
@@ -526,13 +526,13 @@ public class Game {
      * @return if it is possible for a box to go at this position
      */
     public boolean positionAllowedToBoxes(Position position, int level){
-        for(Monster monster : getMonsters()){
+        for(Monster monster : getMonsters(level)){
             if (monster.getPosition().equals(position)) return false ; // a box can't go on a monster
         }
-        for (Box box : getBoxes()){
+        for (Box box : getBoxes(level)){
             if (box.getPosition().equals(position)) return false ; // or on another box
         }
-        return getWorld().isEmpty(position) && positionAllowedToMovableGameObjects(position, level) && !positionIsLandmine(position, level) ; //a box can't go on a decor
+        return getWorld(level).isEmpty(position) && positionAllowedToMovableGameObjects(position, level) && !positionIsLandmine(position, level) ; //a box can't go on a decor
     }
 
     //functions used by the game engine to compute the score
