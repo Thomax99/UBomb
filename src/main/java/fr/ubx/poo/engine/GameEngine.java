@@ -4,6 +4,7 @@
 
 package fr.ubx.poo.engine;
 
+import fr.ubx.poo.Constants;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.view.sprite.Sprite;
 import fr.ubx.poo.view.sprite.SpriteFactory;
@@ -133,11 +134,13 @@ public final class GameEngine {
         if (input.isBomb()) {
             player.requestBomb() ;
         }
-        if (input.isLandmine()){
-            player.requestLandmine() ;
-        }
-        if (input.isScarecrow()){
-            player.requestScarecrow() ;
+        if (Constants.INPUTMODIFIED){ //those two inputs are used depending on this value
+            if (input.isLandmine()){
+                player.requestLandmine() ;
+            }
+            if (input.isScarecrow()){
+                player.requestScarecrow() ;
+            }
         }
         input.clear();
     }

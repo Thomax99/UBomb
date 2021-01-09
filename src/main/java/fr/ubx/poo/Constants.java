@@ -49,4 +49,6 @@ public final class Constants {
                             valueScarecrowPut = 40, valueBoxDestructed = 10, valueMonsterKilled = 20, valueLivesStaying = 20,
                             valueLandminesStaying = 5, valueDecorDestructed = 5, valueGameWon = 100 ;
 
+    // value for knowing if we can modify the input or not
+    public final static boolean INPUTMODIFIED = false ;
 }

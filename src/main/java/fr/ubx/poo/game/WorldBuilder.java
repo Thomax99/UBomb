@@ -83,7 +83,12 @@ public class WorldBuilder {
         Iterator<List<WorldEntity>> it = mapEntitiesList.iterator() ;
         while(it.hasNext()){
             List<WorldEntity> line = it.next() ;
-            if (line.size() != lineLength){
+            if (line.size() == 0){
+                //the line is empty : we suppress it
+                it.remove();
+            }
+            else if (line.size() != lineLength){
+                //the array is not regular
                 throw new WorldNotValidException("Le fichier n'est pas conforme") ;
             }
         }

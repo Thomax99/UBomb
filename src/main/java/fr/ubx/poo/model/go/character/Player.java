@@ -15,6 +15,7 @@ import fr.ubx.poo.game.Game;
 public class Player extends Character{
 
     //booleans for managing the request from user
+    // scarecrowRequested and landmineRequested are used just if Constants.INPUTMODIFIED is true
     private boolean moveRequested = false, bombRequested = false, scarecrowRequested = false, landmineRequested = false, infectionRequested = false ;
     private long timeInvincible, currentTime ;
     private boolean hasScarecrow, winner = false, isInvincible = false ;
@@ -180,31 +181,61 @@ public class Player extends Character{
             }
             moveRequested = false;
         }
-        if (landmineRequested){
-            //the landmine is a bomb which will be placed in front of the player
-            Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
-            if (canLandmine(nextPosition)){ //searching if it possible to put a landmine
-                game.addLandmine(nextPosition, range) ;
-                landmines-- ;
-                nbLandminesPut++ ;
+
+        // the managing of the request depends of the value Constants.INPUTMODIFIED : if we can modify them, there is a different treament
+        if (Constants.INPUTMODIFIED){
+            // there is a different input foreach possible request (landmine, scarecrow and bomb)
+            if (landmineRequested){
+                //the landmine is a bomb which will be placed in front of the player
+                Position nextPosition = getDirection().nextPosition(getPosition()) ; // compute the position
+                if (canLandmine(nextPosition)){ //searching if it possible to put a landmine
+                    game.addLandmine(nextPosition, range) ;
+                    landmines-- ;
+                    nbLandminesPut++ ;
+                }
+                landmineRequested = false ;
             }
-            landmineRequested = false ;
+            if (scarecrowRequested){
+                if(canScarecrow(getPosition())){
+                    game.addScarecrow(getPosition());
+                    hasScarecrow = false ;
+                    nbScarecrowPut++ ;
+                }
+                scarecrowRequested = false ;
+            }
+            if (bombRequested){
+                if (canBomb(getPosition())){
+                    game.addBomb(getPosition(), range, now) ;
+                    bombs-- ;
+                    nbBombsPut++ ;
+                }
+                bombRequested = false ;
+            }
         }
-        if (scarecrowRequested){
-            if(canScarecrow(getPosition())){
-                game.addScarecrow(getPosition());
-                hasScarecrow = false ;
-                nbScarecrowPut++ ;
+        else {
+            // the boolean bombRequested manage all the request :
+            // if we can put a scarecrow, we put it. Else, if we have a landmine we have to put them
+            //if we haven't landmine, we put a bomb
+            if (bombRequested){
+                if(canScarecrow(getPosition())){
+                    game.addScarecrow(getPosition());
+                    hasScarecrow = false ;
+                    nbScarecrowPut++ ;
+                }
+                else {
+                    if (canLandmine(getDirection().nextPosition(getPosition()))){ //searching if it possible to put a landmine
+                        game.addLandmine(getDirection().nextPosition(getPosition()), range) ;
+                        landmines-- ;
+                        nbLandminesPut++ ;
+                    }
+                    else if (landmines == 0 && canBomb(getPosition())){ //we put a bomb just if there is just one bomb
+                        game.addBomb(getPosition(), range, now) ;
+                        bombs-- ;
+                        nbBombsPut++ ;
+                    }
+                }
+                bombRequested = false ;
             }
-            scarecrowRequested = false ;
-        }
-        if (bombRequested){
-            if (canBomb(getPosition())){
-                game.addBomb(getPosition(), range, now) ;
-                bombs-- ;
-                nbBombsPut++ ;
-            }
-            bombRequested = false ;
         }
     }
     /**
@@ -232,6 +263,7 @@ public class Player extends Character{
     }
     /**
      * Used to notify the object player that we would like to put a scarecrow
+     * Used just if the value of Constants.INPUTMODIFIED is true
      */
     public void requestScarecrow() {
         scarecrowRequested = true;
@@ -244,6 +276,7 @@ public class Player extends Character{
     }
     /**
      * Used to notify the object player that we would like to put a landmine
+     * Used just if the value of Constants.INPUTMODIFIED is true
      */
     public void requestLandmine(){
         landmineRequested = true ;

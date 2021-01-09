@@ -87,6 +87,7 @@ public final class Input {
     }
     /**
      * A landmine is put if we press SHIFT
+     * This function is used if Constants.INPUTMODIFIED is true
      * @return if the touch is a requirement for a landmine
      */
     public boolean isLandmine() {
@@ -94,6 +95,7 @@ public final class Input {
     }
     /**
      * A scarecrow is put if we press CAPS (VERR. MAJ) or S
+     * This function is used if Constants.INPUTMODIFIED is true
      * @return if the touch is a requirement for a scarecrow
      */
     public boolean isScarecrow() {
