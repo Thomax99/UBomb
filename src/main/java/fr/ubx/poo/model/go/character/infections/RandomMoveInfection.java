@@ -10,6 +10,7 @@ public class RandomMoveInfection extends Infection{
     RandomMoveInfection(Player playerInfected, long now){
         super(playerInfected, now) ;
     }
+    @Override
     public void makeAction(){
         Direction dir = Direction.random() ;
         getPlayerInfected().setDirection(dir) ;

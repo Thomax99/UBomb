@@ -134,7 +134,7 @@ public final class Score implements Comparable<Score> {
         //here the recuperation of the scores
         int score = Constants.valueDecorComputed*player.getNbDecorComputed() + Constants.valueDamaged*player.getNbTimesDamaged() +
          Constants.valueBombPut*player.getNbBombsPut() + Constants.valueLandminePut*player.getNbLandminesPut() + Constants.valueScarecrowPut*player.getNbScarecrowPut() +
-         Constants.valueBoxDestructed*game.getNbBoxDestructed() + Constants.valueMonsterKilled*game.getNbMonstersKilled() +
+         Constants.valueBoxDestructed*game.getNbBoxesDestructed() + Constants.valueMonsterKilled*game.getNbMonstersKilled() +
          Constants.valueLivesStaying*player.getLives() + Constants.valueLandminesStaying*player.getNbLandmines() + Constants.valueDecorDestructed*game.getNbDecorDestructed() +
          (player.isAlive() ? 1 : 0)*Constants.valueGameWon ;
         return new Score(playerName, score) ;

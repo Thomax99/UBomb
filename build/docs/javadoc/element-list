@@ -1,0 +1,13 @@
+fr.ubx.poo
+fr.ubx.poo.engine
+fr.ubx.poo.game
+fr.ubx.poo.model
+fr.ubx.poo.model.decor
+fr.ubx.poo.model.decor.bonus
+fr.ubx.poo.model.decor.explosives
+fr.ubx.poo.model.go
+fr.ubx.poo.model.go.character
+fr.ubx.poo.model.go.character.automovablepolicies
+fr.ubx.poo.model.go.character.infections
+fr.ubx.poo.view.image
+fr.ubx.poo.view.sprite

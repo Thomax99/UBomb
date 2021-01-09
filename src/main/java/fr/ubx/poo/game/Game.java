@@ -42,7 +42,7 @@ public class Game {
     private int initPlayerLives, initPlayerBombs, initPlayerKey, initPlayerRange, initPlayerLandmines ;
     private boolean initPlayerScarecrow ;
     // storing differents values for the score
-    private int nbBoxDestructed = 0, nbMonstersKilled = 0, nbDecorsDestructed = 0 ;
+    private int nbBoxesDestructed = 0, nbMonstersKilled = 0, nbDecorsDestructed = 0 ;
     /**
      * 
      * @param worldPath the path to find the levels in case that the Game is not random and the configuration EVERYTIME
@@ -379,14 +379,14 @@ public class Game {
                     if (monster.getPosition().equals(position)){
                         monster.explosion(now) ;
                         somethingExploded = true ;
-                        nbMonstersKilled++ ;
+                        nbMonstersKilled++ ; //useful for the score
                     }
                 }
                 for(Box box : boxes){
                     if (box.getPosition().equals(position)){
                         box.explosion(now) ;
                         somethingExploded = true ;
-                        nbBoxDestructed++ ;
+                        nbBoxesDestructed++ ; //useful for the score
                     }
                 }
 
@@ -460,6 +460,10 @@ public class Game {
     private Map<Position, Decor> getNewDecors(int level){
         return newDecorToPlace.get(level - 1) ;
     }
+    /**
+     * This function is used to load a configuration of a player according to a path
+     * @param path the path on which we can found the file
+     */
     private void loadConfig(String path) {
         try (InputStream input = new FileInputStream(new File(path, Constants.propertiesFileName))) {
             Properties prop = new Properties();
@@ -477,20 +481,28 @@ public class Game {
             System.err.println("Error loading configuration");
         }
     }
+    /**
+     * This function is used to load a world from a file which is well constructed
+     * @param n the number of the new level
+     * @return the World well constructed
+     * @throws WorldNotValidException if the corresponding file on the disk is not valid
+     */
     private World loadWorld(int n) throws WorldNotValidException{
         return new World(WorldBuilder.loadWorldFromFile(n, this.worldPath, this.initPrefString, this.initSuffixString)) ;
     }
     /**
-     * This function compute if it is possible for a gameObject which can move to go at a given position
+     * This function compute if it is possible for a gameObject which can move to go at a given position on a particular level
      * @param position the given position
+     * @param level the particular level
      * @return if it is possible for a gameObject to go at this position
      */
     private boolean positionAllowedToMovableGameObjects(Position position, int level){
         return getWorld(level).isInside(position) && !positionIsBomb(position, level) ; // a gameobject can't go outside of the world or on a bomb
     }
     /**
-     * This function compute if it is possible for a Character to go at a given position
+     * This function compute if it is possible for a Character to go at a given position on a particular level
      * @param position the given position
+     * @param level the particular level
      * @return if it is possible for a character to go at this position
      */
     private boolean positionAllowedToCharacters(Position position, int level){
@@ -498,8 +510,9 @@ public class Game {
         //a character can't go on an unauthorized decor
     }
     /**
-     * This function compute if it is possible for a monster to go at a given position
+     * This function compute if it is possible for a monster to go at a given position on a particular level
      * @param position the given position
+     * @param level the particular level
      * @return if it is possible for a monster to go at this position
      */
     public boolean positionAllowedToMonsters(Position position, int level){
@@ -509,9 +522,10 @@ public class Game {
         return !getWorld().positionIsDoor(position) && !getWorld(level).positionIsPrincess(position) && positionAllowedToCharacters(position, level); //another not allowed position for a monster is a princess position ;
     }
     /**
-     * This function compute if it is possible for a player to go at a given position, if he came from a given direction
+     * This function compute if it is possible for a player to go at a given position, if he came from a given direction on a particular level
      * @param position the given position
-     * @param dir the given direction
+     * @param dir the given direction, usefull because a player can push boxes which depends on the direction
+     * @param level the particular level
      * @return if it is possible for a player to go at this position
      */
     public boolean positionAllowedToPlayer(Position position, Direction dir, int level){
@@ -521,8 +535,9 @@ public class Game {
         return positionAllowedToCharacters(position, level);
     }
     /**
-     * This function compute if it is possible for a box to go at a given position
+     * This function compute if it is possible for a box to go at a given position on a particular level
      * @param position the given position
+     * @param level the particular level
      * @return if it is possible for a box to go at this position
      */
     public boolean positionAllowedToBoxes(Position position, int level){
@@ -536,8 +551,8 @@ public class Game {
     }
 
     //functions used by the game engine to compute the score
-    public int getNbBoxDestructed(){
-        return nbBoxDestructed ;
+    public int getNbBoxesDestructed(){
+        return nbBoxesDestructed ;
     }
     public int getNbMonstersKilled(){
         return nbMonstersKilled ;

@@ -30,6 +30,7 @@ public abstract class Infection {
     }
     /**
      * This function is called by the player when a move is requested to make something according to the override of this method
+     * It's the only function to override if you would like a well implemented infection
      */
     public abstract void makeAction() ;
     /**
