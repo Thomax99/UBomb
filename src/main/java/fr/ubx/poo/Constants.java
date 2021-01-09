@@ -9,6 +9,7 @@ package fr.ubx.poo;
  */
 public final class Constants {
     public final static long secondInnanoSec = 1000000000L ; // storage of the number on nanoseconds in one second
+    public final static int timeInfection = 3 ;
 
     // default parameters 
     public final static boolean defaultRandomValue = false ;
@@ -27,14 +28,16 @@ public final class Constants {
     public final static String emptyProbaName = "emptyProba", boxProbaName = "boxProba", monsterProbaName = "monsterProba", stoneProbaName ="stoneProba",
                                         treeProbaName = "treeProba", numberIncProbaName = "numberIncProba", numberDecProbaName = "numberDecProba",
                                         rangeIncProbaName = "rangeIncProba", rangeDecProbaName = "rangeDecProba", heartProbaName = "heartProba",
-                                        landminerProbaname = "landminerProba", scarecrowProbaName = "scarecrowProba", fieldMinWidthValue = "minWidthValue",
-                                        fieldMaxWidthValue = "maxWidthValue", fieldMinHeightValue = "minHeightValue", fieldMaxHeightValue = "maxHeightValue";
+                                        landminerProbaname = "landminerProba", scarecrowProbaName = "scarecrowProba", infectionProbaName = "infectionProba",
+                                        fieldMinWidthValue = "minWidthValue", fieldMaxWidthValue = "maxWidthValue", fieldMinHeightValue = "minHeightValue",
+                                        fieldMaxHeightValue = "maxHeightValue";
 
     // default values for the random generation
     public final static int defaultMinWidthValue = 12, defaultMaxWidthValue = 30, defaultMinHeightValue = 10, defaultMaxHeightValue = 25 ;
     public final static double defaultEmptyProba = 0.73, defaultBoxProba = 0.07, defaultMonsterProba = 0.02, defaultStoneProba = 0.07,
                         defaultTreeProba = 0.02, defaultNumberIncProba = 0.012, defaultNumberDecProba = 0.012, defaultRangeIncProba = 0.015,
-                        defaultRangeDecProba = 0.02, defaultHeartProba = 0.01, defaultLandminerProba = 0.017, defaultScarecrowProba = 0.009 ;
+                        defaultRangeDecProba = 0.02, defaultHeartProba = 0.01, defaultLandminerProba = 0.009, defaultScarecrowProba = 0.009,
+                        defaultInfectionProba = 0.008 ;
 
     //default values for loading game from files
     public final static int defaultInitPlayerLives = 3, defaultInitPlayerBombs = 3, defaultInitPlayerKey = 0, defaultInitPlayerRange = 1, defaultInitPlayerLandmines = 0 ;

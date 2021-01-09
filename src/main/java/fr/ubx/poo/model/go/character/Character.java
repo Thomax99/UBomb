@@ -17,7 +17,7 @@ public abstract class Character extends MovableGameObject implements Updatable {
         super(game, position) ;
         this.direction = Direction.S ;
     }
-    protected void setDirection(Direction d){
+    public void setDirection(Direction d){
         direction = d ;
     }
     public Direction getDirection() {

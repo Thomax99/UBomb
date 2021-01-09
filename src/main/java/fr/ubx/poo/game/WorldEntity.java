@@ -7,6 +7,8 @@ package fr.ubx.poo.game;
 import java.util.Arrays;
 import java.util.Optional;
 
+import fr.ubx.poo.model.decor.bonus.Infected;
+
 public enum WorldEntity {
     Empty('_'),
     Box('B'),
@@ -25,7 +27,8 @@ public enum WorldEntity {
     BombNumberInc('+'),
     BombNumberDec('-'),
     Landminer('L'),
-    BonusScarecrow('E')
+    BonusScarecrow('E'),
+    Infected('I'),
         ;
 
 

@@ -22,6 +22,7 @@ public enum ImageResource {
     BOMB_1 ("bomb3.png"),
     BOMB_2 ("bomb2.png"),
     BOMB_3 ("bomb1.png"),
+    LANDMINE("landmine.png"),
     EXPLOSION ("explosion.png"),
     PLAYER_DOWN("player_down.png"),
     PLAYER_LEFT("player_left.png"),
@@ -58,9 +59,9 @@ public enum ImageResource {
     BONUS_BOMB_DEC("bonus_bomb_nb_dec.png"),
     BONUS_BOMB_RANGE_DEC("bonus_bomb_range_dec.png"),
     BONUS_BOMB_RANGE_INC("bonus_bomb_range_inc.png"),
-    LANDMINE("landmine.png"),
     BONUS_LANDMINE("bonus_landmine.png"),
     BONUS_SCARECROW("bonus_scarecrow.png"),
+    BONUS_INFECTED("bonus_infected.png"),
     ;
 
     private final String FileName;

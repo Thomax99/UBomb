@@ -122,14 +122,13 @@ public final class Score implements Comparable<Score> {
             throw new RuntimeException("Le fichier ne peut être écrit") ;
         }
     }
-        /**
+    /**
      * This function is used to compute a score when the game is over.
      * @param playerName the name of the player
      * @param player the player which was playing
      * @param game the game in which the player was playing
      * @return the score computed
      */
-
     public static Score computeScore(String playerName, final Player player, final Game game){
         //here the values of each thing : to be modified
         //here the recuperation of the scores

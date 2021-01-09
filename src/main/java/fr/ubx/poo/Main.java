@@ -24,7 +24,6 @@ public class Main extends Application {
         Parameters params = getParameters();
         List<String> list = params.getRaw();
         loadParameters(getParameters().getRaw());
-        System.out.println("Le jeu est aléatoire ? "+ isRandom +"Le nombre de jeu est "+nbLevels+" le nom est "+ name) ;
         ImageFactory.getInstance().load();
         String path = getClass().getResource("/sample").getFile();
         Game game = new Game(path, isRandom, nbLevels);

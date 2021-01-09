@@ -46,6 +46,8 @@ public final class SpriteFactory {
             return new SpriteDecor(layer, factory.get(BONUS_LANDMINE), position, decor);
         if (decor instanceof BonusScarecrow)
             return new SpriteDecor(layer, factory.get(BONUS_SCARECROW), position, decor);
+        if (decor instanceof Infected)
+        return new SpriteDecor(layer, factory.get(BONUS_INFECTED), position, decor);
         if (decor instanceof Explosion)
             return new SpriteDecor(layer, factory.get(EXPLOSION), position,  decor);
         if (decor instanceof Bomb)

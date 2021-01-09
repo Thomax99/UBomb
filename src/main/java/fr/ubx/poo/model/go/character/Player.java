@@ -9,14 +9,16 @@ import fr.ubx.poo.Constants ;
 import fr.ubx.poo.game.Direction;
 import fr.ubx.poo.game.Position;
 import fr.ubx.poo.model.decor.* ;
+import fr.ubx.poo.model.go.character.infections.Infection;
 import fr.ubx.poo.game.Game;
 
 public class Player extends Character{
 
     //booleans for managing the request from user
-    private boolean moveRequested = false, bombRequested = false, scarecrowRequested = false, landmineRequested = false ;
+    private boolean moveRequested = false, bombRequested = false, scarecrowRequested = false, landmineRequested = false, infectionRequested = false ;
     private long timeInvincible, currentTime ;
     private boolean hasScarecrow, winner = false, isInvincible = false ;
+    private Infection currentInfection ; //the current infection of the player
     // managing the differents values of the elements that a player has
     private int lives, bombs, landmines, key, range ;
     // storing differents values to compute a score
@@ -96,7 +98,9 @@ public class Player extends Character{
     public void lessPortee(){
         range = (range <= 1 ? 1 : range-1); //the smaller range is 1
     }
-
+    public void addInfection(){
+        infectionRequested = true ; //this will be treat by the update method to notify that there is a new infection to put
+    }
     //this function are used by the game engine to compute the score
     public int getNbDecorComputed(){
         return nbDecorComputed ;
@@ -156,8 +160,21 @@ public class Player extends Character{
             // supress the invicibility of the player after one second
             isInvincible = false ;
         }
+        if (hasAnInfection() && currentInfection.isTerminated(now)){
+            //we suppress the infection
+            currentInfection = null ;
+        }
+        if (infectionRequested){
+            //we make an new infection
+            currentInfection = Infection.getRandomInfection(this, now) ;
+            infectionRequested = false ;
+        }
         if (moveRequested) {
             //doing a move
+            if (hasAnInfection()){
+                //we call the method makeAction of the infection : it is called when moving
+                currentInfection.makeAction();
+            }
             if (canMove(getDirection())) {
                 doMove(getDirection());
             }
@@ -253,6 +270,14 @@ public class Player extends Character{
     @Override
     public boolean hasToBeRemoved(){
         return false ; // a player is never removed of a game
+    }
+    /**
+     * Useful to know if the player has a correct infection or not
+     * COuld be used by the sprites to know the state of the player
+     * @return if the player is currently infected
+     */
+    public boolean hasAnInfection(){
+        return currentInfection != null ;
     }
     /**
      * Used to notify the player that the actual time has been changed.

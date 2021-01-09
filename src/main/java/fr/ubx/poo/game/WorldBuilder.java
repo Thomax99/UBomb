@@ -132,6 +132,8 @@ public class WorldBuilder {
                 return new Landminer() ;
             case BonusScarecrow:
                 return new BonusScarecrow() ;
+            case Infected:
+                return new Infected() ;
             default:
                 return null;
         }

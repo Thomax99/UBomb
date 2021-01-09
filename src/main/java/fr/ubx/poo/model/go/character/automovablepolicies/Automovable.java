@@ -6,6 +6,9 @@ import fr.ubx.poo.game.Game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+/**
+ * This abstract class is used to implement a moving policy for the monsters
+ */
 public abstract class Automovable {
     private Monster monsterToMove ;
 

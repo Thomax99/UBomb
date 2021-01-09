@@ -25,13 +25,15 @@ public class RandomWorldBuilder {
         //first we load the differents default values from the Constant class : useful to have default value
         double probas[] = {Constants.defaultEmptyProba, Constants.defaultBoxProba, Constants.defaultMonsterProba, Constants.defaultStoneProba,
                         Constants.defaultTreeProba, Constants.defaultNumberIncProba, Constants.defaultNumberDecProba, Constants.defaultRangeIncProba,
-                        Constants.defaultRangeDecProba, Constants.defaultHeartProba, Constants.defaultLandminerProba, Constants.defaultScarecrowProba} ;
+                        Constants.defaultRangeDecProba, Constants.defaultHeartProba, Constants.defaultLandminerProba, Constants.defaultScarecrowProba, 
+                        Constants.defaultInfectionProba} ;
         String probaNames[] = {Constants.emptyProbaName, Constants.boxProbaName, Constants.monsterProbaName, Constants.stoneProbaName,
                             Constants.treeProbaName, Constants.numberIncProbaName, Constants.numberDecProbaName, Constants.rangeIncProbaName,
-                            Constants.rangeDecProbaName, Constants.heartProbaName, Constants.landminerProbaname, Constants.scarecrowProbaName} ;
+                            Constants.rangeDecProbaName, Constants.heartProbaName, Constants.landminerProbaname, Constants.scarecrowProbaName,
+                            Constants.infectionProbaName} ;
         WorldEntity entitiesMatches[] = { WorldEntity.Empty, WorldEntity.Box, WorldEntity.Monster, WorldEntity.Stone, WorldEntity.Tree,
                                         WorldEntity.BombNumberInc, WorldEntity.BombNumberDec, WorldEntity.BombRangeInc, WorldEntity.BombRangeDec,
-                                        WorldEntity.Heart, WorldEntity.Landminer, WorldEntity.BonusScarecrow} ;
+                                        WorldEntity.Heart, WorldEntity.Landminer, WorldEntity.BonusScarecrow, WorldEntity.Infected } ;
         int minWidth = Constants.defaultMinWidthValue, maxWidth = Constants.defaultMaxWidthValue, minHeight = Constants.defaultMinHeightValue, maxHeight = Constants.defaultMaxHeightValue ;
 
         // now we load the needed values for the config.properties file

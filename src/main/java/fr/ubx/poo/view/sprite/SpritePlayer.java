@@ -21,9 +21,8 @@ public class SpritePlayer extends SpriteGameObject {
     public void updateImage() {
         Player player = (Player) go;
         setImage(ImageFactory.getInstance().getPlayer(player.getDirection()));
-
-        if(player.isInvincible()) effect.setBrightness(0.5) ; //managing the transparency effect when the player is invincible
-        else effect.setBrightness(0.1) ;
+        effect.setSaturation( player.hasAnInfection() ? 0.8 : 0) ; //managing the saturation effect when the player is infected
+        effect.setBrightness( player.isInvincible() ? 0.5 : 0) ; //managing the transparency effect when the player is invincibl
         imageView.setEffect(effect) ;
     }
 }
