@@ -41,8 +41,9 @@ public abstract class Automovable {
     public static Automovable getRandomPolicy(Monster monsterToMove, Game game){
         double value = Math.random() ;
         if (value < 0.1) return new RandomPolicy(monsterToMove) ;
-        else if (value < 0.4) return new BehindPlayerPolicy(monsterToMove, game) ;
-        else if (value < 0.7) return new InFrontOfPlayerPolicy(monsterToMove, game) ;
+        else if (value < 0.325) return new BehindPlayerPolicy(monsterToMove, game) ;
+        else if (value < 0.550) return new InFrontOfPlayerPolicy(monsterToMove, game) ;
+        else if (value < 0.775) return new MCPolicy(monsterToMove, game) ;
         return new OnPlayerPolicy(monsterToMove, game) ;
     }
 

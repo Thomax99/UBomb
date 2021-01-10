@@ -26,6 +26,7 @@ public final class ImageFactory {
         {MONSTER_1_UP, MONSTER_1_RIGHT, MONSTER_1_DOWN, MONSTER_1_LEFT},
         {MONSTER_2_UP, MONSTER_2_RIGHT, MONSTER_2_DOWN, MONSTER_2_LEFT},
         {MONSTER_3_UP, MONSTER_3_RIGHT, MONSTER_3_DOWN, MONSTER_3_LEFT},
+        {MONSTER_4_UP, MONSTER_4_RIGHT, MONSTER_4_DOWN, MONSTER_4_LEFT},
 
     };
     private final ImageResource[] stateBomb = new ImageResource[]{

@@ -6,8 +6,15 @@ package fr.ubx.poo;
 
 /**
  * Generalist class to store all the constants which are needed on the code
+ * Class which can't be instantiate
  */
 public final class Constants {
+    /**
+     * We don't want that this class could be instantied so the constructor is private
+     */
+    private Constants(){
+
+    }
     public final static long secondInnanoSec = 1000000000L ; // storage of the number on nanoseconds in one second
     public final static int timeInfection = 3 ;
 
@@ -51,4 +58,7 @@ public final class Constants {
 
     // value for knowing if we can modify the input or not
     public final static boolean INPUTMODIFIED = false ;
+
+    //values for implementing a type of MCTS 
+    public final static int nbTrials = 50, nbRepetitions = 50 ;
 }
