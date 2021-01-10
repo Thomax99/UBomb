@@ -20,6 +20,9 @@ public final class ImageFactory {
         // Direction { N, E, S, W }
         MONSTER_UP, MONSTER_RIGHT, MONSTER_DOWN, MONSTER_LEFT,
     };
+    private final ImageResource[] explosions_monsters = new ImageResource[]{
+        MONSTER_0_EXPLOSING, MONSTER_1_EXPLOSING, MONSTER_2_EXPLOSING, MONSTER_3_EXPLOSING,MONSTER_4_EXPLOSING,
+    };
     private final ImageResource[][] directions_monsters = new ImageResource[][]{
         // Direction { N, E, S, W }
         {MONSTER_0_UP, MONSTER_0_RIGHT, MONSTER_0_DOWN, MONSTER_0_LEFT},
@@ -27,7 +30,6 @@ public final class ImageFactory {
         {MONSTER_2_UP, MONSTER_2_RIGHT, MONSTER_2_DOWN, MONSTER_2_LEFT},
         {MONSTER_3_UP, MONSTER_3_RIGHT, MONSTER_3_DOWN, MONSTER_3_LEFT},
         {MONSTER_4_UP, MONSTER_4_RIGHT, MONSTER_4_DOWN, MONSTER_4_LEFT},
-
     };
     private final ImageResource[] stateBomb = new ImageResource[]{
         // State {0, 1, 2, 3}
@@ -83,6 +85,14 @@ public final class ImageFactory {
     public Image getMonster(int monster_type, Direction direction) {
         if (monster_type >= directions_monsters.length) return get(directions_monsters_classicals[direction.ordinal()]); //we return the default image of monsters
         return get(directions_monsters[monster_type][direction.ordinal()]);
+    }
+    /**
+     * @param monster_type the type of the monster
+     * @return an image according to the type of the monster which is explosing
+     */
+    public Image getMonsterExplosion(int monster_type) {
+        if (monster_type >= directions_monsters.length) return get(EXPLOSION); //we return the default image of explosion
+        return get(explosions_monsters[monster_type]);
     }
     public Image getBomb(int state) {
         return get(stateBomb[state]);

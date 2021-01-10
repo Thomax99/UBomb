@@ -18,6 +18,7 @@ public class SpriteMonster extends SpriteGameObject {
     public void updateImage() {
         Monster monster = (Monster) go;
         if (monster.hasToBeRemoved()) setImage(null) ;
+        else if (monster.isExplosing()) setImage(ImageFactory.getInstance().getMonsterExplosion(monster.getMonsterType()));
         else setImage(ImageFactory.getInstance().getMonster(monster.getMonsterType(), monster.getDirection()));
     }
 }

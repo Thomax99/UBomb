@@ -361,10 +361,21 @@ public class Game {
         for(Direction d : directions){
             position = startPosition ; // we reinitialize the variable
             boolean somethingExploded = false ; //useful to not propagate an explosion if something explode on the direction
+            boolean notRequiredExplosion = false ; // in the case of monster : we don't have to put explosion : the explosion is part of their states
             for (int j = 0; j < explosive.getRange() && !somethingExploded; j++){
                 //decor explosion part
                 position = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
-                if(!world.canExplode(position)) break ; //there is a decor which block the explosion
+                if(!world.canExplode(position)){
+                    //sometimes, a monster could be on a position of a non-explosing decor
+                    for(Monster monster : monsters){
+                        if (monster.getPosition().equals(position)){
+                            monster.explosion(now) ;
+                            somethingExploded = notRequiredExplosion = true ;
+                            nbMonstersKilled++ ; //useful for the score
+                        }
+                    }
+                    break ; // the decor block the explosion
+                }
                 somethingExploded = world.explode(position) ;
                 if (somethingExploded) nbDecorsDestructed++ ; //at this point just decors could be exploded
 
@@ -378,7 +389,7 @@ public class Game {
                 for(Monster monster : monsters){
                     if (monster.getPosition().equals(position)){
                         monster.explosion(now) ;
-                        somethingExploded = true ;
+                        somethingExploded = notRequiredExplosion = true ;
                         nbMonstersKilled++ ; //useful for the score
                     }
                 }
@@ -395,7 +406,7 @@ public class Game {
                 if (exploAdj != null && !exploAdj.hasToBeRemoved()){
                     explode(position, now, level) ;
                 }
-                getNewDecors(level).put(position, world.addExplosion(position, now));
+                if (!notRequiredExplosion) getNewDecors(level).put(position, world.addExplosion(position, now));
             }
         }
     }

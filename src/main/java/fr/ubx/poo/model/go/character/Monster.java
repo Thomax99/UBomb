@@ -12,14 +12,15 @@ import fr.ubx.poo.model.go.character.automovablepolicies.Automovable;
 import fr.ubx.poo.game.Game;
 
 public class Monster extends Character {
-    private long lastMoveTime = 0 ;
+    private long lastMoveTime = 0, explosionTime = 0 ;
     private int speedMoving;
+    private boolean isExplosing = false ;
     private Automovable automovingPolicy ;
     Direction direction;
     public Monster(Game game, Position position) {
         super(game, position);
         setLevel(game.getLevel()) ;
-        speedMoving = Automovable.getSpeed(game.getLevel()-1) ;
+        speedMoving = Automovable.getSpeed(getLevel()-1) ;
         this.automovingPolicy = Automovable.getRandomPolicy(this, game) ;
     }
 
@@ -29,7 +30,14 @@ public class Monster extends Character {
      */
     @Override
     public void update(long now) {
-        if((now-lastMoveTime) /Constants.secondInnanoSec >= speedMoving){
+        if (isExplosing && (now-explosionTime)/Constants.secondInnanoSec >= 1){
+            //the state isExplosing is finished
+            isExplosing = false ;
+            //we remove the monster
+            remove();
+        }
+        if((now-lastMoveTime) /Constants.secondInnanoSec >= speedMoving && !hasToBeRemoved() && !isExplosing){
+            //we move just if it is time and if the monster is not explosing or removed
             lastMoveTime = now ;
             //time to move
             Direction d = automovingPolicy.computeMove() ;
@@ -61,5 +69,13 @@ public class Monster extends Character {
      */
     public int getMonsterType(){
         return automovingPolicy.getType().ordinal() ;
+    }
+    @Override
+    public void explosion(long now){
+        isExplosing = true ;
+        explosionTime = now ; //during one second, a monster is in an explosing effect, so it can't move, but if a player come in it, the player is damaged
+    }
+    public boolean isExplosing(){
+        return isExplosing ;
     }
 }
