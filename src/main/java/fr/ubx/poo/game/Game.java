@@ -351,17 +351,25 @@ public class Game {
         World world = getWorld(explosive.getLevel()) ;
 
         final Position startPosition = position ; //we make a copy of the position to reinitialize it at each loop turn
+        boolean notRequiredExplosion = false ; // in the case of monster : we don't have to put explosion : the explosion is part of their states
 
         //management of the explosion on the position of the explosion (useful for landmines)
-        getNewDecors(explosive.getLevel()).put(position, world.addExplosion(position, now));
         if (getPlayer().getPosition().equals(position))
             player.explosion(now) ;
-        monsters.stream().filter(monster -> monster.getPosition().equals(startPosition)).forEach(monster -> monster.explosion(now));
+        for(Monster monster : monsters){
+            if (monster.getPosition().equals(startPosition)){
+                monster.explosion(now) ;
+                notRequiredExplosion = true ; // the explosion of a monster doesn't imply that we put an explosion
+                nbMonstersKilled++ ; //useful for the score
+            }
+        }
+        //we don't have to check the box because they can't be on a landmine
+        if (!notRequiredExplosion) getNewDecors(explosive.getLevel()).put(position, world.addExplosion(position, now));
 
         for(Direction d : directions){
             position = startPosition ; // we reinitialize the variable
             boolean somethingExploded = false ; //useful to not propagate an explosion if something explode on the direction
-            boolean notRequiredExplosion = false ; // in the case of monster : we don't have to put explosion : the explosion is part of their states
+            notRequiredExplosion = false ;
             for (int j = 0; j < explosive.getRange() && !somethingExploded; j++){
                 //decor explosion part
                 position = d.nextPosition(position) ; //this variable is declared as final because we need a final variable to use Streams interfaces
